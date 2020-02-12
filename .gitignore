@@ -132,3 +132,13 @@ dmypy.json
 *.jpg
 *.jpeg
 *.png
+
+# compressed files
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
