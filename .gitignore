@@ -132,6 +132,7 @@ dmypy.json
 *.jpg
 *.jpeg
 *.png
+*.tif
 
 # compressed files
 *.7z
