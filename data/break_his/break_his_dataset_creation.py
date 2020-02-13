@@ -70,7 +70,7 @@ def move_to_directory(directory, cancer_subtype, total, number_to_move):
     for random_number in random_list:
         files_to_move.append(files[random_number])
     for file_path in files_to_move:
-        shutil.move(file_path, os.getcwd() + '/break_his_validation/' + cancer_subtype)
+        shutil.move(file_path, os.getcwd() + directory + cancer_subtype)
 
 for cancer_subtype in [*benign, *malignant]:
     total = len([name for name in os.listdir(os.getcwd() + '/break_his_train/' + cancer_subtype)])
