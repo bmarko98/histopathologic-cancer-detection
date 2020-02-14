@@ -5,7 +5,7 @@ import random
 
 
 with zipfile.ZipFile('NCT-CRC-HE-100K.zip', 'r') as zip_ref:
-        zip_ref.extractall(os.getcwd())
+    zip_ref.extractall(os.getcwd())
 
 os.remove('NCT-CRC-HE-100K.zip')
 
