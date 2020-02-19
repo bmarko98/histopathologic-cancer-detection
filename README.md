@@ -24,9 +24,9 @@ Dataset is divided into two main groups: benign tumors (adenosis, fibroadenoma, 
 First, download the dataset:
  - [Download BreakHis](https://www.kaggle.com/ambarish/breakhis)
 Next, in order to get necessary directory structure, move *BreaKHis_v1.tar.gz* into data/break_his directory and run:
-'''
+```
 $ python3 break_his_dataset_creation.py
-'''
+```
 
 ### 2. PatchCamelyon Dataset (PCam)
 
