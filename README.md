@@ -23,6 +23,8 @@ Dataset is divided into two main groups: benign tumors (adenosis, fibroadenoma, 
 
 First, download the dataset:
  - [Download BreakHis](https://www.kaggle.com/ambarish/breakhis)
+Next, in order to get necessary directory structure, move BreaKHis_v1.tar.gz into data/break_his directory and run:
+    $ python3 break_his_dataset_creation.py
 
 ### 2. PatchCamelyon Dataset (PCam)
 
@@ -30,6 +32,8 @@ PCam is composed of 327.680 color images (96x96 pixels) extracted from histopath
 
 First, download the dataset:
  - [Download PCam](https://www.kaggle.com/c/histopathologic-cancer-detection/data)
+ Next, in order to get necessary directory structure, move histopathologic-cancer-detection.zip into data/pcam directory and run:
+     $ python3 pcam_dataset_creation.py
 
 ### 3. NCT-CRC-HE-100K Dataset
 
@@ -38,6 +42,8 @@ Tissue classes are: adipose, background, debris, lymphocytes, mucus, smooth musc
 
 First, download the dataset:
  - [Download NCT-CRC-HE-100K](https://zenodo.org/record/1214456#.Xk2d2-l7nqo)
+ Next, in order to get necessary directory structure, move NCT-CRC-HE-100K.zip into data/nct_crc_he_100k directory and run:
+     $ python3 nct_crc_he_100k_dataset_creation.py
 
 ## Author
 
