@@ -1,0 +1,64 @@
+
+Dataset: nct_crc_he_100k
+Categories: 
+	 cancer_associated_stroma
+	 adipose
+	 debris
+	 mucus
+	 background
+	 smooth_muscle
+	 lymphocytes
+	 colorectal_adenocarcinoma_epithelium
+	 normal_colon_mucosa
+
+Total number of images: 100000
+Number of images per class: 
+	cancer_associated_stroma: 10446
+	adipose: 10407
+	debris: 11512
+	mucus: 8896
+	background: 10566
+	smooth_muscle: 13536
+	lymphocytes: 11557
+	colorectal_adenocarcinoma_epithelium: 14317
+	normal_colon_mucosa: 8763
+
+Training set: 
+Total number of images: 70010
+Number of images per class: 
+	cancer_associated_stroma: 7314
+	adipose: 7285
+	debris: 8060
+	mucus: 6228
+	background: 7398
+	smooth_muscle: 9476
+	lymphocytes: 8091
+	colorectal_adenocarcinoma_epithelium: 10023
+	normal_colon_mucosa: 6135
+
+Validation set: 
+Total number of images: 14995
+Number of images per class: 
+	cancer_associated_stroma: 1566
+	adipose: 1561
+	debris: 1726
+	mucus: 1334
+	background: 1584
+	smooth_muscle: 2030
+	lymphocytes: 1733
+	colorectal_adenocarcinoma_epithelium: 2147
+	normal_colon_mucosa: 1314
+
+Test set: 
+Total number of images: 14995
+Number of images per class: 
+	cancer_associated_stroma: 1566
+	adipose: 1561
+	debris: 1726
+	mucus: 1334
+	background: 1584
+	smooth_muscle: 2030
+	lymphocytes: 1733
+	colorectal_adenocarcinoma_epithelium: 2147
+	normal_colon_mucosa: 1314
+
