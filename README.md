@@ -36,13 +36,14 @@ NCT-CRC-HE-100K Dataset is composed of 100,000 non-overlapping image patches (22
  - [Download NCT-CRC-HE-100K](https://zenodo.org/record/1214456#.Xk2d2-l7nqo)
 
 ### Copying images to Training, Validation and Test sets
- - In order to create training, validation and test sets, do the following:
+ - In order to create training, validation and test sets, first:
+  - move *BreaKHis_v1.tar.gz* into data/break_his directory
+  - move *histopathologic-cancer-detection.zip*  
+  - move *NCT-CRC-HE-100K.zip* into data/nct_crc_he_100k
+ - Next, execute following commands:
 ```
-# move *BreaKHis_v1.tar.gz* into data/break_his directory
 $ python3 break_his_dataset_creation.py            #execute inside data/break_his directory
-# move *histopathologic-cancer-detection.zip* into data/pcam directory
 $ python3 pcam_dataset_creation.py                 #execute inside data/pcam directory
-# move *NCT-CRC-HE-100K.zip* into data/nct_crc_he_100k directory
 $ python3 nct_crc_he_100k_dataset_creation.py      #execute inside data/nct_crc_he_100k directory
 ```
  - In order to plot sample images and obtain basic dataset information, run following command:
