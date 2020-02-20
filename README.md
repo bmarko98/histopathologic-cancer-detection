@@ -51,6 +51,8 @@ $ python3 nct_crc_he_100k_dataset_creation.py      #execute inside data/nct_crc_
 $ python3 dataset_overview.py                      #execute in data/ directory
  ```
 
-### Author
+## Models
+
+## Author
 
 Marko Bauer / [@bmarko98](https://github.com/bmarko98)
