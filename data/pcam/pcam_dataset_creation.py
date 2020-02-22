@@ -24,7 +24,7 @@ for directory in ['pcam_train', 'pcam_validation', 'pcam_test']:
 
 train_labels = pd.read_csv('train_labels.csv')
 
-#move data to train directory
+#move data to train directory (moves ~220000 images, takes ~45min)
 for image in os.listdir(os.getcwd() + '/train'):
     label = int(train_labels.loc[train_labels['id'] == image[0:-4]]['label'])
     shutil.move(os.getcwd() + '/train/' + image, os.getcwd() + '/pcam_train/' + tissue_types[label])
