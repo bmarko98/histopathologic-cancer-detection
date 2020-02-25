@@ -10,7 +10,7 @@ from keras.optimizers import SGD, RMSprop, Adam
 from keras.preprocessing.image import ImageDataGenerator
 
 sys.path.insert(1, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'utils'))
-from save_model import save
+from save_model import save_model
 
 logging.basicConfig(level=logging.INFO)
 _logger = logging.getLogger(__name__)
@@ -43,10 +43,10 @@ class VGG19Simple():
             classes: int, number of classes in dataset, default: None
             weights: 'imagenet' (pre-training on ImageNet) or path to weights file to be loaded, defualt: 'imagenet'
             include_top: bool, whether to include the 3 fully-connected layers at the top of the network, default: False
-            loss: string, loss function for model training, default: 'categorical_crossentropy'
-            learning_rate: float, optimizer learning rate, default: 1e-4
-            optimizer: optimizer for model training, options: rmsprop, adam, sgd, default: rmsprop
-            metrics: list of strings, metrics for model training, default: ['acc']
+            loss: string, loss function used as feedback signal for learning the weighs, default: 'categorical_crossentropy'
+            learning_rate: float, optimizer learning rate (magnitude of the move), default: 1e-4
+            optimizer: optimizer for model training (variant of SGD), options: rmsprop, adam, sgd, default: rmsprop
+            metrics: list of strings, metrics to monitor during model training, default: ['acc']
             epochs: int, number of epochs to train
         '''
         _logger.info('VGG19Simple constructor...')
@@ -93,7 +93,7 @@ class VGG19Simple():
 
         self.predict()
 
-        save(self)
+        save_model(self)
 
 
     def data_generators(self):
