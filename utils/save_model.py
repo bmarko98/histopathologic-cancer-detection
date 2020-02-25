@@ -94,7 +94,12 @@ def save_test_results(file, model, test_generator):
     file.write('\n\ntest accuracy: ' + str(result[1]) + '\ntest loss: ' + str(result[0]))
 
 
-def save(network):
+def save_as_h5(directory, model, name):
+    _logger.info('Saving the model as .h5 file...')
+    network.model.save(os.path.join(directory, name + '.h5'))
+
+
+def save_model(network):
     _logger.info('Started saving the model...')
     directory, file_path = create_directory_and_txt_file(network.network_name)
     file = open(file_path, 'a+')
@@ -105,5 +110,6 @@ def save(network):
     save_train_plots(directory, network.history)
     save_confusion_matrix(file, network.validation_generator, network.predictions)
     save_test_results(file, network.model, network.test_generator)
+    save_as_h5(directory, network.model, network.network_name)
 
     file.close()
