@@ -25,21 +25,12 @@ def create_directory_and_txt_file(network_name):
 
 def save_arguments(file, network):
     _logger.info('Saving the arguments...')
-    arguments = '\nnetwork name: ' + str(network.network_name) + '\n'\
-                'dataset name: ' + str(network.dataset_name) + '\n'\
-                'image size: ' + str(network.image_size) + '\n'\
-                'data augmentation: ' + str(network.data_augmentation) + '\n'\
-                'batch size: ' + str(network.batch_size) + '\n'\
-                'classes: ' + str(network.classes) + '\n'\
-                'weights: ' + str(network.weights) + '\n'\
-                'include_top: ' + str(network.include_top) + '\n'\
-                'loss: ' + str(network.loss) + '\n'\
-                'learning rate: ' + str(network.learning_rate) + '\n'\
-                'optimizer: ' + str(network.optimizer) + '\n'\
-                'metrics: ' + str(network.metrics) + '\n'\
-                'epochs: ' + str(network.epochs) + '\n\n'
-    file.write(arguments)
 
+    for attribute, value in network.__dict__.items():
+        if not callable(attribute):
+            file.write('\n' + str(attribute) + ': ' + str(value))
+    file.write('\n\n')
+    
 
 def save_model_architecture(file, model):
     _logger.info('Saving the model architecture...')
@@ -88,15 +79,16 @@ def save_confusion_matrix(file, validation_generator, predictions):
     file.write('\n\n' + 'confusion matrix: \n\n' + confusion_matrix_text)
 
 
-def save_test_results(file, model, test_generator):
+def save_test_results(file, model, test_generator, dataset_count, batch_size):
     _logger.info('Saving the test dataset results...')
-    result = model.evaluate_generator(test_generator, steps=50)
+    result = model.evaluate_generator(test_generator,
+                                      steps=int(dataset_count[2]/batch_size) if dataset_count is not None else 20)
     file.write('\n\ntest accuracy: ' + str(result[1]) + '\ntest loss: ' + str(result[0]))
 
 
 def save_as_h5(directory, model, name):
     _logger.info('Saving the model as .h5 file...')
-    network.model.save(os.path.join(directory, name + '.h5'))
+    model.save(os.path.join(directory, name + '.h5'))
 
 
 def save_model(network):
@@ -109,7 +101,7 @@ def save_model(network):
     save_train_history(file, network.epochs, network.history)
     save_train_plots(directory, network.history)
     save_confusion_matrix(file, network.validation_generator, network.predictions)
-    save_test_results(file, network.model, network.test_generator)
+    save_test_results(file, network.model, network.test_generator, network.dataset_count, network.batch_size)
     save_as_h5(directory, network.model, network.network_name)
 
     file.close()
