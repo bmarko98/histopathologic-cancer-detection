@@ -1,4 +1,4 @@
-# Histopathologic Cancer Detection using Deep Neural Networks
+# Histopathologic Cancer Detection using CNNs
 
 Tensorflow & Keras implementation of Deep Convolutional Neural Networks for classification of histopathologic slides of tissue in order to determine whether the patient has metastatic cancer or not.
 
