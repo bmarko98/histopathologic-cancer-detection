@@ -21,6 +21,7 @@ class VGG19Simple():
     def __init__(self,
                  network_name = 'vgg19_simple',
                  dataset_name = None,
+                 dataset_count = None,
                  image_size = None,
                  data_augmentation = False,
                  batch_size = 32,
@@ -49,10 +50,11 @@ class VGG19Simple():
             metrics: list of strings, metrics to monitor during model training, default: ['acc']
             epochs: int, number of epochs to train
         '''
-        _logger.info('VGG19Simple constructor...')
+        _logger.info('VGG19Simple...')
 
         self.network_name = network_name
         self.dataset_name = dataset_name
+        self.dataset_count = dataset_count
 
         if image_size is None:
             try:
@@ -101,12 +103,15 @@ class VGG19Simple():
         if self.data_augmentation is True:
             train_datagen = ImageDataGenerator(rescale=1./255,
                                                rotation_range=45,
-                                               width_shift_range=0.2,
-                                               height_shift_range=0.2,
-                                               shear_range=0.2,
-                                               zoom_range=0.2,
+                                               width_shift_range=0.05,
+                                               height_shift_range=0.05,
+                                               shear_range=0.05,
+                                               zoom_range=0.05,
+                                               zca_whitening=True,
+                                               zca_epsilon=1e-6,
                                                fill_mode='nearest',
-                                               horizontal_flip=True)
+                                               horizontal_flip=True,
+                                               vertical_flip=True)
         else:
             train_datagen = ImageDataGenerator(rescale=1./255)
 
@@ -136,15 +141,16 @@ class VGG19Simple():
         input_shape = list(self.image_size)
         input_shape.insert(2, 3)
         input_shape = tuple(input_shape)
-        convolutional_base = VGG19(weights = self.weights,
-                                        include_top = self.include_top,
-                                        input_shape = input_shape)
+        convolutional_base = VGG19(weights=self.weights,
+                                   include_top=self.include_top,
+                                   input_shape=input_shape)
 
         if self.include_top is False:
             flatten = Flatten(name = 'flatten')(convolutional_base.outputs)
-            dropout_1 = Dropout(0.5, name = 'dropout_1')(flatten)
-            dense_1 = Dense(256, activation = 'relu', name = 'dense')(dropout_1)
-            dropout_2 = Dropout(0.5, name = 'dropout_2')(dense_1)
+            dense_1 = Dense(256, activation = 'relu', name = 'dense_1')(flatten)
+            dropout_1 = Dropout(0.5, name = 'dropout_1')(dense_1)
+            dense_2 = Dense(512, activation = 'relu', name = 'dense_2')(dropout_1)
+            dropout_2 = Dropout(0.5, name = 'dropout_2')(dense_2)
             output = Dense(8, activation = 'softmax', name = 'predictions')(dropout_2)
             model = Model(inputs = convolutional_base.inputs, outputs = output)
             self.model = model
@@ -165,10 +171,10 @@ class VGG19Simple():
     def train(self):
         _logger.info('Training the model...')
         self.history = self.model.fit_generator(self.train_generator,
-                                                steps_per_epoch = 100,
+                                                steps_per_epoch = int(self.dataset_count[0]/self.batch_size) if self.dataset_count is not None else 100,
                                                 epochs = self.epochs,
                                                 validation_data = self.validation_generator,
-                                                validation_steps = 50)
+                                                validation_steps = int(self.dataset_count[1]/self.batch_size) if self.dataset_count is not None else 20)
 
 
 
@@ -182,7 +188,8 @@ def main():
     _logger.info('main()...')
     model = VGG19Simple(network_name = 'VGG19Test',
                         dataset_name = 'break_his',
-                        image_size = (700, 460),
+                        dataset_count = None,
+                        image_size = (256, 256),
                         data_augmentation = True,
                         batch_size = 1,
                         classes = 8,
