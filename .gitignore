@@ -143,3 +143,6 @@ dmypy.json
 *.rar
 *.tar
 *.zip
+
+# TO_DO file
+TO_DO.txt
