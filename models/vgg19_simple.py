@@ -32,7 +32,9 @@ class VGG19Simple():
                  learning_rate = 1e-4,
                  optimizer = 'rmsprop',
                  metrics = ['acc'],
-                 epochs = 100):
+                 epochs = 100,
+                 fine_tune = False,
+                 fine_tune_blocks = 0):
 
         '''
         Arguments:
@@ -93,9 +95,10 @@ class VGG19Simple():
         self.epochs = epochs
         self.train()
 
-        self.predict()
-
-        save_model(self)
+        self.fine_tune = fine_tune
+        self.fine_tune_blocks = fine_tune_blocks
+        if self.fine_tune is True:
+            self.fine_tune_model()
 
 
     def data_generators(self):
@@ -141,21 +144,23 @@ class VGG19Simple():
         input_shape = list(self.image_size)
         input_shape.insert(2, 3)
         input_shape = tuple(input_shape)
-        convolutional_base = VGG19(weights=self.weights,
-                                   include_top=self.include_top,
-                                   input_shape=input_shape)
+        self.convolutional_base = VGG19(weights=self.weights,
+                                        include_top=self.include_top,
+                                        input_shape=input_shape)
+        for layer in self.convolutional_base.layers:
+            layer.trainable = False
 
         if self.include_top is False:
-            flatten = Flatten(name = 'flatten')(convolutional_base.outputs)
+            flatten = Flatten(name = 'flatten')(self.convolutional_base.outputs)
             dense_1 = Dense(256, activation = 'relu', name = 'dense_1')(flatten)
             dropout_1 = Dropout(0.5, name = 'dropout_1')(dense_1)
             dense_2 = Dense(512, activation = 'relu', name = 'dense_2')(dropout_1)
             dropout_2 = Dropout(0.5, name = 'dropout_2')(dense_2)
             output = Dense(8, activation = 'softmax', name = 'predictions')(dropout_2)
-            model = Model(inputs = convolutional_base.inputs, outputs = output)
+            model = Model(inputs = self.convolutional_base.inputs, outputs = output)
             self.model = model
         else:
-            self.model = convolutional_base
+            self.model = self.convolutional_base
 
 
     def compile(self):
@@ -170,12 +175,16 @@ class VGG19Simple():
 
     def train(self):
         _logger.info('Training the model...')
+        print('Number of trainable tensors: ', len(self.model.trainable_weights))
         self.history = self.model.fit_generator(self.train_generator,
                                                 steps_per_epoch = int(self.dataset_count[0]/self.batch_size) if self.dataset_count is not None else 100,
                                                 epochs = self.epochs,
                                                 validation_data = self.validation_generator,
                                                 validation_steps = int(self.dataset_count[1]/self.batch_size) if self.dataset_count is not None else 20)
 
+
+    def fine_tune_model(self):
+        
 
 
     def predict(self):
@@ -199,7 +208,9 @@ def main():
                         learning_rate = 1e-4,
                         optimizer = 'rmsprop',
                         metrics = ['acc'],
-                        epochs = 1)
+                        epochs = 1,
+                        fine_tune = False,
+                        fine_tune_blocks = 0)
 
 if __name__ == '__main__':
     _logger.info('Started the program...')
