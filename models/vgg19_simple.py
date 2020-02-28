@@ -34,7 +34,8 @@ class VGG19Simple():
                  metrics = ['acc'],
                  epochs = 100,
                  fine_tune = False,
-                 fine_tune_blocks = 0):
+                 first_trainable_block = 5,
+                 fine_tune_learning_rate = 1e-5):
 
         '''
         Arguments:
@@ -51,6 +52,9 @@ class VGG19Simple():
             optimizer: optimizer for model training (variant of SGD), options: rmsprop, adam, sgd, default: rmsprop
             metrics: list of strings, metrics to monitor during model training, default: ['acc']
             epochs: int, number of epochs to train
+            fine_tune: bool, whether to fine tune the model, default: False
+            first_trainable_block: 1-5, first block to set to trainable if fine tuning, default: 5
+            fine_tune_learning_rate: float, optimizer learning rate if fine tuning, default: 1e-5
         '''
         _logger.info('VGG19Simple...')
 
@@ -90,15 +94,30 @@ class VGG19Simple():
         self.learning_rate = learning_rate
         self.optimizer = optimizer
         self.metrics = metrics
-        self.compile()
+        self.compile(self.learning_rate)
 
         self.epochs = epochs
         self.train()
+        self.predict()
+        save_model(self)
 
         self.fine_tune = fine_tune
-        self.fine_tune_blocks = fine_tune_blocks
+        if self.fine_tune is True:
+            if first_trainable_block >= 1 and first_trainable_block <= 5:
+                self.first_trainable_block = first_trainable_block
+            else:
+                self.first_trainable_block = 5
+            self.fine_tune_learning_rate = fine_tune_learning_rate
+        else:
+            self.first_trainable_block = None
+            self.fine_tune_learning_rate = None
+
         if self.fine_tune is True:
             self.fine_tune_model()
+            self.compile(self.fine_tune_learning_rate)
+            self.train()
+            self.predict()
+            save_model(self)
 
 
     def data_generators(self):
@@ -163,11 +182,11 @@ class VGG19Simple():
             self.model = self.convolutional_base
 
 
-    def compile(self):
+    def compile(self, learning_rate):
         _logger.info('Compiling the model...')
-        optimizer_dict = {'sgd': SGD(learning_rate=self.learning_rate),
-                          'rmsprop': RMSprop(learning_rate = self.learning_rate),
-                          'adam': Adam(learning_rate = self.learning_rate)}
+        optimizer_dict = {'sgd': SGD(learning_rate=learning_rate),
+                          'rmsprop': RMSprop(learning_rate = learning_rate),
+                          'adam': Adam(learning_rate = learning_rate)}
         self.model.compile(loss = self.loss,
                            optimizer = optimizer_dict[self.optimizer],
                            metrics = self.metrics)
@@ -183,18 +202,28 @@ class VGG19Simple():
                                                 validation_steps = int(self.dataset_count[1]/self.batch_size) if self.dataset_count is not None else 20)
 
 
-    def fine_tune_model(self):
-        
-
-
     def predict(self):
         _logger.info('Predicting test dataset classes...')
         predictions = self.model.predict_generator(self.test_generator)
         self.predictions = np.argmax(predictions, axis=1)
 
 
+    def fine_tune_model(self):
+        _logger.info('Fine tuning...')
+        for layer in self.model.layers:
+            if layer.name[0:5] == 'block':
+                if int(layer.name[5]) < self.first_trainable_block:
+                    layer.trainable = False
+                else:
+                    layer.trainable = True
+            elif layer.name[0:5] == 'input':
+                layer.trainable = False
+            else:
+                layer.trainable = True
+
+
 def main():
-    _logger.info('main()...')
+    _logger.info('Creating VGG19Simple object...')
     model = VGG19Simple(network_name = 'VGG19Test',
                         dataset_name = 'break_his',
                         dataset_count = None,
@@ -208,9 +237,11 @@ def main():
                         learning_rate = 1e-4,
                         optimizer = 'rmsprop',
                         metrics = ['acc'],
-                        epochs = 1,
-                        fine_tune = False,
-                        fine_tune_blocks = 0)
+                        epochs = 5,
+                        fine_tune = True,
+                        first_trainable_block = 5,
+                        fine_tune_learning_rate = 1e-5)
+
 
 if __name__ == '__main__':
     _logger.info('Started the program...')

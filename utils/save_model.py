@@ -30,7 +30,7 @@ def save_arguments(file, network):
         if not callable(attribute):
             file.write('\n' + str(attribute) + ': ' + str(value))
     file.write('\n\n')
-    
+
 
 def save_model_architecture(file, model):
     _logger.info('Saving the model architecture...')
