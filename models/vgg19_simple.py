@@ -2,6 +2,7 @@ import os
 import numpy as np
 import sys
 import logging
+from datetime import datetime
 
 from keras.layers import Flatten, Dropout, Dense
 from keras.models import Model
@@ -11,6 +12,9 @@ from keras.preprocessing.image import ImageDataGenerator
 
 sys.path.insert(1, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'utils'))
 from save_model import save_model
+
+# disable tensorflow logging
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 logging.basicConfig(level=logging.INFO)
 _logger = logging.getLogger(__name__)
@@ -33,6 +37,7 @@ class VGG19Simple():
                  optimizer = 'rmsprop',
                  metrics = ['acc'],
                  epochs = 100,
+                 skip_filters = True,
                  fine_tune = False,
                  first_trainable_block = 5,
                  fine_tune_learning_rate = 1e-5):
@@ -52,13 +57,17 @@ class VGG19Simple():
             optimizer: optimizer for model training (variant of SGD), options: rmsprop, adam, sgd, default: rmsprop
             metrics: list of strings, metrics to monitor during model training, default: ['acc']
             epochs: int, number of epochs to train
+            skip_filters: bool, whether to skip creation of filter patterns for separate conv layers, default: True
             fine_tune: bool, whether to fine tune the model, default: False
             first_trainable_block: 1-5, first block to set to trainable if fine tuning, default: 5
             fine_tune_learning_rate: float, optimizer learning rate if fine tuning, default: 1e-5
         '''
+
         _logger.info('VGG19Simple...')
 
-        self.network_name = network_name
+        current_time = datetime.now()
+        current_time = current_time.strftime("_%d-%m-%Y_%H:%M:%S")
+        self.network_name = network_name + current_time
         self.dataset_name = dataset_name
         self.dataset_count = dataset_count
 
@@ -99,7 +108,7 @@ class VGG19Simple():
         self.epochs = epochs
         self.train()
         self.predict()
-        save_model(self)
+        save_model(self, skip_filters)
 
         self.fine_tune = fine_tune
         if self.fine_tune is True:
@@ -129,8 +138,6 @@ class VGG19Simple():
                                                height_shift_range=0.05,
                                                shear_range=0.05,
                                                zoom_range=0.05,
-                                               zca_whitening=True,
-                                               zca_epsilon=1e-6,
                                                fill_mode='nearest',
                                                horizontal_flip=True,
                                                vertical_flip=True)
@@ -194,7 +201,7 @@ class VGG19Simple():
 
     def train(self):
         _logger.info('Training the model...')
-        print('Number of trainable tensors: ', len(self.model.trainable_weights))
+        _logger.info('Number of trainable tensors: ' + str(len(self.model.trainable_weights)))
         self.history = self.model.fit_generator(self.train_generator,
                                                 steps_per_epoch = int(self.dataset_count[0]/self.batch_size) if self.dataset_count is not None else 100,
                                                 epochs = self.epochs,
@@ -237,7 +244,8 @@ def main():
                         learning_rate = 1e-4,
                         optimizer = 'rmsprop',
                         metrics = ['acc'],
-                        epochs = 5,
+                        epochs = 2,
+                        skip_filters = True,
                         fine_tune = True,
                         first_trainable_block = 5,
                         fine_tune_learning_rate = 1e-5)

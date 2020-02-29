@@ -2,9 +2,9 @@ import os
 import matplotlib.pyplot as plt
 import logging
 import pandas as pd
-from datetime import datetime
-
 from sklearn.metrics import confusion_matrix
+
+from visualize_filters import create_and_save_model_patterns
 
 
 logging.basicConfig(level=logging.INFO)
@@ -12,15 +12,17 @@ _logger = logging.getLogger(__name__)
 
 
 def create_directory_and_txt_file(network_name):
-    _logger.info('Creating output directory and .txt file...')
-    current_time = datetime.now()
-    current_time = current_time.strftime("_%d-%m-%Y_%H:%M:%S")
-    directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'experiments', network_name + current_time)
-    os.mkdir(directory)
-    file_path = os.path.join(directory, network_name + current_time + '.txt')
+    _logger.info('Creating output directories and .txt file...')
+    base_directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'experiments', network_name)
+    plots_directory = os.path.join(base_directory, 'plots')
+    filter_directory = os.path.join(base_directory, 'conv_filters')
+    os.mkdir(base_directory)
+    os.mkdir(plots_directory)
+    os.mkdir(filter_directory)
+    file_path = os.path.join(base_directory, network_name + '.txt')
     file = open(file_path, 'w+')
     file.close()
-    return directory, file_path
+    return base_directory, plots_directory, filter_directory, file_path
 
 
 def save_arguments(file, network):
@@ -59,13 +61,15 @@ def save_train_plots(directory, history):
     plt.plot(epochs, acc, 'bo', label='Training acc')
     plt.plot(epochs, val_acc, 'b', label='Validation acc')
     plt.title('Training and validation accuracy')
-    plt.savefig(fname = directory + '/accuracy_plot.png', bbox_inches = 'tight')
+    accuracy_plot_path = os.path.join(directory, 'accuracy_plot.png')
+    plt.savefig(fname = accuracy_plot_path, bbox_inches = 'tight')
     plt.legend()
     plt.figure()
     plt.plot(epochs, loss, 'bo', label='Training loss')
     plt.plot(epochs, val_loss, 'b', label='Validation loss')
     plt.title('Training and validation loss')
-    plt.savefig(fname = directory + '/loss_plot.png', bbox_inches = 'tight')
+    loss_plot_path = os.path.join(directory, 'loss_plot.png')
+    plt.savefig(fname = loss_plot_path, bbox_inches = 'tight')
     plt.legend()
     plt.figure()
     plt.cla()
@@ -91,17 +95,19 @@ def save_as_h5(directory, model, name):
     model.save(os.path.join(directory, name + '.h5'))
 
 
-def save_model(network):
+def save_model(network, skip_filters):
     _logger.info('Started saving the model...')
-    directory, file_path = create_directory_and_txt_file(network.network_name)
+    base_directory, plots_directory, filter_directory, file_path = create_directory_and_txt_file(network.network_name)
     file = open(file_path, 'a+')
 
     save_arguments(file, network)
     save_model_architecture(file, network.model)
     save_train_history(file, network.epochs, network.history)
-    save_train_plots(directory, network.history)
+    save_train_plots(plots_directory, network.history)
     save_confusion_matrix(file, network.validation_generator, network.predictions)
     save_test_results(file, network.model, network.test_generator, network.dataset_count, network.batch_size)
-    save_as_h5(directory, network.model, network.network_name)
+    if skip_filters is False:
+        create_and_save_model_patterns(network.model, filter_directory)
+    save_as_h5(base_directory, network.model, network.network_name)
 
     file.close()
