@@ -2,10 +2,9 @@ import os
 import numpy as np
 import sys
 import logging
-from datetime import datetime
 
 from keras.layers import Flatten, Dropout, Dense
-from keras.models import Model
+from keras.models import Sequential
 from keras.applications import VGG19
 from keras.optimizers import SGD, RMSprop, Adam
 from keras.preprocessing.image import ImageDataGenerator
@@ -46,6 +45,7 @@ class VGG19Simple():
         Arguments:
             network_name: string, name of the network, default: vgg19_simple
             dataset_name: string, name of the dataset, default: None
+            dateset_count: (int, int, int), number of images in train, validation, test set, default: None
             image_size: (int, int), size of the input images, default: None
             data_augmentation: bool, whether to use data augmentation, default: False
             batch_size: int, batch size during network training, default: 32
@@ -65,9 +65,7 @@ class VGG19Simple():
 
         _logger.info('VGG19Simple...')
 
-        current_time = datetime.now()
-        current_time = current_time.strftime("_%d-%m-%Y_%H:%M:%S")
-        self.network_name = network_name + current_time
+        self.network_name = network_name
         self.dataset_name = dataset_name
         self.dataset_count = dataset_count
 
@@ -126,7 +124,7 @@ class VGG19Simple():
             self.compile(self.fine_tune_learning_rate)
             self.train()
             self.predict()
-            save_model(self)
+            save_model(self, skip_filters)
 
 
     def data_generators(self):
@@ -150,19 +148,19 @@ class VGG19Simple():
                 os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data', self.dataset_name, self.dataset_name + '_train'),
                 target_size = self.image_size,
                 batch_size = self.batch_size,
-                class_mode = 'categorical' if self.classes>1 else 'binary')
+                class_mode = 'categorical')
 
         self.validation_generator = validation_test_datagen.flow_from_directory(
                 os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data', self.dataset_name, self.dataset_name + '_validation'),
                 target_size = self.image_size,
                 batch_size = self.batch_size,
-                class_mode = 'categorical' if self.classes>1 else 'binary')
+                class_mode = 'categorical')
 
         self.test_generator = validation_test_datagen.flow_from_directory(
                 os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data', self.dataset_name, self.dataset_name + '_test'),
                 target_size = self.image_size,
                 batch_size = self.batch_size,
-                class_mode = 'categorical' if self.classes>1 else 'binary')
+                class_mode = 'categorical')
 
 
     def build(self):
@@ -176,17 +174,18 @@ class VGG19Simple():
         for layer in self.convolutional_base.layers:
             layer.trainable = False
 
+        model = Sequential(name='sequential')
+        model.add(self.convolutional_base)
+
         if self.include_top is False:
-            flatten = Flatten(name = 'flatten')(self.convolutional_base.outputs)
-            dense_1 = Dense(256, activation = 'relu', name = 'dense_1')(flatten)
-            dropout_1 = Dropout(0.5, name = 'dropout_1')(dense_1)
-            dense_2 = Dense(512, activation = 'relu', name = 'dense_2')(dropout_1)
-            dropout_2 = Dropout(0.5, name = 'dropout_2')(dense_2)
-            output = Dense(8, activation = 'softmax', name = 'predictions')(dropout_2)
-            model = Model(inputs = self.convolutional_base.inputs, outputs = output)
-            self.model = model
-        else:
-            self.model = self.convolutional_base
+            model.add(Flatten(name = 'flatten'))
+            model.add(Dense(512, activation = 'relu', name = 'dense_1'))
+            model.add(Dropout(0.5, name = 'dropout_1'))
+            model.add(Dense(1024, activation = 'relu', name = 'dense_2'))
+            model.add(Dropout(0.5, name = 'dropout_2'))
+            model.add(Dense(8, activation = 'softmax', name = 'predictions'))
+
+        self.model = model
 
 
     def compile(self, learning_rate):
@@ -201,7 +200,7 @@ class VGG19Simple():
 
     def train(self):
         _logger.info('Training the model...')
-        _logger.info('Number of trainable tensors: ' + str(len(self.model.trainable_weights)))
+        _logger.info('Number of trainable tensors: ' + str(len(self.model.trainable_weights)) + '...')
         self.history = self.model.fit_generator(self.train_generator,
                                                 steps_per_epoch = int(self.dataset_count[0]/self.batch_size) if self.dataset_count is not None else 100,
                                                 epochs = self.epochs,
@@ -212,12 +211,12 @@ class VGG19Simple():
     def predict(self):
         _logger.info('Predicting test dataset classes...')
         predictions = self.model.predict_generator(self.test_generator)
-        self.predictions = np.argmax(predictions, axis=1)
+        self.predictions = predictions
 
 
     def fine_tune_model(self):
         _logger.info('Fine tuning...')
-        for layer in self.model.layers:
+        for layer in self.convolutional_base.layers:
             if layer.name[0:5] == 'block':
                 if int(layer.name[5]) < self.first_trainable_block:
                     layer.trainable = False
@@ -233,22 +232,22 @@ def main():
     _logger.info('Creating VGG19Simple object...')
     model = VGG19Simple(network_name = 'VGG19Test',
                         dataset_name = 'break_his',
-                        dataset_count = None,
-                        image_size = (256, 256),
+                        dataset_count = (1463, 309, 309),
+                        image_size = (150, 150),
                         data_augmentation = True,
-                        batch_size = 1,
+                        batch_size = 32,
                         classes = 8,
                         weights = 'imagenet',
                         include_top = False,
                         loss = 'categorical_crossentropy',
-                        learning_rate = 1e-4,
-                        optimizer = 'rmsprop',
+                        learning_rate = 5e-3,
+                        optimizer = 'adam',
                         metrics = ['acc'],
-                        epochs = 2,
+                        epochs = 100,
                         skip_filters = True,
                         fine_tune = True,
                         first_trainable_block = 5,
-                        fine_tune_learning_rate = 1e-5)
+                        fine_tune_learning_rate = 2e-5)
 
 
 if __name__ == '__main__':
