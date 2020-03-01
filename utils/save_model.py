@@ -2,8 +2,8 @@ import os
 import matplotlib.pyplot as plt
 import logging
 import pandas as pd
+from datetime import datetime
 from sklearn.metrics import confusion_matrix
-
 from visualize_filters import create_and_save_model_patterns
 
 
@@ -13,7 +13,9 @@ _logger = logging.getLogger(__name__)
 
 def create_directory_and_txt_file(network_name):
     _logger.info('Creating output directories and .txt file...')
-    base_directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'experiments', network_name)
+    current_time = datetime.now()
+    current_time = current_time.strftime("_%d-%m-%Y_%H:%M:%S")
+    base_directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'experiments', network_name + current_time)
     plots_directory = os.path.join(base_directory, 'plots')
     filter_directory = os.path.join(base_directory, 'conv_filters')
     os.mkdir(base_directory)
@@ -34,8 +36,11 @@ def save_arguments(file, network):
     file.write('\n\n')
 
 
-def save_model_architecture(file, model):
+def save_model_architecture(file, include_top, base, model):
     _logger.info('Saving the model architecture...')
+    file.write('\n')
+    if include_top is False:
+        base.summary(print_fn = lambda x: file.write(x + '\n'))
     model.summary(print_fn = lambda x: file.write(x + '\n'))
 
 
@@ -90,9 +95,9 @@ def save_test_results(file, model, test_generator, dataset_count, batch_size):
     file.write('\n\ntest accuracy: ' + str(result[1]) + '\ntest loss: ' + str(result[0]))
 
 
-def save_as_h5(directory, model, name):
+def save_as_h5(directory, model, network_name):
     _logger.info('Saving the model as .h5 file...')
-    model.save(os.path.join(directory, name + '.h5'))
+    model.save(os.path.join(directory, network_name + '.h5'))
 
 
 def save_model(network, skip_filters):
@@ -101,7 +106,7 @@ def save_model(network, skip_filters):
     file = open(file_path, 'a+')
 
     save_arguments(file, network)
-    save_model_architecture(file, network.model)
+    save_model_architecture(file, network.include_top, network.convolutional_base, network.model)
     save_train_history(file, network.epochs, network.history)
     save_train_plots(plots_directory, network.history)
     save_confusion_matrix(file, network.validation_generator, network.predictions)
