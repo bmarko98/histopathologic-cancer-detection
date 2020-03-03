@@ -36,11 +36,9 @@ def save_arguments(file, network):
     file.write('\n\n')
 
 
-def save_model_architecture(file, include_top, base, model):
+def save_model_architecture(file, model):
     _logger.info('Saving the model architecture...')
     file.write('\n')
-    if include_top is False:
-        base.summary(print_fn = lambda x: file.write(x + '\n'))
     model.summary(print_fn = lambda x: file.write(x + '\n'))
 
 
@@ -106,7 +104,7 @@ def save_model(network, skip_filters):
     file = open(file_path, 'a+')
 
     save_arguments(file, network)
-    save_model_architecture(file, network.include_top, network.convolutional_base, network.model)
+    save_model_architecture(file, network.model)
     save_train_history(file, network.epochs, network.history)
     save_train_plots(plots_directory, network.history)
     save_confusion_matrix(file, network.validation_generator, network.predictions)
