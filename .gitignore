@@ -149,3 +149,6 @@ TO_DO.txt
 
 # experiments folder (temporarily)
 experiments/*
+
+# code length calculator
+thesis_code_length.py
