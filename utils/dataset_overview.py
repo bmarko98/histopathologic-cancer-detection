@@ -1,9 +1,11 @@
-from PIL import Image
-import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
 import os
 import random
 import logging
+
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
+from PIL import Image
 
 
 logging.basicConfig(level=logging.INFO)
@@ -21,27 +23,26 @@ def get_image_paths(dataset, category, number_of_images, data_dir):
     return image_paths
 
 
-def sample_images(dataset, categories, number_of_images, image_size, data_dir):
-    _logger.info(dataset + ' dataset sample images...')
-    figsize = (len(categories), number_of_images)
-    fig = plt.figure(figsize=figsize)
-    ax = [fig.add_subplot(len(categories), number_of_images, i+1) for i in range(len(categories) * number_of_images)]
+def sample_images(dataset, categories, number_of_images, image_width, image_height, data_dir):
+    margin = 7
+    results = np.zeros((len(categories) * image_height + len(categories) * margin, number_of_images * image_width, 3))
     for i in range(len(categories)):
         image_paths = get_image_paths(dataset, categories[i], number_of_images, data_dir)
         for j in range(number_of_images):
             img = Image.open(image_paths[j])
-            img = img.resize(image_size)
-            ax[i*number_of_images + j].imshow(img)
-
-    for a in ax:
-        a.set_xticklabels([])
-        a.set_yticklabels([])
-        a.set_aspect('equal')
-
-    plt.subplots_adjust(wspace=0, hspace=0)
-
-    save_path = os.path.join(data_dir, dataset, dataset + '_sample_images.jpg')
-    plt.savefig(save_path, dpi = 400, bbox_inches = 'tight', pad_inches = 0)
+            img = np.asarray(img)
+            horizontal_start = i * image_height + i * margin
+            horizontal_end = horizontal_start + image_height
+            vertical_start = j * image_width
+            vertical_end = vertical_start + image_width
+            results[horizontal_start: horizontal_end, vertical_start: vertical_end, :] = img
+    figsize = (20, 20)
+    plt.figure(figsize=figsize)
+    plt.imshow((results).astype(np.uint8))
+    plt.axis('off')
+    image_name = dataset + '_sample_images.jpg'
+    image_path = os.path.join(data_dir, dataset, image_name)
+    plt.savefig(fname = image_path, bbox_inches = 'tight', pad_inches = 0)
 
 
 def category_numbers(dataset, categories, dir):
@@ -108,7 +109,7 @@ def main():
         image_path = [im.path for im in os.scandir(os.path.join(train_dir, categories[0])) if im.is_file()][0]
         image = Image.open(image_path)
         dataset_numbers(dataset, categories, data_dir)
-        sample_images(dataset, categories, number_of_images, image.size, data_dir)
+        sample_images(dataset, categories, number_of_images, image.size[0], image.size[1], data_dir)
 
 
 if __name__ == "__main__":
