@@ -26,10 +26,10 @@ class VGG19Simple(BaseCNN):
                  network_name = 'vgg19_simple',
                  dataset_name = None,
                  dataset_count = None,
+                 classes = None,
                  image_size = None,
                  data_augmentation = False,
                  batch_size = 32,
-                 classes = None,
                  weights = 'imagenet',
                  include_top = False,
                  loss = 'categorical_crossentropy',
@@ -47,10 +47,10 @@ class VGG19Simple(BaseCNN):
             network_name: string, name of the network, default: vgg19_simple
             dataset_name: string, name of the dataset, default: None
             dateset_count: (int, int, int), number of images in train, validation, test set, default: None
+            classes: list of strings, classes of dataset, default: None
             image_size: (int, int), size of the input images, default: None
             data_augmentation: bool, whether to use data augmentation, default: False
             batch_size: int, batch size during network training, default: 32
-            classes: int, number of classes in dataset, default: None
             weights: 'imagenet' (pre-training on ImageNet) or path to weights file to be loaded, defualt: 'imagenet'
             include_top: bool, whether to include the 3 fully-connected layers at the top of the network, default: False
             loss: string, loss function used as feedback signal for learning the weighs, default: 'categorical_crossentropy'
@@ -67,10 +67,10 @@ class VGG19Simple(BaseCNN):
         super().__init__(network_name,
                          dataset_name,
                          dataset_count,
+                         classes,
                          image_size,
                          data_augmentation,
                          batch_size,
-                         classes,
                          loss,
                          learning_rate,
                          optimizer,
@@ -143,7 +143,7 @@ class VGG19Simple(BaseCNN):
             model.add(Dropout(0.5, name = 'dropout_1'))
             model.add(Dense(1024, activation = 'relu', name = 'dense_2'))
             model.add(Dropout(0.5, name = 'dropout_2'))
-            model.add(Dense(8, activation = 'softmax', name = 'predictions'))
+            model.add(Dense(len(self.classes), activation = 'softmax', name = 'predictions'))
 
         self.model = model
 
@@ -168,10 +168,10 @@ def main():
     model2 = VGG19Simple(network_name = 'VGG19Test',
                          dataset_name = 'break_his',
                          dataset_count = (1463, 309, 309),
+                         classes = ['ADE', 'DUC', 'FIB', 'LOB', 'MUC', 'PAP', 'PHY', 'TUB'],
                          image_size = (150, 150),
                          data_augmentation = True,
                          batch_size = 32,
-                         classes = 8,
                          weights = 'imagenet',
                          include_top = False,
                          loss = 'categorical_crossentropy',
@@ -180,7 +180,7 @@ def main():
                          metrics = ['acc'],
                          epochs = 1,
                          skip_filters = True,
-                         fine_tune = True,
+                         fine_tune = False,
                          first_trainable_block = 5,
                          fine_tune_learning_rate = 5e-4)
 

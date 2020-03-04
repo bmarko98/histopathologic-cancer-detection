@@ -22,10 +22,10 @@ class BaseCNN():
                  network_name = None,
                  dataset_name = None,
                  dataset_count = None,
+                 classes = None,
                  image_size = None,
                  data_augmentation = False,
                  batch_size = 32,
-                 classes = None,
                  loss = 'categorical_crossentropy',
                  learning_rate = 1e-4,
                  optimizer = 'rmsprop',
@@ -37,6 +37,7 @@ class BaseCNN():
         self.network_name = network_name
         self.dataset_name = dataset_name
         self.dataset_count = dataset_count
+        self.classes = classes
 
         if image_size is None:
             try:
@@ -52,14 +53,6 @@ class BaseCNN():
 
         self.data_augmentation = data_augmentation
         self.batch_size = batch_size
-        if classes is None:
-            try:
-                dataset_path = os.path.join(os.path.abspath(__file__), '..', 'data', dataset_name)
-                self.classes = len([ f.path for f in os.scandir(os.path.join(dataset_path, 'train')) if f.is_dir() ])
-            except Exception as e:
-                _logger.error('Error caught in constructor while getting number of classes: ', e)
-        else:
-            self.classes = classes
 
         self.loss = loss
         self.learning_rate = learning_rate

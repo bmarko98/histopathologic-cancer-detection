@@ -25,10 +25,10 @@ class CNNSimple(BaseCNN):
                  network_name = 'cnn_simple',
                  dataset_name = None,
                  dataset_count = None,
+                 classes = None,
                  image_size = None,
                  data_augmentation = False,
                  batch_size = 32,
-                 classes = None,
                  loss = 'categorical_crossentropy',
                  learning_rate = 1e-4,
                  optimizer = 'rmsprop',
@@ -40,10 +40,10 @@ class CNNSimple(BaseCNN):
             network_name: string, name of the network, default: cnn_simple
             dataset_name: string, name of the dataset, default: None
             dateset_count: (int, int, int), number of images in train, validation, test set, default: None
+            classes: list of strings, classes of dataset, default: None
             image_size: (int, int), size of the input images, default: None
             data_augmentation: bool, whether to use data augmentation, default: False
             batch_size: int, batch size during network training, default: 32
-            classes: int, number of classes in dataset, default: None
             loss: string, loss function used as feedback signal for learning the weighs, default: 'categorical_crossentropy'
             learning_rate: float, optimizer learning rate (magnitude of the move), default: 1e-4
             optimizer: optimizer for model training (variant of SGD), options: rmsprop, adam, sgd, default: rmsprop
@@ -54,10 +54,10 @@ class CNNSimple(BaseCNN):
         super().__init__(network_name,
                          dataset_name,
                          dataset_count,
+                         classes,
                          image_size,
                          data_augmentation,
                          batch_size,
-                         classes,
                          loss,
                          learning_rate,
                          optimizer,
@@ -121,8 +121,8 @@ class CNNSimple(BaseCNN):
         model.add(Dropout(0.5, name='dropout1'))
         model.add(Dense(1024, activation = 'relu', name='dense2'))
         model.add(Dropout(0.5, name='dropout2'))
-        model.add(Dense(9, activation='softmax', name='prediction'))
-        model.summary()
+        model.add(Dense(len(self.classes), activation='softmax', name='prediction'))
+
         self.model = model
 
 
@@ -132,10 +132,10 @@ def main():
     model = CNNSimple(network_name = 'CNNSimpleTest',
                       dataset_name = 'nct_crc_he_100k',
                       dataset_count = (70010, 14995, 14995),
+                      classes = ['ADI', 'BACK', 'CAS', 'CAE', 'DEB', 'LYM', 'MUC', 'NCM', 'SM'],
                       image_size = (150, 150),
                       data_augmentation = True,
                       batch_size = 32,
-                      classes = 9,
                       loss = 'categorical_crossentropy',
                       learning_rate = 1e-4,
                       optimizer = 'rmsprop',
