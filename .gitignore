@@ -133,6 +133,9 @@ dmypy.json
 *.jpeg
 *.png
 *.tif
+!break_his_sample_images.jpg
+!nct_crc_he_100k_sample_images.jpg
+!pcam_sample_images.jpg
 
 # compressed files
 *.7z
