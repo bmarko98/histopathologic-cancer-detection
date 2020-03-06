@@ -5,14 +5,16 @@ import itertools
 
 import numpy as np
 import pandas as pd
-import seaborn as sn
+import seaborn as sns
 from datetime import datetime
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import confusion_matrix, roc_curve, roc_auc_score, precision_recall_curve, auc
 from visualize_filters import create_and_save_model_patterns
 
 
 logging.basicConfig(level=logging.INFO)
 _logger = logging.getLogger(__name__)
+
+sns.set_style('darkgrid')
 
 
 def create_directory_and_txt_file(network_name):
@@ -60,7 +62,7 @@ def save_train_history(file, epochs, history):
     file.write('\n\n' + 'training and validation accuracy and loss: \n\n' + str(df))
 
 
-def save_train_plots(directory, history):
+def save_train_history_plots(directory, history):
     _logger.info('Saving the accuracy and loss plots...')
     acc = history.history['acc']
     val_acc = history.history['val_acc']
@@ -88,16 +90,19 @@ def save_train_plots(directory, history):
     plt.close('all')
 
 
-def save_confusion_matrix_plot(directory, validation_generator, predictions, classes):
+def save_confusion_matrix_plot(directory, test_generator, predictions, classes):
     _logger.info('Saving the confusion matrix plot...')
-    cm = confusion_matrix(validation_generator.classes, predictions)
+    cm = confusion_matrix(test_generator.classes, predictions)
     df_cm = pd.DataFrame(cm, index = classes, columns = classes)
     plt.figure(figsize = (10,7))
-    ax = sn.heatmap(df_cm, annot=True, fmt='g')
+    ax = sns.heatmap(df_cm, annot=True, fmt='g')
     bottom, top = ax.get_ylim()
     ax.set_ylim(bottom + 0.5, top - 0.5)
     confusion_matrix_plot_path = os.path.join(directory, 'confusion_matrix.png')
     plt.savefig(fname = confusion_matrix_plot_path)
+    plt.cla()
+    plt.clf()
+    plt.close('all')
 
 
 def save_test_results(file, model, test_generator, dataset_count, batch_size):
@@ -112,6 +117,11 @@ def save_as_h5(directory, model, network_name):
     model.save(os.path.join(directory, network_name + '.h5'))
 
 
+def save_plots(directory, network):
+    save_train_history_plots(directory, network.history)
+    save_confusion_matrix_plot(directory, network.test_generator, network.predictions, network.classes)
+
+
 def save_model(network, skip_filters):
     _logger.info('Started saving the model...')
     base_directory, plots_directory, filter_directory, file_path = create_directory_and_txt_file(network.network_name)
@@ -120,8 +130,7 @@ def save_model(network, skip_filters):
     save_arguments(file, network)
     save_model_architecture(file, network.model)
     save_train_history(file, network.epochs, network.history)
-    save_train_plots(plots_directory, network.history)
-    save_confusion_matrix_plot(plots_directory, network.validation_generator, network.predictions, network.classes)
+    save_plots(plots_directory, network)
     save_test_results(file, network.model, network.test_generator, network.dataset_count, network.batch_size)
     if skip_filters is False:
         create_and_save_model_patterns(network.model, filter_directory)
