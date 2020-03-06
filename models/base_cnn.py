@@ -87,7 +87,8 @@ class BaseCNN():
                 os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data', self.dataset_name, self.dataset_name + '_test'),
                 target_size = self.image_size,
                 batch_size = self.batch_size,
-                class_mode = 'categorical')
+                class_mode = 'categorical',
+                shuffle = False)
 
 
     def build(self):
