@@ -17,11 +17,12 @@ _logger = logging.getLogger(__name__)
 sns.set_style('darkgrid')
 
 
-def create_directory_and_txt_file(network_name):
+def create_directory_and_txt_file(network_name, dataset_name):
     _logger.info('Creating output directories and .txt file...')
     current_time = datetime.now()
     current_time = current_time.strftime("_%d-%m-%Y_%H:%M:%S")
-    base_directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'experiments', network_name + current_time)
+    base_directory = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                  '..', 'experiments', dataset_name + '_models', network_name + current_time)
     plots_directory = os.path.join(base_directory, 'plots')
     filter_directory = os.path.join(base_directory, 'conv_filters')
     os.mkdir(base_directory)
@@ -124,7 +125,8 @@ def save_plots(directory, network):
 
 def save_model(network, skip_filters):
     _logger.info('Started saving the model...')
-    base_directory, plots_directory, filter_directory, file_path = create_directory_and_txt_file(network.network_name)
+    base_directory, plots_directory, filter_directory, file_path = create_directory_and_txt_file(network.network_name,
+                                                                                                 network.dataset_name)
     file = open(file_path, 'a+')
 
     save_arguments(file, network)
