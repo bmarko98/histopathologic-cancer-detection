@@ -152,6 +152,10 @@ TO_DO.txt
 
 # experiments folder (temporarily)
 experiments/*
+!experiments/hyperparameter_tuning.py
 
 # code length calculator
 thesis_code_length.py
+
+# __init__.py
+__init__.py
