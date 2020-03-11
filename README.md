@@ -58,7 +58,7 @@ $ python3 dataset_overview.py
 
 ## Models
 
-### 0. BaseCNN
+### BaseCNN
 
 BaseCNN is parent model of all subsequent models. It contains creation of data generators, as well as build, compile, train and predict methods, some of which are overridden in its children classes.
 
