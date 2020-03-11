@@ -8,7 +8,7 @@ import pandas as pd
 import seaborn as sns
 from datetime import datetime
 from sklearn.metrics import confusion_matrix, roc_curve, roc_auc_score, precision_recall_curve, auc
-from visualize_filters import create_and_save_model_patterns
+from utils.visualize_filters import create_and_save_model_patterns
 
 
 logging.basicConfig(level=logging.INFO)

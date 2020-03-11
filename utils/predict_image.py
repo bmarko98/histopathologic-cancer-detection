@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from PIL import Image
 from skimage import transform
 from keras.models import load_model
-from visualize_intermediate_activations_and_heatmaps import visualize_intermediate_activations, visualize_heatmaps
+from utils.visualize_intermediate_activations_and_heatmaps import visualize_intermediate_activations, visualize_heatmaps
 
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
