@@ -3,15 +3,14 @@ import numpy as np
 import sys
 import logging
 
-from base_cnn import BaseCNN
 from keras.layers import Flatten, Dropout, Dense
 from keras.models import Sequential
 from keras.applications import VGG19
 from keras.optimizers import SGD, RMSprop, Adam
 from keras.preprocessing.image import ImageDataGenerator
 
-sys.path.insert(1, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'utils'))
-from save_model import save_model
+from models.base_cnn import BaseCNN
+from utils.save_model import save_model
 
 # disable tensorflow logging
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
@@ -40,7 +39,8 @@ class VGG19Simple(BaseCNN):
                  skip_filters = True,
                  fine_tune = False,
                  first_trainable_block = 5,
-                 fine_tune_learning_rate = 1e-5):
+                 fine_tune_learning_rate = 1e-5,
+                 fine_tune_epochs = 100):
 
         '''
         Arguments:
@@ -62,6 +62,7 @@ class VGG19Simple(BaseCNN):
             fine_tune: bool, whether to fine tune the model, default: False
             first_trainable_block: 1-5, first block to set to trainable if fine tuning, default: 5
             fine_tune_learning_rate: float, optimizer learning rate if fine tuning, default: 1e-5
+            fine_tune_epochs: int, number of epochs to train fine tunes model
         '''
 
         super().__init__(network_name,
@@ -86,7 +87,7 @@ class VGG19Simple(BaseCNN):
         self.build()
 
         self.compile(self.learning_rate)
-        self.train()
+        self.train(self.epochs)
         self.predict()
         save_model(self, skip_filters)
 
@@ -97,14 +98,16 @@ class VGG19Simple(BaseCNN):
             else:
                 self.first_trainable_block = 5
             self.fine_tune_learning_rate = fine_tune_learning_rate
+            self.fine_tune_epochs = fine_tune_epochs
         else:
             self.first_trainable_block = None
             self.fine_tune_learning_rate = None
+            self.fine_tune_epochs = None
 
         if self.fine_tune is True:
             self.fine_tune_model()
             self.compile(self.fine_tune_learning_rate)
-            self.train()
+            self.train(self.fine_tune_epochs)
             self.predict()
             save_model(self, skip_filters)
 
@@ -160,31 +163,3 @@ class VGG19Simple(BaseCNN):
                 layer.trainable = False
             else:
                 layer.trainable = True
-
-
-def main():
-    _logger.info('Creating VGG19Simple object...')
-
-    model2 = VGG19Simple(network_name = 'VGG19Test',
-                         dataset_name = 'break_his',
-                         dataset_count = (1463, 309, 309),
-                         classes = ['ADE', 'DUC', 'FIB', 'LOB', 'MUC', 'PAP', 'PHY', 'TUB'],
-                         image_size = (150, 150),
-                         data_augmentation = True,
-                         batch_size = 32,
-                         weights = 'imagenet',
-                         include_top = False,
-                         loss = 'categorical_crossentropy',
-                         learning_rate = 1e-3,
-                         optimizer = 'rmsprop',
-                         metrics = ['acc'],
-                         epochs = 1,
-                         skip_filters = True,
-                         fine_tune = False,
-                         first_trainable_block = 5,
-                         fine_tune_learning_rate = 5e-4)
-
-
-if __name__ == '__main__':
-    _logger.info('Started the program...')
-    main()

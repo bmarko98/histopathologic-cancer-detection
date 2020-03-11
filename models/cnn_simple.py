@@ -3,14 +3,13 @@ import numpy as np
 import sys
 import logging
 
-from base_cnn import BaseCNN
 from keras.layers import Conv2D, MaxPooling2D, Flatten, Dropout, Dense
 from keras.models import Sequential
 from keras.optimizers import SGD, RMSprop, Adam
 from keras.preprocessing.image import ImageDataGenerator
 
-sys.path.insert(1, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'utils'))
-from save_model import save_model
+from models.base_cnn import BaseCNN
+from utils.save_model import save_model
 
 # disable tensorflow logging
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
@@ -69,7 +68,7 @@ class CNNSimple(BaseCNN):
         self.data_generators()
         self.build()
         self.compile(self.learning_rate)
-        self.train()
+        self.train(self.epochs)
         self.predict()
         save_model(self, skip_filters=True)
 
@@ -124,25 +123,3 @@ class CNNSimple(BaseCNN):
         model.add(Dense(len(self.classes), activation='softmax', name='prediction'))
 
         self.model = model
-
-
-def main():
-    _logger.info('Creating CNNSimple object...')
-
-    model = CNNSimple(network_name = 'CNNSimpleTest',
-                      dataset_name = 'nct_crc_he_100k',
-                      dataset_count = (70010, 14995, 14995),
-                      classes = ['ADI', 'BACK', 'CAS', 'CAE', 'DEB', 'LYM', 'MUC', 'NCM', 'SM'],
-                      image_size = (150, 150),
-                      data_augmentation = True,
-                      batch_size = 32,
-                      loss = 'categorical_crossentropy',
-                      learning_rate = 1e-4,
-                      optimizer = 'rmsprop',
-                      metrics = ['acc'],
-                      epochs = 1)
-
-
-if __name__ == '__main__':
-    _logger.info('Started the program...')
-    main()
