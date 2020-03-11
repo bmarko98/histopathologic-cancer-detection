@@ -10,6 +10,7 @@ Tensorflow & Keras implementation of Deep Convolutional Neural Networks for clas
  - numpy
  - pandas
  - Pillow
+ - scikit-image
  - scikit-learn
  - seaborn
  - tensorflow
@@ -46,16 +47,36 @@ NCT-CRC-HE-100K Dataset is composed of 100,000 non-overlapping image patches (22
    - move *NCT-CRC-HE-100K.zip* into data/nct_crc_he_100k directory
  - Next, execute following commands:
 ```
-$ python3 break_his_dataset_creation.py            #execute inside data/break_his directory
-$ python3 pcam_dataset_creation.py                 #execute inside data/pcam directory
-$ python3 nct_crc_he_100k_dataset_creation.py      #execute inside data/nct_crc_he_100k directory
+$ python3 break_his_dataset_creation.py
+$ python3 pcam_dataset_creation.py
+$ python3 nct_crc_he_100k_dataset_creation.py
 ```
  - In order to plot sample images and obtain basic dataset information, run following command:
  ```
-$ python3 dataset_overview.py                      #execute in data/ directory
+$ python3 dataset_overview.py
  ```
 
 ## Models
+
+### 0. BaseCNN
+
+BaseCNN is parent model of all subsequent models. It contains creation of data generators, as well as build, compile, train and predict methods, some of which are overridden in its children classes.
+
+### 1. CNNSimple
+
+CNNSimple is model trained on NCT_CRC_HE_100K dataset. It's architecture consists of 4 convolutional blocks (each of which contain several convolutional layers, followed by max pooling layer), and 3 fully-connected (dense) layers on top.
+ - In order to train the model from scratch on NCT_CRC_HE_100K dataset, run following command:
+ ```
+$ python3 vgg19_simple.py
+ ```
+
+### 2. VGG19Simple
+
+VGG19Simple is model trained on BreakHis dataset. It's architecture consists of VGG19 network as convolutional base and 3 fully-connected (dense) layers on top. It uses transfer learning in order to overcome small size of the dataset.
+- In order to train the model from scratch on BreakHis dataset, run following command:
+```
+$ python3 cnn_simple.py
+```
 
 ## Author
 
