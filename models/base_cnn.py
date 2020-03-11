@@ -8,9 +8,6 @@ from keras.models import Sequential
 from keras.optimizers import SGD, RMSprop, Adam
 from keras.preprocessing.image import ImageDataGenerator
 
-sys.path.insert(1, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'utils'))
-from save_model import save_model
-
 
 logging.basicConfig(level=logging.INFO)
 _logger = logging.getLogger(__name__)
@@ -104,11 +101,11 @@ class BaseCNN():
                            metrics = self.metrics)
 
 
-    def train(self):
+    def train(self, epochs):
         _logger.info('Training the model...')
         self.history = self.model.fit_generator(self.train_generator,
                                                 steps_per_epoch = int(self.dataset_count[0]/self.batch_size) if self.dataset_count is not None else 100,
-                                                epochs = self.epochs,
+                                                epochs = epochs,
                                                 validation_data = self.validation_generator,
                                                 validation_steps = int(self.dataset_count[1]/self.batch_size) if self.dataset_count is not None else 20)
 
