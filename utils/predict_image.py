@@ -2,9 +2,8 @@ import os
 import numpy as np
 import logging
 import matplotlib.pyplot as plt
-from PIL import Image
-from skimage import transform
 from keras.models import load_model
+from keras.preprocessing import image
 from utils.visualize_intermediate_activations_and_heatmaps import visualize_intermediate_activations, visualize_heatmaps
 
 
@@ -23,27 +22,28 @@ datasets = {'break_his': {'categories': ['mucinous_carcinoma', 'adenosis', 'duct
                      'image_size': (150, 150, 3)}}
 
 
-def plot_class_probabilities(classes, class_probabilities):
+def plot_class_probabilities(classes, class_probabilities, dir):
     _logger.info('Plotting bar of classes and class probabilities...')
     index = np.arange(len(classes))
     plt.bar(classes, class_probabilities)
-    plt.xticks(index, classes, fontsize=10, rotation=30)
-    class_probabilities_plot_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'gui', 'temporary_plots', 'tmp.png')
+    plt.xticks(index, classes, fontsize=12, rotation=45)
+    class_probabilities_plot_path = os.path.join(dir, 'class_probabilities.png')
     plt.savefig(fname = class_probabilities_plot_path)
 
 
-def predict_image_class(image_URL, dataset, model):
+def predict_image_class(image_URL, dataset, model, dir):
     _logger.info('Predicting image class...')
-    image = Image.open(image_URL)
-    np_image = np.array(image).astype('float32')/255
-    np_image = transform.resize(np_image, datasets[dataset]['image_size'])
-    np_image = np.expand_dims(np_image, axis=0)
-    class_probabilities = model.predict(np_image)
+
+    img = image.load_img(image_URL, target_size=datasets[dataset]['image_size'])
+    np_img = image.img_to_array(img)
+    np_img = np.expand_dims(np_img, axis=0)
+    np_img /= 255.
+    class_probabilities = model.predict(np_img)
     classes = datasets[dataset]['categories']
     classes.sort()
-    plot_class_probabilities(classes, class_probabilities[0])
+    plot_class_probabilities(classes, class_probabilities[0], dir)
 
-    return datasets[dataset]['categories'][class_probabilities[0].argmax(axis=-1)]
+    return np_img, datasets[dataset]['categories'][class_probabilities[0].argmax(axis=-1)]
 
 
 def load_keras_model(dataset, model_path):
@@ -61,18 +61,24 @@ def load_keras_model(dataset, model_path):
     return model
 
 
-def predict_image(image_URL, dataset, model_path = None):
+def predict_image(image_URL, dataset, model_path = None, transfer_learning = False):
+    temporary_plots_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'gui', 'temporary_plots')
+    if not os.path.exists(temporary_plots_dir):
+        os.mkdir(temporary_plots_dir)
     model = load_keras_model(dataset, model_path)
-    image_class = predict_image_class(image_URL, dataset, model)
-    visualize_intermediate_activations()
-    visualize_heatmaps()
+    image, image_class = predict_image_class(image_URL, dataset, model, temporary_plots_dir)
+    visualize_intermediate_activations(image, model, transfer_learning, temporary_plots_dir)
+    visualize_heatmaps(image_URL, image, model, transfer_learning, temporary_plots_dir)
 
-
+'''
 def main():
     image_URL = "/home/lenovo/Desktop/test.png"
-    dataset = "break_his"
-    predict_image(image_URL, dataset)
+    model_path = "/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/experiments/break_his_models/VGG19Test_03-03-2020_09:38:50/VGG19Test.h5"
+    model_path_2 = "/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/experiments/nct_crc_he_100k_models/CNNSimpleTest_12-03-2020_15:49:03/CNNSimpleTest.h5"
+    predict_image(image_URL, 'nct_crc_he_100k', model_path_2, False)
+    predict_image(image_URL, 'break_his', model_path, True)
 
 
 if __name__ == "__main__":
     main()
+'''
