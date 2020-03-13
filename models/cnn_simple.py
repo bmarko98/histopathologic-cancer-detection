@@ -114,7 +114,7 @@ class CNNSimple(BaseCNN):
         model.add(Conv2D(256, (3, 3), activation='relu', name='block4_conv3'))
         model.add(MaxPooling2D((2, 2), name='block4_pool'))
         # flatten
-        model.add(Flatten())
+        model.add(Flatten(name='flatten'))
         # fully connected layers
         model.add(Dense(512, activation='relu', name='dense1'))
         model.add(Dropout(0.5, name='dropout1'))
