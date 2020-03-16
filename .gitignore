@@ -159,3 +159,6 @@ thesis_code_length.py
 
 # __init__.py
 __init__.py
+
+# .ui files
+*.ui
