@@ -1,0 +1,23 @@
+import gui.gui_components as GUI
+
+FONT = GUI.get_font('Sans Serif', 12)
+BACKGROUND_COLOR = 'rgb(42, 49, 56)'
+FONT_COLOR = 'white'
+ACTIVATION_URL = '/home/lenovo/Pictures/filter.jpg'
+FILTER_URL = '/home/lenovo/Pictures/filter.jpg'
+INPUT_IMAGE_URL = '/home/lenovo/Desktop/test.png'
+HEATMAP_URL = '/home/lenovo/Desktop/heatmap.jpg'
+PROB_URL = '/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/gui/temporary_plots/plot.png'
+AUTHOR_IMAGE_URL = '/home/lenovo/Downloads/baki.jpg'
+BREAK_HIS_FILE_URL = '/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/data/break_his/break_his_dataset_overview.txt'
+NCT_CRC_HE_100K_FILE_URL = '/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/data/nct_crc_he_100k/nct_crc_he_100k_dataset_overview.txt'
+BREAK_HIS_IMAGES_URL = '/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/data/break_his/break_his_sample_images.jpg'
+NCT_CRC_HE_100K_IMAGES_URL = '/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/data/nct_crc_he_100k/nct_crc_he_100k_sample_images.jpg'
+VGG19_FILE_URL = '/home/lenovo/Downloads/vgg19_summary.txt'
+CNN_FILE_URL = '/home/lenovo/Downloads/cnn_summary.txt'
+VGG19_ACCURACY_PLOT_URL = '/home/lenovo//Documents/bachelors_thesis/histopathologic-cancer-detection/experiments/break_his_models/VGG19Test_16-03-2020_16:36:34/plots/accuracy_plot.png'
+VGG19_LOSS_PLOT_URL = '/home/lenovo//Documents/bachelors_thesis/histopathologic-cancer-detection/experiments/break_his_models/VGG19Test_16-03-2020_16:36:34/plots/loss_plot.png'
+VGG19_CONFUSION_MATRIX_URL = '/home/lenovo//Documents/bachelors_thesis/histopathologic-cancer-detection/experiments/break_his_models/VGG19Test_16-03-2020_16:36:34/plots/confusion_matrix.png'
+CNN_ACCURACY_PLOT_URL = '/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/experiments/nct_crc_he_100k_models/CNNSimpleTest_12-03-2020_15:49:03/plots/accuracy_plot.png'
+CNN_LOSS_PLOT_URL = '/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/experiments/nct_crc_he_100k_models/CNNSimpleTest_12-03-2020_15:49:03/plots/loss_plot.png'
+CNN_CONFUSION_MATRIX_URL = '/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/experiments/nct_crc_he_100k_models/CNNSimpleTest_12-03-2020_15:49:03/plots/confusion_matrix.png'
