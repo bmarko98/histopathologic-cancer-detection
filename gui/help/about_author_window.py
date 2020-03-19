@@ -1,44 +1,36 @@
 import gui.config as CONFIG
 import gui.gui_components as GUI
+from gui.window import Window
 from PyQt5 import QtCore, QtWidgets
 
 
-class Ui_AboutAuthorWindow():
+class AboutAuthorWindow(Window):
 
-    def set_about_author_window(self, AboutAuthorWindow):
-        AboutAuthorWindow.setObjectName("AboutAuthorWindow")
-        AboutAuthorWindow.resize(640, 400)
-        AboutAuthorWindow.setMinimumSize(QtCore.QSize(640, 400))
-        AboutAuthorWindow.setMaximumSize(QtCore.QSize(640, 400))
-        AboutAuthorWindow.setFont(CONFIG.FONT)
-        AboutAuthorWindow.setStyleSheet("background-color: {b};\n color: {f};".format(b=CONFIG.BACKGROUND_COLOR,
-                                                                                      f=CONFIG.FONT_COLOR))
+    def set_about_author_window(self, AboutAuthorWindow, ABOUT_AUTHOR_CONFIG):
+        super().set_window(AboutAuthorWindow, ABOUT_AUTHOR_CONFIG)
 
 
-    def create_central_widget(self, AboutAuthorWindow):
-        self.centralwidget = GUI.get_widget(AboutAuthorWindow, 'centralwidget')
+    def create_central_widget(self, AboutAuthorWindow, ABOUT_AUTHOR_CONFIG):
+        super().create_central_widget(AboutAuthorWindow, ABOUT_AUTHOR_CONFIG)
         self.authorImageLabel = GUI.get_image_label(self.centralwidget,
-                                                    50, 75, 100, 150,
+                                                    *ABOUT_AUTHOR_CONFIG['IMAGE_LABEL_POSITION'],
                                                     CONFIG.FONT,
                                                     True,
-                                                    'authorImageLabel',
-                                                    CONFIG.AUTHOR_IMAGE_URL)
+                                                    ABOUT_AUTHOR_CONFIG['IMAGE_LABEL_NAME'],
+                                                    ABOUT_AUTHOR_CONFIG['AUTHOR_IMAGE_PATH'])
         self.resumeLabel = GUI.get_label(self.centralwidget,
-                                         250, 75, 250, 250,
+                                         *ABOUT_AUTHOR_CONFIG['RESUME_LABEL_POSITION'],
                                          CONFIG.FONT,
                                          False,
-                                         'resumeLabel')
+                                         ABOUT_AUTHOR_CONFIG['RESUME_LABEL_NAME'])
         AboutAuthorWindow.setCentralWidget(self.centralwidget)
 
 
-    def setupUi(self, AboutAuthorWindow):
-        self.set_about_author_window(AboutAuthorWindow)
-        self.create_central_widget(AboutAuthorWindow)
-        self.retranslateUi(AboutAuthorWindow)
-        QtCore.QMetaObject.connectSlotsByName(AboutAuthorWindow)
+    def retranslate(self, AboutAuthorWindow, ABOUT_AUTHOR_CONFIG):
+        super().retranslate(AboutAuthorWindow, ABOUT_AUTHOR_CONFIG)
+        self.resumeLabel.setText(self._translate(ABOUT_AUTHOR_CONFIG['WINDOW_NAME'],
+                                                 ABOUT_AUTHOR_CONFIG['RESUME']))
 
 
-    def retranslateUi(self, AboutAuthorWindow):
-        _translate = QtCore.QCoreApplication.translate
-        AboutAuthorWindow.setWindowTitle(_translate("AboutAuthorWindow", "About - Author"))
-        self.resumeLabel.setText(_translate("AboutAuthorWindow", "Short Resume"))
+    def setup(self, AboutAuthorWindow, ABOUT_AUTHOR_CONFIG):
+        super().setup(AboutAuthorWindow, ABOUT_AUTHOR_CONFIG)

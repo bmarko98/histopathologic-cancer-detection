@@ -1,60 +1,38 @@
 import gui.config as CONFIG
 import gui.gui_components as GUI
-from PyQt5 import QtCore, QtWidgets
+from gui.window import Window
+from PyQt5 import QtCore
+from utils.misc import file_get_contents
 
 
-class Ui_AboutDatasetsWindow():
+class AboutDatasetsWindow(Window):
 
-    def set_about_datasets_window(self, AboutDatasetsWindow):
-        AboutDatasetsWindow.setObjectName("AboutDatasetsWindow")
-        AboutDatasetsWindow.resize(1600, 900)
-        AboutDatasetsWindow.setMinimumSize(QtCore.QSize(1600, 900))
-        AboutDatasetsWindow.setMaximumSize(QtCore.QSize(1600, 900))
-        AboutDatasetsWindow.setFont(CONFIG.FONT)
-        AboutDatasetsWindow.setStyleSheet("background-color: {b};\n color: {f};".format(b=CONFIG.BACKGROUND_COLOR,
-                                                                                        f=CONFIG.FONT_COLOR))
+    def set_about_datasets_window(self, AboutDatasetsWindow, ABOUT_DATASETS_CONFIG):
+        super().set_about_window(AboutDatasetsWindow, ABOUT_DATASETS_CONFIG)
 
 
-    def create_central_widget(self, AboutDatasetsWindow, dataset):
-        self.centralwidget = GUI.get_widget(AboutDatasetsWindow, 'centralwidget')
+    def create_central_widget(self, AboutDatasetsWindow, ABOUT_DATASETS_CONFIG):
+        super().create_central_widget(AboutDatasetsWindow, ABOUT_DATASETS_CONFIG)
         self.datasetOverviewLabel = GUI.get_label(self.centralwidget,
-                                                  75, 5, 400, 900,
+                                                  *ABOUT_DATASETS_CONFIG['OVERVIEW_LABEL_POSITION'],
                                                   CONFIG.FONT,
                                                   False,
-                                                  'datasetOverviewLabel',
+                                                  ABOUT_DATASETS_CONFIG['OVERVIEW_LABEL_NAME'],
                                                   QtCore.Qt.AlignLeft)
-        if dataset == 'break_his':
-            dataset_images_url = CONFIG.BREAK_HIS_IMAGES_URL
-        elif dataset == 'nct_crc_he_100k':
-            dataset_images_url = CONFIG.NCT_CRC_HE_100K_IMAGES_URL
         self.datasetImagesLabel = GUI.get_image_label(self.centralwidget,
-                                                      550, 200, 950, 600,
+                                                      *ABOUT_DATASETS_CONFIG['IMAGES_LABEL_POSITIONS'],
                                                       CONFIG.FONT,
                                                       True,
-                                                      'datasetImagesLabel',
-                                                      dataset_images_url)
+                                                      ABOUT_DATASETS_CONFIG['IMAGES_LABEL_NAME'],
+                                                      ABOUT_DATASETS_CONFIG['IMAGES_URL'])
         AboutDatasetsWindow.setCentralWidget(self.centralwidget)
 
 
-    def retranslateUi(self, AboutDatasetsWindow, dataset):
-        _translate = QtCore.QCoreApplication.translate
-        AboutDatasetsWindow.setWindowTitle(_translate("AboutDatasetsWindow", "About Datasets"))
-        if dataset == 'break_his':
-            self.datasetOverviewLabel.setText(_translate("AboutDatasetsWindow",
-                                                         file_get_contents(CONFIG.BREAK_HIS_FILE_URL)))
-        elif dataset == 'nct_crc_he_100k':
-            self.datasetOverviewLabel.setText(_translate("AboutDatasetsWindow",
-                                                         file_get_contents(CONFIG.NCT_CRC_HE_100K_FILE_URL)))
+    def retranslate(self, AboutDatasetsWindow, ABOUT_DATASETS_CONFIG):
+        super().retranslate(AboutDatasetsWindow, ABOUT_DATASETS_CONFIG)
+        self.datasetOverviewLabel.setText(self._translate(ABOUT_DATASETS_CONFIG['WINDOW_NAME'],
+                                                          file_get_contents(ABOUT_DATASETS_CONFIG['DATASET_OVERVIEW_PATH'])))
 
 
-    def setupUi(self, AboutDatasetsWindow, dataset):
-        self.set_about_datasets_window(AboutDatasetsWindow)
-        self.create_central_widget(AboutDatasetsWindow, dataset)
-        self.retranslateUi(AboutDatasetsWindow, dataset)
-        QtCore.QMetaObject.connectSlotsByName(AboutDatasetsWindow)
-
-
-def file_get_contents(filename):
-    with open(filename) as f:
-        s = f.read()
-    return s
+    def setup(self, AboutDatasetsWindow, ABOUT_DATASETS_CONFIG):
+        super().setup(AboutDatasetsWindow, ABOUT_DATASETS_CONFIG)

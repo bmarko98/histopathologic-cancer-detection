@@ -1,84 +1,55 @@
 import gui.config as CONFIG
 import gui.gui_components as GUI
-from PyQt5 import QtCore, QtWidgets, QtGui
+from gui.window import Window
+from utils.misc import file_get_contents
 
 
-class Ui_AboutModelsWindow():
+class AboutModelsWindow(Window):
 
-    def set_about_models_window(self, AboutModelsWindow):
-        AboutModelsWindow.setObjectName("AboutModelsWindow")
-        AboutModelsWindow.resize(1800, 900)
-        AboutModelsWindow.setMinimumSize(QtCore.QSize(1800, 900))
-        AboutModelsWindow.setMaximumSize(QtCore.QSize(1800, 900))
-        AboutModelsWindow.setFont(CONFIG.FONT)
-        AboutModelsWindow.setStyleSheet("background-color: {b};\n color: {f};".format(b=CONFIG.BACKGROUND_COLOR,
-                                                                                      f=CONFIG.FONT_COLOR))
+    def set_about_models_window(self, AboutModelsWindow, ABOUT_MODELS_CONFIG):
+        super().set_window(AboutModelsWindow, ABOUT_MODELS_CONFIG)
 
 
-    def create_central_widget(self, AboutModelsWindow, model):
-        self.centralwidget = GUI.get_widget(AboutModelsWindow, 'centralwidget')
-
-        if model == 'vgg19_simple':
-            accuracy_plot = CONFIG.VGG19_ACCURACY_PLOT_URL
-            loss_plot = CONFIG.VGG19_LOSS_PLOT_URL
-            confusion_matrix = CONFIG.VGG19_CONFUSION_MATRIX_URL
-        elif model == 'cnn_simple':
-            accuracy_plot = CONFIG.CNN_ACCURACY_PLOT_URL
-            loss_plot = CONFIG.CNN_LOSS_PLOT_URL
-            confusion_matrix = CONFIG.CNN_CONFUSION_MATRIX_URL
-
+    def create_central_widget(self, AboutModelsWindow, ABOUT_MODELS_CONFIG):
+        super().create_central_widget(AboutModelsWindow, ABOUT_MODELS_CONFIG)
         self.modelNameLabel = GUI.get_label(self.centralwidget,
-                                            110, 10, 300, 25,
+                                            *ABOUT_MODELS_CONFIG['MODEL_NAME_LABEL_POSITION'],
                                             CONFIG.FONT,
                                             False,
-                                            'modelNameLabel')
+                                            ABOUT_MODELS_CONFIG['MODEL_NAME_LABEL_NAME'])
         self.modelSummaryLabel = GUI.get_label(self.centralwidget,
-                                               25, 35, 500, 850,
+                                               *ABOUT_MODELS_CONFIG['MODEL_SUMMARY_LABEL_POSITION'],
                                                CONFIG.FONT,
                                                False,
-                                               'modelSummaryLabel')
+                                               ABOUT_MODELS_CONFIG['MODEL_SUMMARY_LABEL_NAME'])
         self.accuracyLabel = GUI.get_image_label(self.centralwidget,
-                                                 550, 50, 400, 400,
+                                                 *ABOUT_MODELS_CONFIG['ACCURACY_LABEL_POSITION'],
                                                  CONFIG.FONT,
                                                  True,
-                                                 'accuracyLabel',
-                                                 accuracy_plot)
+                                                 ABOUT_MODELS_CONFIG['ACCURACY_LABEL_NAME'],
+                                                 ABOUT_MODELS_CONFIG['ACCURACY_PATH'])
         self.lossLabel = GUI.get_image_label(self.centralwidget,
-                                             550, 450, 400, 400,
+                                             *ABOUT_MODELS_CONFIG['LOSS_LABEL_POSITION'],
                                              CONFIG.FONT,
                                              True,
-                                             'lossLabel',
-                                             loss_plot)
+                                             ABOUT_MODELS_CONFIG['LOSS_LABEL_NAME'],
+                                             ABOUT_MODELS_CONFIG['LOSS_PATH'])
         self.confMatrixLabel = GUI.get_image_label(self.centralwidget,
-                                                   950, 50, 800, 800,
+                                                   *ABOUT_MODELS_CONFIG['CONF_MATRIX_LABEL_POSITION'],
                                                    CONFIG.FONT,
                                                    True,
-                                                   'confMatrixLabel',
-                                                   confusion_matrix)
+                                                   ABOUT_MODELS_CONFIG['CONF_MATRIX_LABEL_NAME'],
+                                                   ABOUT_MODELS_CONFIG['CONF_MATRIX_PATH'])
         AboutModelsWindow.setCentralWidget(self.centralwidget)
 
 
-    def retranslateUi(self, AboutModelsWindow, model):
-        _translate = QtCore.QCoreApplication.translate
-        AboutModelsWindow.setWindowTitle(_translate("AboutModelsWindow", "About Model"))
-        if model == 'vgg19_simple':
-            self.modelNameLabel.setText(_translate("AboutModelsWindow", "VGG19Simple"))
-            self.modelSummaryLabel.setText(_translate("AboutModelsWindow",
-                                                      file_get_contents(CONFIG.VGG19_FILE_URL)))
-        elif model == 'cnn_simple':
-            self.modelNameLabel.setText(_translate("AboutModelsWindow", "CNNSimple"))
-            self.modelSummaryLabel.setText(_translate("AboutModelsWindow",
-                                                      file_get_contents(CONFIG.CNN_FILE_URL)))
+    def retranslate(self, AboutModelsWindow, ABOUT_MODELS_CONFIG):
+        super().retranslate(AboutModelsWindow, ABOUT_MODELS_CONFIG)
+        self.modelNameLabel.setText(self._translate(ABOUT_MODELS_CONFIG['WINDOW_NAME'],
+                                                    ABOUT_MODELS_CONFIG['MODEL_NAME']))
+        self.modelSummaryLabel.setText(self._translate(ABOUT_MODELS_CONFIG['WINDOW_NAME'],
+                                                      file_get_contents(ABOUT_MODELS_CONFIG['MODEL_SUMMARY_PATH'])))
 
 
-    def setupUi(self, AboutModelsWindow, model):
-        self.set_about_models_window(AboutModelsWindow)
-        self.create_central_widget(AboutModelsWindow, model)
-        self.retranslateUi(AboutModelsWindow, model)
-        QtCore.QMetaObject.connectSlotsByName(AboutModelsWindow)
-
-
-def file_get_contents(filename):
-    with open(filename) as f:
-        s = f.read()
-    return s
+    def setup(self, AboutModelsWindow, ABOUT_MODELS_CONFIG):
+        super().setup(AboutModelsWindow, ABOUT_MODELS_CONFIG)
