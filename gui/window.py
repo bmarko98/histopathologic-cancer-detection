@@ -1,4 +1,3 @@
-import sys
 import gui.config as CONFIG
 import gui.gui_components as GUI
 from PyQt5 import QtCore
@@ -15,15 +14,12 @@ class Window():
         Window.setStyleSheet("background-color: {b};\n color: {f};".format(b=CONFIG.BACKGROUND_COLOR,
                                                                            f=CONFIG.FONT_COLOR))
 
-
     def create_central_widget(self, Window, WINDOW_CONFIG):
         self.centralwidget = GUI.get_widget(Window, CONFIG.CENTRAL_WIDGET)
-
 
     def retranslate(self, Window, WINDOW_CONFIG):
         self._translate = QtCore.QCoreApplication.translate
         Window.setWindowTitle(self._translate(WINDOW_CONFIG['WINDOW_NAME'], WINDOW_CONFIG['WINDOW_TITLE']))
-
 
     def setup(self, Window, WINDOW_CONFIG):
         self.set_window(Window, WINDOW_CONFIG)

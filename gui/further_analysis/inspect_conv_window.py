@@ -8,7 +8,6 @@ class InspectConvWindow(Window):
     def set_inspect_conv_window(self, InspectConvWindow, INSPECT_CONV_CONFIG):
         super().set_window(InspectConvWindow, INSPECT_CONV_CONFIG)
 
-
     def create_central_widget(self, InspectConvWindow, INSPECT_CONV_CONFIG):
         self.centralwidget = GUI.get_widget(InspectConvWindow, 'centralwidget')
         self.convLayerLabel = GUI.get_label(self.centralwidget,
@@ -42,7 +41,6 @@ class InspectConvWindow(Window):
                                             INSPECT_CONV_CONFIG['LINE_EDIT_NAME'])
         InspectConvWindow.setCentralWidget(self.centralwidget)
 
-
     def retranslate(self, InspectConvWindow, INSPECT_CONV_CONFIG):
         super().retranslate(InspectConvWindow, INSPECT_CONV_CONFIG)
         self.convLayerLabel.setText(self._translate(INSPECT_CONV_CONFIG['WINDOW_NAME'],
@@ -53,7 +51,6 @@ class InspectConvWindow(Window):
                                                 INSPECT_CONV_CONFIG['BUTTON_TEXT']))
         for index, item in enumerate(INSPECT_CONV_CONFIG['COMBO_BOX_ITEMS']):
             self.layerComboBox.setItemText(index, self._translate(INSPECT_CONV_CONFIG['WINDOW_NAME'], item))
-
 
     def setup(self, InspectConvWindow, INSPECT_CONV_CONFIG):
         super().setup(InspectConvWindow, INSPECT_CONV_CONFIG)

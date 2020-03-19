@@ -16,7 +16,6 @@ class MainWindow(Window):
     def set_main_window(self, MainWindow, MAIN_CONFIG):
         super().set_window(MainWindow, MAIN_CONFIG)
 
-
     def create_central_widget(self, MainWindow, MAIN_CONFIG):
         super().create_central_widget(MainWindow, MAIN_CONFIG)
         self.loadImageButton = GUI.get_button(self.centralwidget,
@@ -57,7 +56,6 @@ class MainWindow(Window):
                                                           MAIN_CONFIG['CLASS_PROBABILITIES_PLOT_PATH'])
         MainWindow.setCentralWidget(self.centralwidget)
 
-
     def create_menu(self, MainWindow, MAIN_CONFIG):
         self.menubar = GUI.get_menu_bar(MainWindow,
                                         *MAIN_CONFIG['MENU_BAR_POSITION'],
@@ -84,7 +82,6 @@ class MainWindow(Window):
         self.actionExit = GUI.get_action(MainWindow, MAIN_CONFIG['ACTION']['EXIT_NAME'])
         self.actionGeneral = GUI.get_action(MainWindow, MAIN_CONFIG['ACTION']['GENERAL_NAME'])
 
-
     def add_actions(self):
         self.menuFile.addAction(self.actionExit)
         self.menuFurtherAnalysis.addAction(self.actionIntermediateActivations)
@@ -106,7 +103,6 @@ class MainWindow(Window):
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuFurtherAnalysis.menuAction())
         self.menubar.addAction(self.menuAbout.menuAction())
-
 
     def retranslate(self, MainWindow, MAIN_CONFIG):
         super().retranslate(MainWindow, MAIN_CONFIG)
@@ -140,17 +136,17 @@ class MainWindow(Window):
         self.actionExit.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['ACTION']['EXIT_TEXT']))
         self.actionGeneral.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['ACTION']['GENERAL_TEXT']))
 
-
     def inspectConvWindow(self, INSPECT_CONV_CONFIG):
         self.InspectConvWindow = QtWidgets.QMainWindow()
         inspect_conv_window = InspectConvWindow()
         inspect_conv_window.setup(self.InspectConvWindow, INSPECT_CONV_CONFIG)
         self.InspectConvWindow.show()
+
     def classActivationsWindow(self):
         self.inspectConvWindow(CONFIG.INSPECT_CONV_CONFIG['CLASS_ACTIVATIONS'])
+
     def filterPatternsWindow(self):
         self.inspectConvWindow(CONFIG.INSPECT_CONV_CONFIG['FILTER_PATTERNS'])
-
 
     def heatmapWindow(self):
         self.HeatmapWindow = QtWidgets.QMainWindow()
@@ -158,46 +154,47 @@ class MainWindow(Window):
         heatmap_window.setup(self.HeatmapWindow, CONFIG.HEATMAP_CONFIG)
         self.HeatmapWindow.show()
 
-
     def aboutAuthorWindow(self):
         self.AboutAuthorWindow = QtWidgets.QMainWindow()
         about_author_window = AboutAuthorWindow()
         about_author_window.setup(self.AboutAuthorWindow, CONFIG.ABOUT_AUTHOR_CONFIG)
         self.AboutAuthorWindow.show()
 
-
     def aboutDatasetsWindow(self, DATASETS_CONFIG):
         self.AboutDatasetsWindow = QtWidgets.QMainWindow()
         about_datasets_window = AboutDatasetsWindow()
         about_datasets_window.setup(self.AboutDatasetsWindow, DATASETS_CONFIG)
         self.AboutDatasetsWindow.show()
+
     def aboutDatasetNCT_CRC_HE_100K(self):
         self.aboutDatasetsWindow(CONFIG.ABOUT_DATASETS_CONFIG['NCT_CRC_HE_100K'])
+
     def aboutDatasetBreakHis(self):
         self.aboutDatasetsWindow(CONFIG.ABOUT_DATASETS_CONFIG['BREAK_HIS'])
-
 
     def aboutModelsWindow(self, MODELS_CONFIG):
         self.AboutModelsWindow = QtWidgets.QMainWindow()
         about_models_window = AboutModelsWindow()
         about_models_window.setup(self.AboutModelsWindow, MODELS_CONFIG)
         self.AboutModelsWindow.show()
+
     def aboutModelVGG19Simple(self):
         self.aboutModelsWindow(CONFIG.ABOUT_MODELS_CONFIG['VGG19_SIMPLE'])
+
     def aboutModelCNNSimple(self):
         self.aboutModelsWindow(CONFIG.ABOUT_MODELS_CONFIG['CNN_SIMPLE'])
-
 
     def simpleWindow(self, SIMPLE_CONFIG):
         self.SimpleWindow = QtWidgets.QMainWindow()
         simple_window = SimpleWindow()
         simple_window.setup(self.SimpleWindow, SIMPLE_CONFIG)
         self.SimpleWindow.show()
+
     def generalWindow(self):
         self.simpleWindow(CONFIG.SIMPLE_CONFIG['GENERAL'])
+
     def howToWindow(self):
         self.simpleWindow(CONFIG.SIMPLE_CONFIG['HOWTO'])
-
 
     def triggers(self):
         self.actionNetworkFilters.triggered.connect(self.filterPatternsWindow)
@@ -211,7 +208,6 @@ class MainWindow(Window):
         self.actionGeneral.triggered.connect(self.generalWindow)
         self.actionHowTo.triggered.connect(self.howToWindow)
         self.actionExit.triggered.connect(sys.exit)
-
 
     def setup(self, MainWindow, MAIN_CONFIG):
         self.set_main_window(MainWindow, MAIN_CONFIG)

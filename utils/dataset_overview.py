@@ -4,7 +4,6 @@ import logging
 
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
 from PIL import Image
 
 
@@ -42,7 +41,7 @@ def sample_images(dataset, categories, number_of_images, image_width, image_heig
     plt.axis('off')
     image_name = dataset + '_sample_images.jpg'
     image_path = os.path.join(data_dir, dataset, image_name)
-    plt.savefig(fname = image_path, bbox_inches = 'tight', pad_inches = 0)
+    plt.savefig(fname=image_path, bbox_inches='tight', pad_inches=0)
 
 
 def category_numbers(dataset, categories, dir):
@@ -67,11 +66,11 @@ def write_dataset_numbers(txt_file, total, dictionary):
 def dataset_numbers(dataset, categories, data_dir):
     _logger.info(dataset + ' dataset numbers...')
     train_dictionary, train_total = category_numbers(dataset,
-                                                      categories,
-                                                      os.path.join(data_dir, dataset, dataset + '_train'))
+                                                     categories,
+                                                     os.path.join(data_dir, dataset, dataset + '_train'))
     validation_dictionary, validation_total = category_numbers(dataset,
-                                                                categories,
-                                                                os.path.join(data_dir, dataset, dataset + '_validation'))
+                                                               categories,
+                                                               os.path.join(data_dir, dataset, dataset + '_validation'))
     test_dictionary, test_total = category_numbers(dataset,
                                                    categories,
                                                    os.path.join(data_dir, dataset, dataset + '_test'))
@@ -100,11 +99,11 @@ def dataset_numbers(dataset, categories, data_dir):
 
 def main():
     data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data')
-    datasets = [ f.name for f in os.scandir(data_dir) if f.is_dir() ]
+    datasets = [f.name for f in os.scandir(data_dir) if f.is_dir()]
     for dataset in datasets:
         _logger.info(dataset + ' dataset...')
         train_dir = os.path.join(data_dir, dataset, dataset + '_train')
-        categories = [ f.name for f in os.scandir(train_dir) if f.is_dir() ]
+        categories = [f.name for f in os.scandir(train_dir) if f.is_dir()]
         number_of_images = 10
         image_path = [im.path for im in os.scandir(os.path.join(train_dir, categories[0])) if im.is_file()][0]
         image = Image.open(image_path)

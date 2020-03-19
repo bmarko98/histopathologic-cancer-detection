@@ -57,15 +57,15 @@ def visualize_intermediate_activations(image, model, transfer_learning, dir):
                     channel_image *= 64
                     channel_image += 128
                     channel_image = np.clip(channel_image, 0, 255).astype('uint8')
-                    display_grid[col * size : (col + 1) * size, row * size : (row + 1) * size] = channel_image
+                    display_grid[col * size: (col + 1) * size, row * size: (row + 1) * size] = channel_image
 
             scale = 1. / size
-            plt.figure(figsize = (scale*display_grid.shape[1], scale*display_grid.shape[0]))
+            plt.figure(figsize=(scale*display_grid.shape[1], scale*display_grid.shape[0]))
             plt.title(layer_name)
             plt.grid(False)
             plt.axis('off')
             plt.imshow(display_grid, aspect='auto', cmap='viridis')
-            plt.savefig(fname=os.path.join(activation_plots_dir, layer_name + '.png'), bbox_inches = 'tight')
+            plt.savefig(fname=os.path.join(activation_plots_dir, layer_name + '.png'), bbox_inches='tight')
             plt.close('all')
 
 

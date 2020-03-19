@@ -1,11 +1,8 @@
 import os
-import numpy as np
-import sys
 import logging
 
 from keras.layers import Conv2D, MaxPooling2D, Flatten, Dropout, Dense
 from keras.models import Sequential
-from keras.optimizers import SGD, RMSprop, Adam
 from keras.preprocessing.image import ImageDataGenerator
 
 from models.base_cnn import BaseCNN
@@ -21,18 +18,18 @@ _logger = logging.getLogger(__name__)
 class CNNSimple(BaseCNN):
 
     def __init__(self,
-                 network_name = 'cnn_simple',
-                 dataset_name = None,
-                 dataset_count = None,
-                 classes = None,
-                 image_size = None,
-                 data_augmentation = False,
-                 batch_size = 32,
-                 loss = 'categorical_crossentropy',
-                 learning_rate = 1e-4,
-                 optimizer = 'rmsprop',
-                 metrics = ['acc'],
-                 epochs = 100):
+                 network_name='cnn_simple',
+                 dataset_name=None,
+                 dataset_count=None,
+                 classes=None,
+                 image_size=None,
+                 data_augmentation=False,
+                 batch_size=32,
+                 loss='categorical_crossentropy',
+                 learning_rate=1e-4,
+                 optimizer='rmsprop',
+                 metrics=['acc'],
+                 epochs=100):
 
         '''
         Arguments:
@@ -70,8 +67,7 @@ class CNNSimple(BaseCNN):
         self.compile(self.learning_rate)
         self.train(self.epochs)
         self.predict()
-        save_model(self, skip_filters=True)
-
+        save_model(self, skip_filters=False)
 
     def data_generators(self):
         _logger.info('Setting data generators...')
@@ -85,7 +81,6 @@ class CNNSimple(BaseCNN):
                                            horizontal_flip=True,
                                            vertical_flip=True)
         super().data_generators(train_datagen)
-
 
     def build(self):
         _logger.info('Building the model...')
@@ -118,7 +113,7 @@ class CNNSimple(BaseCNN):
         # fully connected layers
         model.add(Dense(512, activation='relu', name='dense1'))
         model.add(Dropout(0.5, name='dropout1'))
-        model.add(Dense(1024, activation = 'relu', name='dense2'))
+        model.add(Dense(1024, activation='relu', name='dense2'))
         model.add(Dropout(0.5, name='dropout2'))
         model.add(Dense(len(self.classes), activation='softmax', name='prediction'))
 

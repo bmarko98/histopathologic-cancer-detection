@@ -1,13 +1,10 @@
 import os
 import matplotlib.pyplot as plt
 import logging
-import itertools
-
-import numpy as np
 import pandas as pd
 import seaborn as sns
 from datetime import datetime
-from sklearn.metrics import confusion_matrix, roc_curve, roc_auc_score, precision_recall_curve, auc
+from sklearn.metrics import confusion_matrix
 from utils.visualize_filters import create_and_save_model_patterns
 
 
@@ -46,7 +43,7 @@ def save_arguments(file, network):
 def save_model_architecture(file, model):
     _logger.info('Saving the model architecture...')
     file.write('\n')
-    model.summary(print_fn = lambda x: file.write(x + '\n'))
+    model.summary(print_fn=lambda x: file.write(x + '\n'))
 
 
 def save_train_history(file, epochs, history):
@@ -76,14 +73,14 @@ def save_train_history_plots(directory, history):
     plt.plot(epochs, val_acc, 'b', label='Validation acc')
     plt.title('Training and validation accuracy')
     accuracy_plot_path = os.path.join(directory, 'accuracy_plot.png')
-    plt.savefig(fname = accuracy_plot_path, bbox_inches = 'tight')
+    plt.savefig(fname=accuracy_plot_path, bbox_inches='tight')
     plt.legend()
     plt.figure()
     plt.plot(epochs, loss, 'bo', label='Training loss')
     plt.plot(epochs, val_loss, 'b', label='Validation loss')
     plt.title('Training and validation loss')
     loss_plot_path = os.path.join(directory, 'loss_plot.png')
-    plt.savefig(fname = loss_plot_path, bbox_inches = 'tight')
+    plt.savefig(fname=loss_plot_path, bbox_inches='tight')
     plt.legend()
     plt.figure()
     plt.cla()
@@ -94,13 +91,13 @@ def save_train_history_plots(directory, history):
 def save_confusion_matrix_plot(directory, test_generator, predictions, classes):
     _logger.info('Saving the confusion matrix plot...')
     cm = confusion_matrix(test_generator.classes, predictions)
-    df_cm = pd.DataFrame(cm, index = classes, columns = classes)
-    plt.figure(figsize = (10,7))
+    df_cm = pd.DataFrame(cm, index=classes, columns=classes)
+    plt.figure(figsize=(10, 7))
     ax = sns.heatmap(df_cm, annot=True, fmt='g')
     bottom, top = ax.get_ylim()
     ax.set_ylim(bottom + 0.5, top - 0.5)
     confusion_matrix_plot_path = os.path.join(directory, 'confusion_matrix.png')
-    plt.savefig(fname = confusion_matrix_plot_path)
+    plt.savefig(fname=confusion_matrix_plot_path)
     plt.cla()
     plt.clf()
     plt.close('all')

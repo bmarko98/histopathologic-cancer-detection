@@ -9,7 +9,6 @@ class AboutModelsWindow(Window):
     def set_about_models_window(self, AboutModelsWindow, ABOUT_MODELS_CONFIG):
         super().set_window(AboutModelsWindow, ABOUT_MODELS_CONFIG)
 
-
     def create_central_widget(self, AboutModelsWindow, ABOUT_MODELS_CONFIG):
         super().create_central_widget(AboutModelsWindow, ABOUT_MODELS_CONFIG)
         self.modelNameLabel = GUI.get_label(self.centralwidget,
@@ -42,14 +41,12 @@ class AboutModelsWindow(Window):
                                                    ABOUT_MODELS_CONFIG['CONF_MATRIX_PATH'])
         AboutModelsWindow.setCentralWidget(self.centralwidget)
 
-
     def retranslate(self, AboutModelsWindow, ABOUT_MODELS_CONFIG):
         super().retranslate(AboutModelsWindow, ABOUT_MODELS_CONFIG)
         self.modelNameLabel.setText(self._translate(ABOUT_MODELS_CONFIG['WINDOW_NAME'],
                                                     ABOUT_MODELS_CONFIG['MODEL_NAME']))
         self.modelSummaryLabel.setText(self._translate(ABOUT_MODELS_CONFIG['WINDOW_NAME'],
-                                                      file_get_contents(ABOUT_MODELS_CONFIG['MODEL_SUMMARY_PATH'])))
-
+                                                       file_get_contents(ABOUT_MODELS_CONFIG['MODEL_SUMMARY_PATH'])))
 
     def setup(self, AboutModelsWindow, ABOUT_MODELS_CONFIG):
         super().setup(AboutModelsWindow, ABOUT_MODELS_CONFIG)

@@ -1,12 +1,9 @@
 import os
-import numpy as np
-import sys
 import logging
 
 from keras.layers import Flatten, Dropout, Dense
 from keras.models import Sequential
 from keras.applications import VGG19
-from keras.optimizers import SGD, RMSprop, Adam
 from keras.preprocessing.image import ImageDataGenerator
 
 from models.base_cnn import BaseCNN
@@ -22,25 +19,25 @@ _logger = logging.getLogger(__name__)
 class VGG19Simple(BaseCNN):
 
     def __init__(self,
-                 network_name = 'vgg19_simple',
-                 dataset_name = None,
-                 dataset_count = None,
-                 classes = None,
-                 image_size = None,
-                 data_augmentation = False,
-                 batch_size = 32,
-                 weights = 'imagenet',
-                 include_top = False,
-                 loss = 'categorical_crossentropy',
-                 learning_rate = 1e-4,
-                 optimizer = 'rmsprop',
-                 metrics = ['acc'],
-                 epochs = 100,
-                 skip_filters = True,
-                 fine_tune = False,
-                 first_trainable_block = 5,
-                 fine_tune_learning_rate = 1e-5,
-                 fine_tune_epochs = 100):
+                 network_name='vgg19_simple',
+                 dataset_name=None,
+                 dataset_count=None,
+                 classes=None,
+                 image_size=None,
+                 data_augmentation=False,
+                 batch_size=32,
+                 weights='imagenet',
+                 include_top=False,
+                 loss='categorical_crossentropy',
+                 learning_rate=1e-4,
+                 optimizer='rmsprop',
+                 metrics=['acc'],
+                 epochs=100,
+                 skip_filters=True,
+                 fine_tune=False,
+                 first_trainable_block=5,
+                 fine_tune_learning_rate=1e-5,
+                 fine_tune_epochs=100):
 
         '''
         Arguments:
@@ -111,7 +108,6 @@ class VGG19Simple(BaseCNN):
             self.predict()
             save_model(self, skip_filters)
 
-
     def data_generators(self):
         _logger.info('Setting data generators...')
         train_datagen = ImageDataGenerator(rescale=1./255,
@@ -124,7 +120,6 @@ class VGG19Simple(BaseCNN):
                                            horizontal_flip=True,
                                            vertical_flip=True)
         super().data_generators(train_datagen)
-
 
     def build(self):
         _logger.info('Building the model...')
@@ -141,15 +136,14 @@ class VGG19Simple(BaseCNN):
         model.add(self.convolutional_base)
 
         if self.include_top is False:
-            model.add(Flatten(name = 'flatten'))
-            model.add(Dense(512, activation = 'relu', name = 'dense_1'))
-            model.add(Dropout(0.5, name = 'dropout_1'))
-            model.add(Dense(1024, activation = 'relu', name = 'dense_2'))
-            model.add(Dropout(0.5, name = 'dropout_2'))
-            model.add(Dense(len(self.classes), activation = 'softmax', name = 'predictions'))
+            model.add(Flatten(name='flatten'))
+            model.add(Dense(512, activation='relu', name='dense_1'))
+            model.add(Dropout(0.5, name='dropout_1'))
+            model.add(Dense(1024, activation='relu', name='dense_2'))
+            model.add(Dropout(0.5, name='dropout_2'))
+            model.add(Dense(len(self.classes), activation='softmax', name='predictions'))
 
         self.model = model
-
 
     def fine_tune_model(self):
         _logger.info('Fine tuning...')

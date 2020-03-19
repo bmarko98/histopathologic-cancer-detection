@@ -2,9 +2,7 @@ import os
 import logging
 import numpy as np
 import matplotlib.pyplot as plt
-
 from keras import backend as K
-from keras.applications import VGG16
 
 
 logging.basicConfig(level=logging.INFO)
@@ -56,7 +54,7 @@ def create_layer_patterns(model, layer_name, N, size, margin, directory):
     plt.axis('off')
     image_name = layer_name + '_filter_patterns.png'
     image_path = os.path.join(directory, image_name)
-    plt.savefig(fname = image_path, bbox_inches = 'tight')
+    plt.savefig(fname=image_path, bbox_inches='tight')
 
 
 def create_and_save_model_patterns(model, directory):

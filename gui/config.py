@@ -29,8 +29,10 @@ ABOUT_DATASETS_CONFIG = {
         'OVERVIEW_LABEL_NAME': 'datasetOverviewLabel',
         'IMAGES_LABEL_POSITIONS': [550, 200, 950, 600],
         'IMAGES_LABEL_NAME': 'datasetImagesLabel',
-        'IMAGES_URL': '/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/data/break_his/break_his_sample_images.jpg',
-        'DATASET_OVERVIEW_PATH': '/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/data/break_his/break_his_dataset_overview.txt'
+        'IMAGES_URL': '/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/' +
+                      'data/break_his/break_his_sample_images.jpg',
+        'DATASET_OVERVIEW_PATH': '/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/' +
+                                 'data/break_his/break_his_dataset_overview.txt'
         },
     'NCT_CRC_HE_100K': {
         'WINDOW_NAME': 'AboutDatasetsWindow',
@@ -41,8 +43,10 @@ ABOUT_DATASETS_CONFIG = {
         'OVERVIEW_LABEL_NAME': 'datasetOverviewLabel',
         'IMAGES_LABEL_POSITIONS': [550, 200, 950, 600],
         'IMAGES_LABEL_NAME': 'datasetImagesLabel',
-        'IMAGES_URL': '/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/data/nct_crc_he_100k/nct_crc_he_100k_sample_images.jpg',
-        'DATASET_OVERVIEW_PATH': '/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/data/nct_crc_he_100k/nct_crc_he_100k_dataset_overview.txt'
+        'IMAGES_URL': '/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/data/' +
+                      'nct_crc_he_100k/nct_crc_he_100k_sample_images.jpg',
+        'DATASET_OVERVIEW_PATH': '/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/' +
+                                 'data/nct_crc_he_100k/nct_crc_he_100k_dataset_overview.txt'
         }
 }
 
@@ -59,13 +63,16 @@ ABOUT_MODELS_CONFIG = {
         'MODEL_SUMMARY_LABEL_NAME': 'modelSummaryLabel',
         'ACCURACY_LABEL_POSITION': [550, 50, 400, 400],
         'ACCURACY_LABEL_NAME': 'accuracyLabel',
-        'ACCURACY_PATH': '/home/lenovo//Documents/bachelors_thesis/histopathologic-cancer-detection/experiments/break_his_models/VGG19Test_16-03-2020_16:36:34/plots/accuracy_plot.png',
+        'ACCURACY_PATH': '/home/lenovo//Documents/bachelors_thesis/histopathologic-cancer-detection/' +
+                         'experiments/break_his_models/VGG19Test_16-03-2020_16:36:34/plots/accuracy_plot.png',
         'LOSS_LABEL_POSITION': [550, 450, 400, 400],
         'LOSS_LABEL_NAME': 'lossLabel',
-        'LOSS_PATH': '/home/lenovo//Documents/bachelors_thesis/histopathologic-cancer-detection/experiments/break_his_models/VGG19Test_16-03-2020_16:36:34/plots/loss_plot.png',
+        'LOSS_PATH': '/home/lenovo//Documents/bachelors_thesis/histopathologic-cancer-detection/' +
+                     'experiments/break_his_models/VGG19Test_16-03-2020_16:36:34/plots/loss_plot.png',
         'CONF_MATRIX_LABEL_POSITION': [950, 50, 800, 800],
         'CONF_MATRIX_LABEL_NAME': 'confMatrixLabel',
-        'CONF_MATRIX_PATH': '/home/lenovo//Documents/bachelors_thesis/histopathologic-cancer-detection/experiments/break_his_models/VGG19Test_16-03-2020_16:36:34/plots/confusion_matrix.png',
+        'CONF_MATRIX_PATH': '/home/lenovo//Documents/bachelors_thesis/histopathologic-cancer-detection/' +
+                            'experiments/break_his_models/VGG19Test_16-03-2020_16:36:34/plots/confusion_matrix.png',
         'MODEL_SUMMARY_PATH': '/home/lenovo/Downloads/vgg19_summary.txt',
     },
     'CNN_SIMPLE': {
@@ -80,13 +87,16 @@ ABOUT_MODELS_CONFIG = {
         'MODEL_SUMMARY_LABEL_NAME': 'modelSummaryLabel',
         'ACCURACY_LABEL_POSITION': [550, 50, 400, 400],
         'ACCURACY_LABEL_NAME': 'accuracyLabel',
-        'ACCURACY_PATH': '/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/experiments/nct_crc_he_100k_models/CNNSimpleTest_12-03-2020_15:49:03/plots/accuracy_plot.png',
+        'ACCURACY_PATH': '/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/experiments/' +
+                         'nct_crc_he_100k_models/CNNSimpleTest_12-03-2020_15:49:03/plots/accuracy_plot.png',
         'LOSS_LABEL_POSITION': [550, 450, 400, 400],
         'LOSS_LABEL_NAME': 'lossLabel',
-        'LOSS_PATH': '/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/experiments/nct_crc_he_100k_models/CNNSimpleTest_12-03-2020_15:49:03/plots/loss_plot.png',
+        'LOSS_PATH': '/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/experiments/' +
+                     'nct_crc_he_100k_models/CNNSimpleTest_12-03-2020_15:49:03/plots/loss_plot.png',
         'CONF_MATRIX_LABEL_POSITION': [950, 50, 800, 800],
         'CONF_MATRIX_LABEL_NAME': 'confMatrixLabel',
-        'CONF_MATRIX_PATH': '/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/experiments/nct_crc_he_100k_models/CNNSimpleTest_12-03-2020_15:49:03/plots/confusion_matrix.png',
+        'CONF_MATRIX_PATH': '/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/experiments/' +
+                            'nct_crc_he_100k_models/CNNSimpleTest_12-03-2020_15:49:03/plots/confusion_matrix.png',
         'MODEL_SUMMARY_PATH': '/home/lenovo/Downloads/cnn_summary.txt',
     }
 }
@@ -207,7 +217,8 @@ MAIN_CONFIG = {
     'PROGRESS_BAR_NAME': 'classificationProgressBar',
     'CLASS_PROBABILITIES_PLOT_POSITION': [850, 200, 400, 400],
     'CLASS_PROBABILITIES_PLOT_NAME': 'classProbabilitiesPlot',
-    'CLASS_PROBABILITIES_PLOT_PATH': '/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/gui/temporary_plots/plot.png',
+    'CLASS_PROBABILITIES_PLOT_PATH': '/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/' +
+                                     'gui/temporary_plots/plot.png',
     'MENU_BAR_POSITION': [0, 0, 1280, 25],
     'MENU_BAR_NAME': 'menuBar',
     'MENU': {
@@ -218,7 +229,7 @@ MAIN_CONFIG = {
         'DATASETS_NAME': 'menuDatasets', 'DATASETS_TEXT': 'Datasets',
         'MODELS_NAME': 'menuModels', 'MODELS_TEXT': 'Models'
      },
-     'ACTION': {
+    'ACTION': {
         'MODELS_NAME': 'actionModels', 'MODELS_TEXT': 'Models',
         'AUTHOR_NAME': 'actionAuthor', 'AUTHOR_TEXT': 'Author',
         'HOW_TO_NAME': 'actionHowTo', 'HOW_TO_TEXT': 'How To',

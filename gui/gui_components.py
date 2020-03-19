@@ -22,7 +22,7 @@ def get_button(widget, x, y, width, height, button_font, button_name):
     return button
 
 
-def get_label(widget, x, y, width, height, label_font, scale, label_name, allign = QtCore.Qt.AlignCenter):
+def get_label(widget, x, y, width, height, label_font, scale, label_name, allign=QtCore.Qt.AlignCenter):
     label = QtWidgets.QLabel(widget)
     label.setGeometry(QtCore.QRect(x, y, width, height))
     label.setFont(label_font)

@@ -15,9 +15,9 @@ _logger = logging.getLogger(__name__)
 datasets = {'break_his': {'categories': ['mucinous_carcinoma', 'adenosis', 'ductal_carcinoma', 'fibroadenoma',
                                          'tubular_adenoma', 'phyllodes_tumor', 'papillary_carcinoma', 'lobular_carcinoma'],
                           'image_size': (150, 150, 3)},
-            'nct_crc_he_100k': {'categories': ['cancer_associated_stroma', 'adipose', 'debris', 'mucus', 'background', 'smooth_muscle',
-                                              'lymphocytes', 'colorectal_adenocarcinoma_epithelium', 'normal_colon_mucosa'],
-                               'image_size': (150, 150, 3)},
+            'nct_crc_he_100k': {'categories': ['cancer_associated_stroma', 'adipose', 'debris', 'mucus', 'background',
+                                'smooth_muscle', 'lymphocytes', 'colorectal_adenocarcinoma_epithelium', 'normal_colon_mucosa'],
+                                'image_size': (150, 150, 3)},
             'pcam': {'categories': ['non_tumor_tissue', 'tumor_tissue'],
                      'image_size': (150, 150, 3)}}
 
@@ -28,7 +28,7 @@ def plot_class_probabilities(classes, class_probabilities, dir):
     plt.bar(classes, class_probabilities)
     plt.xticks(index, classes, fontsize=12, rotation=45)
     class_probabilities_plot_path = os.path.join(dir, 'class_probabilities.png')
-    plt.savefig(fname = class_probabilities_plot_path)
+    plt.savefig(fname=class_probabilities_plot_path)
 
 
 def predict_image_class(image_URL, dataset, model, dir):
@@ -51,7 +51,7 @@ def load_keras_model(dataset, model_path):
     if model_path is None:
         assert(dataset in datasets)
         model_paths_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'experiments', dataset + '_models')
-        model_paths = [ f.path for f in os.scandir(model_paths_dir) if f.is_dir() ]
+        model_paths = [f.path for f in os.scandir(model_paths_dir) if f.is_dir()]
         assert(len(model_paths) > 0)
         model_name = model_paths[0].split('/')[-1].split('_')[0]
         model = load_model(os.path.join(model_paths[0], model_name + '.h5'))
@@ -61,7 +61,7 @@ def load_keras_model(dataset, model_path):
     return model
 
 
-def predict_image(image_URL, dataset, model_path = None, transfer_learning = False):
+def predict_image(image_URL, dataset, model_path=None, transfer_learning=False):
     temporary_plots_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'gui', 'temporary_plots')
     if not os.path.exists(temporary_plots_dir):
         os.mkdir(temporary_plots_dir)
@@ -70,15 +70,17 @@ def predict_image(image_URL, dataset, model_path = None, transfer_learning = Fal
     visualize_intermediate_activations(image, model, transfer_learning, temporary_plots_dir)
     visualize_heatmaps(image_URL, image, model, transfer_learning, temporary_plots_dir)
 
+
 '''
 def main():
     image_URL = "/home/lenovo/Desktop/test.png"
-    model_path = "/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/experiments/break_his_models/VGG19Test_03-03-2020_09:38:50/VGG19Test.h5"
-    model_path_2 = "/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/experiments/nct_crc_he_100k_models/CNNSimpleTest_12-03-2020_15:49:03/CNNSimpleTest.h5"
+    model_path = "/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/experiments/break_his_models/" + \
+                 "VGG19Test_03-03-2020_09:38:50/VGG19Test.h5"
+    model_path_2 = "/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/experiments/" + \
+                   "nct_crc_he_100k_models/CNNSimpleTest_12-03-2020_15:49:03/CNNSimpleTest.h5"
     predict_image(image_URL, 'nct_crc_he_100k', model_path_2, False)
     predict_image(image_URL, 'break_his', model_path, True)
 
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
 '''

@@ -10,7 +10,6 @@ class AboutDatasetsWindow(Window):
     def set_about_datasets_window(self, AboutDatasetsWindow, ABOUT_DATASETS_CONFIG):
         super().set_about_window(AboutDatasetsWindow, ABOUT_DATASETS_CONFIG)
 
-
     def create_central_widget(self, AboutDatasetsWindow, ABOUT_DATASETS_CONFIG):
         super().create_central_widget(AboutDatasetsWindow, ABOUT_DATASETS_CONFIG)
         self.datasetOverviewLabel = GUI.get_label(self.centralwidget,
@@ -27,12 +26,10 @@ class AboutDatasetsWindow(Window):
                                                       ABOUT_DATASETS_CONFIG['IMAGES_URL'])
         AboutDatasetsWindow.setCentralWidget(self.centralwidget)
 
-
     def retranslate(self, AboutDatasetsWindow, ABOUT_DATASETS_CONFIG):
         super().retranslate(AboutDatasetsWindow, ABOUT_DATASETS_CONFIG)
         self.datasetOverviewLabel.setText(self._translate(ABOUT_DATASETS_CONFIG['WINDOW_NAME'],
                                                           file_get_contents(ABOUT_DATASETS_CONFIG['DATASET_OVERVIEW_PATH'])))
-
 
     def setup(self, AboutDatasetsWindow, ABOUT_DATASETS_CONFIG):
         super().setup(AboutDatasetsWindow, ABOUT_DATASETS_CONFIG)
