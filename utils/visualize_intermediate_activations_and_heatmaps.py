@@ -13,7 +13,7 @@ logging.basicConfig(level=logging.INFO)
 _logger = logging.getLogger(__name__)
 
 
-def visualize_intermediate_activations(image, model, transfer_learning, dir):
+def visualize_intermediate_activations(image, model, transfer_learning, requested_layer_name, channel_number, dir):
     _logger.info("Visualizing intermediate activations...")
     activation_plots_dir = os.path.join(dir, 'layer_activations')
     if not os.path.exists(activation_plots_dir):
@@ -40,34 +40,51 @@ def visualize_intermediate_activations(image, model, transfer_learning, dir):
 
     activations = activation_model.predict(image)
 
-    images_per_row = 16
+    if requested_layer_name:
+        for layer_name in layer_names:
+            if layer_name == requested_layer_name:
+                layer_number = layer_names.index(requested_layer_name)
+                requested_layer_activations = activations[layer_number]
+                if requested_layer_activations.shape[-1] >= channel_number:
+                    plt.title(requested_layer_name + ' ' + str(channel_number))
+                    plt.grid(False)
+                    plt.axis('off')
+                    plt.imshow(requested_layer_activations[0, :, :, channel_number], aspect='auto', cmap='viridis')
+                    requested_layer_channel_path = os.path.join(activation_plots_dir, layer_name + '_' + str(channel_number) + '.png')
+                    plt.savefig(fname=requested_layer_channel_path, bbox_inches='tight')
+                    plt.close('all')
+                    return requested_layer_channel_path
+        return ''
 
-    for layer_name, layer_activation in zip(layer_names, activations):
-        if (layer_name != 'input_1'):
-            _logger.info("Visualizing activations for layer: " + layer_name)
-            n_features = layer_activation.shape[-1]
-            size = layer_activation.shape[1]
-            n_cols = n_features // images_per_row
-            display_grid = np.zeros((size * n_cols, images_per_row * size))
-            for col in range(n_cols):
-                for row in range(images_per_row):
-                    channel_image = layer_activation[0, :, :, col * images_per_row + row]
-                    channel_image -= channel_image.mean()
-                    channel_image /= channel_image.std() + 1e-5
-                    channel_image *= 64
-                    channel_image += 128
-                    channel_image = np.clip(channel_image, 0, 255).astype('uint8')
-                    display_grid[col * size: (col + 1) * size, row * size: (row + 1) * size] = channel_image
+    else:
+        images_per_row = 16
 
-            scale = 1. / size
-            plt.figure(figsize=(scale*display_grid.shape[1], scale*display_grid.shape[0]))
-            plt.title(layer_name)
-            plt.grid(False)
-            plt.axis('off')
-            plt.imshow(display_grid, aspect='auto', cmap='viridis')
-            plt.savefig(fname=os.path.join(activation_plots_dir, layer_name + '.png'), bbox_inches='tight')
-            plt.close('all')
-    return layer_names
+        for layer_name, layer_activation in zip(layer_names, activations):
+            if (layer_name != 'input_1'):
+                _logger.info("Visualizing activations for layer: " + layer_name)
+                n_features = layer_activation.shape[-1]
+                size = layer_activation.shape[1]
+                n_cols = n_features // images_per_row
+                display_grid = np.zeros((size * n_cols, images_per_row * size))
+                for col in range(n_cols):
+                    for row in range(images_per_row):
+                        channel_image = layer_activation[0, :, :, col * images_per_row + row]
+                        channel_image -= channel_image.mean()
+                        channel_image /= channel_image.std() + 1e-5
+                        channel_image *= 64
+                        channel_image += 128
+                        channel_image = np.clip(channel_image, 0, 255).astype('uint8')
+                        display_grid[col * size: (col + 1) * size, row * size: (row + 1) * size] = channel_image
+
+                scale = 1. / size
+                plt.figure(figsize=(scale*display_grid.shape[1], scale*display_grid.shape[0]))
+                plt.title(layer_name)
+                plt.grid(False)
+                plt.axis('off')
+                plt.imshow(display_grid, aspect='auto', cmap='viridis')
+                plt.savefig(fname=os.path.join(activation_plots_dir, layer_name + '.png'), bbox_inches='tight')
+                plt.close('all')
+        return layer_names
 
 
 def get_heatmap(image, model, transfer_learning):

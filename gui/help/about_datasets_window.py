@@ -1,7 +1,10 @@
+import numpy as np
+from keras.preprocessing import image
+from PyQt5 import QtCore, QtGui, QtWidgets
 import gui.config as CONFIG
 import gui.gui_components as GUI
 from gui.window import Window
-from PyQt5 import QtCore
+from gui.help.simple_window import SimpleWindow
 from utils.misc import file_get_contents
 
 
@@ -24,6 +27,7 @@ class AboutDatasetsWindow(Window):
                                                       True,
                                                       ABOUT_DATASETS_CONFIG['IMAGES_LABEL_NAME'],
                                                       ABOUT_DATASETS_CONFIG['IMAGES_URL'])
+        self.image_path = ABOUT_DATASETS_CONFIG['IMAGES_URL']
         AboutDatasetsWindow.setCentralWidget(self.centralwidget)
 
     def retranslate(self, AboutDatasetsWindow, ABOUT_DATASETS_CONFIG):
@@ -31,5 +35,23 @@ class AboutDatasetsWindow(Window):
         self.datasetOverviewLabel.setText(self._translate(ABOUT_DATASETS_CONFIG['WINDOW_NAME'],
                                                           file_get_contents(ABOUT_DATASETS_CONFIG['DATASET_OVERVIEW_PATH'])))
 
+    def simpleWindow(self, SIMPLE_CONFIG):
+        self.SimpleWindow = QtWidgets.QMainWindow()
+        self.simple_window = SimpleWindow()
+        self.simple_window.setup(self.SimpleWindow, SIMPLE_CONFIG)
+        self.SimpleWindow.show()
+
+    def datasetImageClickedEvent(self, event):
+        img = image.load_img(self.image_path)
+        np_img = image.img_to_array(img)
+        np_img = np.expand_dims(np_img, axis=0)
+        np_img /= 255.
+        CONFIG.SIMPLE_CONFIG['IMAGE']['WINDOW_X'] = np_img.shape[2]
+        CONFIG.SIMPLE_CONFIG['IMAGE']['WINDOW_Y'] = np_img.shape[1]
+        CONFIG.SIMPLE_CONFIG['IMAGE']['SIMPLE_INFO_LABEL_POSITION'] = [0, 0, np_img.shape[2], np_img.shape[1]]
+        CONFIG.SIMPLE_CONFIG['IMAGE']['SIMPLE_INFO_LABEL_IMAGE_PATH'] = self.image_path
+        self.simpleWindow(CONFIG.SIMPLE_CONFIG['IMAGE'])
+
     def setup(self, AboutDatasetsWindow, ABOUT_DATASETS_CONFIG):
         super().setup(AboutDatasetsWindow, ABOUT_DATASETS_CONFIG)
+        self.datasetImagesLabel.mousePressEvent = self.datasetImageClickedEvent

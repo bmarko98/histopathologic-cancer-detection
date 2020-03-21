@@ -69,9 +69,9 @@ def predict_image(image_URL, dataset, model_path=None, transfer_learning=False):
         os.mkdir(temporary_plots_dir)
     model = load_keras_model(dataset, model_path)
     image, image_class, plot_path = predict_image_class(image_URL, dataset, model, temporary_plots_dir)
-    layers = visualize_intermediate_activations(image, model, transfer_learning, temporary_plots_dir)
+    layers = visualize_intermediate_activations(image, model, transfer_learning, None, None, temporary_plots_dir)
     visualize_heatmaps(image_URL, image, model, transfer_learning, temporary_plots_dir)
-    return image_class, plot_path, layers
+    return model, image, image_class, plot_path, layers
 
 
 '''

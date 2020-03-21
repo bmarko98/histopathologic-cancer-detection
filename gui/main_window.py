@@ -1,8 +1,10 @@
 import os
 import sys
+import numpy as np
+from keras.preprocessing import image
+from PyQt5 import QtCore, QtWidgets, QtGui
 import gui.config as CONFIG
 import gui.gui_components as GUI
-from PyQt5 import QtCore, QtWidgets, QtGui
 from gui.window import Window
 from gui.help.simple_window import SimpleWindow
 from gui.help.about_models_window import AboutModelsWindow
@@ -57,6 +59,8 @@ class MainWindow(Window):
                                                           True,
                                                           MAIN_CONFIG['CLASS_PROBABILITIES_PLOT_NAME'],
                                                           None)
+        self.image = None
+        self.model = None
         MainWindow.setCentralWidget(self.centralwidget)
 
     def create_menu(self, MainWindow, MAIN_CONFIG):
@@ -140,11 +144,13 @@ class MainWindow(Window):
     def inspectConvWindow(self, INSPECT_CONV_CONFIG):
         self.InspectConvWindow = QtWidgets.QMainWindow()
         self.inspect_conv_window = InspectConvWindow()
+        self.inspect_conv_window.input_image = self.image
+        self.inspect_conv_window.model = self.model
         self.inspect_conv_window.setup(self.InspectConvWindow, INSPECT_CONV_CONFIG)
         self.InspectConvWindow.show()
 
-    def classActivationsWindow(self):
-        self.inspectConvWindow(CONFIG.INSPECT_CONV_CONFIG['CLASS_ACTIVATIONS'])
+    def layerActivationsWindow(self):
+        self.inspectConvWindow(CONFIG.INSPECT_CONV_CONFIG['LAYER_ACTIVATIONS'])
 
     def filterPatternsWindow(self):
         self.inspectConvWindow(CONFIG.INSPECT_CONV_CONFIG['FILTER_PATTERNS'])
@@ -199,7 +205,7 @@ class MainWindow(Window):
 
     def triggers(self):
         self.actionNetworkFilters.triggered.connect(self.filterPatternsWindow)
-        self.actionIntermediateActivations.triggered.connect(self.classActivationsWindow)
+        self.actionIntermediateActivations.triggered.connect(self.layerActivationsWindow)
         self.actionHeatmaps.triggered.connect(self.heatmapWindow)
         self.actionAuthor.triggered.connect(self.aboutAuthorWindow)
         self.actionNCT_CRC_HE_100K.triggered.connect(self.aboutDatasetNCT_CRC_HE_100K)
@@ -212,6 +218,8 @@ class MainWindow(Window):
 
         self.loadImageButton.clicked.connect(self.loadImageButtonEvent)
         self.classifyButton.clicked.connect(self.classifyButtonEvent)
+        self.inputImageLabel.mousePressEvent = self.inputImageClickedEvent
+        self.classProbabilitiesPlot.mousePressEvent = self.classProbabilitiesPlotClickedEvent
 
     def loadImageButtonEvent(self):
         image_path = QtWidgets.QFileDialog.getOpenFileName(None, 'Select Image', '',
@@ -226,13 +234,33 @@ class MainWindow(Window):
                 dataset, model_path, tl = 'break_his', CONFIG.MAIN_CONFIG['VGG19_SIMPLE_MODEL_PATH'], True
             elif self.colorectalTissueRadioButton.isChecked():
                 dataset, model_path, tl = 'nct_crc_he_100k', CONFIG.MAIN_CONFIG['CNN_SIMPLE_MODEL_PATH'], False
-            image_class, plot_path, layers = predict_image(self.image_path, dataset, model_path, tl)
-            self.predictedClassLabel.setText(self._translate(CONFIG.MAIN_CONFIG['WINDOW_NAME'], image_class))
-            self.classProbabilitiesPlot.setPixmap(QtGui.QPixmap(plot_path))
+            self.model, self.image, self.image_class, self.plot_path, self.layers = predict_image(self.image_path,
+                                                                                                  dataset,
+                                                                                                  model_path,
+                                                                                                  tl)
+            self.predictedClassLabel.setText(self._translate(CONFIG.MAIN_CONFIG['WINDOW_NAME'], self.image_class))
+            self.classProbabilitiesPlot.setPixmap(QtGui.QPixmap(self.plot_path))
             CONFIG.HEATMAP_CONFIG['HEATMAP_IMAGE_PATH'] = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                                                        'temporary_plots', 'heatmap.jpg')
-            for layer in layers:
-                CONFIG.INSPECT_CONV_CONFIG['CLASS_ACTIVATIONS']['COMBO_BOX_ITEMS'].append(layer)
+            for layer in self.layers:
+                CONFIG.INSPECT_CONV_CONFIG['LAYER_ACTIVATIONS']['COMBO_BOX_ITEMS'].append(layer)
+
+    def inputImageClickedEvent(self, event):
+        self.imageClickedEvent(self.image_path)
+
+    def classProbabilitiesPlotClickedEvent(self, event):
+        self.imageClickedEvent(self.plot_path)
+
+    def imageClickedEvent(self, image_path):
+        img = image.load_img(image_path)
+        np_img = image.img_to_array(img)
+        np_img = np.expand_dims(np_img, axis=0)
+        np_img /= 255.
+        CONFIG.SIMPLE_CONFIG['IMAGE']['WINDOW_X'] = np_img.shape[2]
+        CONFIG.SIMPLE_CONFIG['IMAGE']['WINDOW_Y'] = np_img.shape[1]
+        CONFIG.SIMPLE_CONFIG['IMAGE']['SIMPLE_INFO_LABEL_POSITION'] = [0, 0, np_img.shape[2], np_img.shape[1]]
+        CONFIG.SIMPLE_CONFIG['IMAGE']['SIMPLE_INFO_LABEL_IMAGE_PATH'] = image_path
+        self.simpleWindow(CONFIG.SIMPLE_CONFIG['IMAGE'])
 
     def setup(self, MainWindow, MAIN_CONFIG):
         self.set_main_window(MainWindow, MAIN_CONFIG)

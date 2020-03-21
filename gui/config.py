@@ -5,6 +5,7 @@ FONT = GUI.get_font('Sans Serif', 12)
 BACKGROUND_COLOR = 'rgb(42, 49, 56)'
 FONT_COLOR = 'white'
 CENTRAL_WIDGET = 'central_widget'
+TEMPORARY_PLOTS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'temporary_plots')
 
 ABOUT_AUTHOR_CONFIG = {
     'WINDOW_NAME': 'AboutAuthorWindow',
@@ -109,7 +110,8 @@ SIMPLE_CONFIG = {
         'WINDOW_Y': 400,
         'TEXT': 'Basic usability of the App...',
         'SIMPLE_INFO_LABEL_POSITION': [50, 50, 540, 300],
-        'SIMPLE_INFO_LABEL_NAME': 'simpleInfoLabel'
+        'SIMPLE_INFO_LABEL_NAME': 'simpleInfoLabel',
+        'SIMPLE_INFO_LABEL_IMAGE_PATH': None
     },
     'HOWTO': {
         'WINDOW_NAME': 'AboutModelsWindow',
@@ -118,7 +120,18 @@ SIMPLE_CONFIG = {
         'WINDOW_Y': 720,
         'TEXT': 'Advanced usability of the App...',
         'SIMPLE_INFO_LABEL_POSITION': [50, 50, 940, 600],
-        'SIMPLE_INFO_LABEL_NAME': 'simpleInfoLabel'
+        'SIMPLE_INFO_LABEL_NAME': 'simpleInfoLabel',
+        'SIMPLE_INFO_LABEL_IMAGE_PATH': None
+    },
+    'IMAGE': {
+        'WINDOW_NAME': 'ImageWindow',
+        'WINDOW_TITLE': 'Image',
+        'WINDOW_X': None,
+        'WINDOW_Y': None,
+        'TEXT': '',
+        'SIMPLE_INFO_LABEL_POSITION': None,
+        'SIMPLE_INFO_LABEL_NAME': 'simpleInfoLabel',
+        'SIMPLE_INFO_LABEL_IMAGE_PATH': None
     }
 }
 
@@ -165,23 +178,22 @@ INSPECT_CONV_CONFIG = {
         'LINE_EDIT_POSITION': [175, 80, 50, 25],
         'LINE_EDIT_NAME': 'filterNumberEdit'
     },
-    'CLASS_ACTIVATIONS': {
+    'LAYER_ACTIVATIONS': {
         'WINDOW_NAME': 'InspectConvWindow',
-        'WINDOW_TITLE': 'Class Activations',
+        'WINDOW_TITLE': 'Layer Activations',
         'WINDOW_X': 1080,
         'WINDOW_Y': 720,
         'CONV_LAYER_LABEL_POSITION': [32, 50, 200, 25],
         'CONV_LAYER_LABEL_NAME': 'convLayerLabel',
-        'CONV_LAYER_LABEL_TEXT': 'Convolutional Layer',
+        'CONV_LAYER_LABEL_TEXT': 'Layer',
         'NUMBER_LABEL_POSITION': [50, 80, 150, 25],
         'NUMBER_LABEL_NAME': 'channelNumberLabel',
         'NUMBER_LABEL_TEXT': 'Channel Number',
         'IMAGE_LABEL_POSITION': [450, 75, 600, 600],
         'IMAGE_LABEL_NAME': 'activationLabel',
-        'IMAGE_PATH': '/home/lenovo/Pictures/filter.jpg',
         'BUTTON_POSITION': [50, 115, 200, 25],
         'BUTTON_NAME': 'showActivationButton',
-        'BUTTON_TEXT': 'Show Class Activations',
+        'BUTTON_TEXT': 'Show Layer Activations',
         'COMBO_BOX_POSITION': [225, 50, 140, 25],
         'COMBO_BOX_NAME': 'layerComboBox',
         'COMBO_BOX_ITEMS': [],
@@ -239,7 +251,7 @@ MAIN_CONFIG = {
         'CNN_SIMPLE_NAME': 'actionCNNSimple', 'CNN_SIMPLE_TEXT': 'CNNSimple',
         'VGG19_SIMPLE_NAME': 'actionVGG19Simple', 'VGG19_SIMPLE_TEXT': 'VGG19Simple',
         'NETWORK_FILTERS_NAME': 'actionNetworkFilters', 'NETWORK_FILTERS_TEXT': 'Network Filters',
-        'INTERMEDIATE_ACTIVATIONS_NAME': 'actionIntermediateActivations', 'INTERMEDIATE_ACTIVATIONS_TEXT': 'Class Activations',
+        'INTERMEDIATE_ACTIVATIONS_NAME': 'actionIntermediateActivations', 'INTERMEDIATE_ACTIVATIONS_TEXT': 'Layer Activations',
         'HEATMAPS_NAME': 'actionHeatmaps', 'HEATMAPS_TEXT': 'Heatmaps',
         'GENERAL_NAME': 'actionGeneral', 'GENERAL_TEXT': 'General',
         'EXIT_NAME': 'actionExit', 'EXIT_TEXT': 'Exit'

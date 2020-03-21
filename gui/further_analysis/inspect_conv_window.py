@@ -1,8 +1,12 @@
 import os
+import numpy as np
+from keras.preprocessing import image
+from PyQt5 import QtGui, QtWidgets
 import gui.config as CONFIG
 import gui.gui_components as GUI
-from PyQt5 import QtGui
 from gui.window import Window
+from gui.help.simple_window import SimpleWindow
+from utils.visualize_intermediate_activations_and_heatmaps import visualize_intermediate_activations
 
 
 class InspectConvWindow(Window):
@@ -27,7 +31,7 @@ class InspectConvWindow(Window):
                                               CONFIG.FONT,
                                               True,
                                               INSPECT_CONV_CONFIG['IMAGE_LABEL_NAME'],
-                                              INSPECT_CONV_CONFIG['IMAGE_PATH'])
+                                              None)
         self.showButton = GUI.get_button(self.centralwidget,
                                          *INSPECT_CONV_CONFIG['BUTTON_POSITION'],
                                          CONFIG.FONT,
@@ -58,13 +62,35 @@ class InspectConvWindow(Window):
         line_edit_text = self.numberEdit.text()
         combo_box_text = self.layerComboBox.currentText()
         if line_edit_text and combo_box_text:
-            image_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'temporary_plots',
-                                      'layer_activations', combo_box_text + '.png')
             if self.showButton.objectName() == 'showActivationButton':
                 if line_edit_text == 'all':
-                    print(image_path)
-                    self.imageLabel.setPixmap(QtGui.QPixmap(image_path))
+                    self.image_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'temporary_plots',
+                                                  'layer_activations', combo_box_text + '.png')
+                    self.imageLabel.setPixmap(QtGui.QPixmap(self.image_path))
+                elif line_edit_text.isdigit():
+                    channel_number = int(line_edit_text)
+                    self.image_path = visualize_intermediate_activations(self.input_image, self.model, False, combo_box_text,
+                                                                         channel_number, CONFIG.TEMPORARY_PLOTS_DIR)
+                    self.imageLabel.setPixmap(QtGui.QPixmap(self.image_path))
+
+    def simpleWindow(self, SIMPLE_CONFIG):
+        self.SimpleWindow = QtWidgets.QMainWindow()
+        self.simple_window = SimpleWindow()
+        self.simple_window.setup(self.SimpleWindow, SIMPLE_CONFIG)
+        self.SimpleWindow.show()
+
+    def labelClickedEvent(self, event):
+        img = image.load_img(self.image_path)
+        np_img = image.img_to_array(img)
+        np_img = np.expand_dims(np_img, axis=0)
+        np_img /= 255.
+        CONFIG.SIMPLE_CONFIG['IMAGE']['WINDOW_X'] = np_img.shape[2]
+        CONFIG.SIMPLE_CONFIG['IMAGE']['WINDOW_Y'] = np_img.shape[1]
+        CONFIG.SIMPLE_CONFIG['IMAGE']['SIMPLE_INFO_LABEL_POSITION'] = [0, 0, np_img.shape[2], np_img.shape[1]]
+        CONFIG.SIMPLE_CONFIG['IMAGE']['SIMPLE_INFO_LABEL_IMAGE_PATH'] = self.image_path
+        self.simpleWindow(CONFIG.SIMPLE_CONFIG['IMAGE'])
 
     def setup(self, InspectConvWindow, INSPECT_CONV_CONFIG):
         super().setup(InspectConvWindow, INSPECT_CONV_CONFIG)
         self.showButton.clicked.connect(self.showButtonEvent)
+        self.imageLabel.mousePressEvent = self.labelClickedEvent
