@@ -48,13 +48,13 @@ NCT-CRC-HE-100K Dataset is composed of 100,000 non-overlapping image patches (22
    - move *NCT-CRC-HE-100K.zip* into data/nct_crc_he_100k directory
  - Next, execute following commands:
 ```
-$ python3 break_his_dataset_creation.py
-$ python3 pcam_dataset_creation.py
-$ python3 nct_crc_he_100k_dataset_creation.py
+$ python3 data/break_his/break_his_dataset_creation.py
+$ python3 data/pcam/pcam_dataset_creation.py
+$ python3 data/nct_crc_he_100k/nct_crc_he_100k_dataset_creation.py
 ```
  - In order to plot sample images and obtain basic dataset information, run following command:
  ```
-$ python3 dataset_overview.py
+$ python3 data/dataset_overview.py
  ```
 
 ## Models
@@ -66,17 +66,24 @@ BaseCNN is parent model of all subsequent models. It contains creation of data g
 ### 1. CNNSimple
 
 CNNSimple is model trained on NCT_CRC_HE_100K dataset. It's architecture consists of 4 convolutional blocks (each of which contain several convolutional layers, followed by max pooling layer), and 3 fully-connected (dense) layers on top.
- - In order to train the model from scratch on NCT_CRC_HE_100K dataset, run following command:
+ - In order to train the model from scratch on NCT_CRC_HE_100K dataset, set up the parameters dictionary in and run following command:
  ```
-$ python3 vgg19_simple.py
+$ python3 experiments/hyperparameter_tuning.py
  ```
 
 ### 2. VGG19Simple
 
 VGG19Simple is model trained on BreakHis dataset. It's architecture consists of VGG19 network as convolutional base and 3 fully-connected (dense) layers on top. It uses transfer learning in order to overcome small size of the dataset.
-- In order to train the model from scratch on BreakHis dataset, run following command:
+- In order to train the model from scratch on BreakHis dataset, set up the parameters dictionary in and run following command:
 ```
-$ python3 cnn_simple.py
+$ python3 experiments/hyperparameter_tuning.py
+```
+
+### 3. Graphical User Interface
+
+GUI is implemented using PyQt5 library, and it consists of several window classes, all derived from Window class. In order to run the Application, run the following command:
+```
+$ python3 gui/main_window.py
 ```
 
 ## Author
