@@ -135,10 +135,10 @@ HEATMAP_CONFIG = {
     'HEATMAP_TEXT_LABEL_TEXT': 'Heatmap of Class Activation',
     'INPUT_IMAGE_LABEL_POSITION': [50, 75, 380, 200],
     'INPUT_IMAGE_LABEL_NAME': 'inputImageLabel',
-    'INPUT_IMAGE_PATH': '/home/lenovo/Desktop/test.png',
+    'INPUT_IMAGE_PATH': None,
     'HEATMAP_IMAGE_LABEL_POSITION': [480, 75, 380, 200],
     'HEATMAP_IMAGE_LABEL_NAME': 'heatmapImageLabel',
-    'HEATMAP_IMAGE_PATH': '/home/lenovo/Desktop/heatmap.jpg',
+    'HEATMAP_IMAGE_PATH': None,
 }
 
 INSPECT_CONV_CONFIG = {
@@ -184,7 +184,7 @@ INSPECT_CONV_CONFIG = {
         'BUTTON_TEXT': 'Show Class Activations',
         'COMBO_BOX_POSITION': [225, 50, 140, 25],
         'COMBO_BOX_NAME': 'layerComboBox',
-        'COMBO_BOX_ITEMS': ['item4', 'item5', 'item6'],
+        'COMBO_BOX_ITEMS': [],
         'LINE_EDIT_POSITION': [175, 80, 50, 25],
         'LINE_EDIT_NAME': 'channelNumberEdit'
     }
@@ -200,7 +200,6 @@ MAIN_CONFIG = {
     'LOAD_IMAGE_BUTTON_TEXT': 'Load Image',
     'INPUT_IMAGE_POSITION': [50, 200, 350, 350],
     'INPUT_IMAGE_NAME': 'inputImageLabel',
-    'INPUT_IMAGE_PATH': '/home/lenovo/Desktop/test.png',
     'BREAST_TISSUE_RADIO_BUTTON_POSITION': [570, 420, 150, 25],
     'BREAST_TISSUE_RADIO_BUTTON_NAME': 'breastTissueRadioButton',
     'BREAST_TISSUE_RADIO_BUTTON_TEXT': 'Breast Tissue',
@@ -210,6 +209,10 @@ MAIN_CONFIG = {
     'CLASSIFY_BUTTON_POSITION': [565, 510, 150, 50],
     'CLASSIFY_BUTTON_NAME': 'classifyButton',
     'CLASSIFY_BUTTON_TEXT': 'Classify',
+    'VGG19_SIMPLE_MODEL_PATH': '/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/experiments/' +
+                               'break_his_models/VGG19Test_03-03-2020_08:51:10/VGG19Test.h5',
+    'CNN_SIMPLE_MODEL_PATH': '/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/experiments/' +
+                             'nct_crc_he_100k_models/CNNSimpleTest_12-03-2020_15:49:03/CNNSimpleTest.h5',
     'PREDICTED_CLASS_LABEL_POSITION': [955, 135, 200, 50],
     'PREDICTED_CLASS_LABEL_NAME': 'predictedClassLabel',
     'PREDICTED_CLASS_LABEL_TEXT': 'Class',
@@ -217,8 +220,6 @@ MAIN_CONFIG = {
     'PROGRESS_BAR_NAME': 'classificationProgressBar',
     'CLASS_PROBABILITIES_PLOT_POSITION': [850, 200, 400, 400],
     'CLASS_PROBABILITIES_PLOT_NAME': 'classProbabilitiesPlot',
-    'CLASS_PROBABILITIES_PLOT_PATH': '/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/' +
-                                     'gui/temporary_plots/plot.png',
     'MENU_BAR_POSITION': [0, 0, 1280, 25],
     'MENU_BAR_NAME': 'menuBar',
     'MENU': {

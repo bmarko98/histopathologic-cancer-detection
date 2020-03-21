@@ -29,6 +29,10 @@ def plot_class_probabilities(classes, class_probabilities, dir):
     plt.xticks(index, classes, fontsize=12, rotation=45)
     class_probabilities_plot_path = os.path.join(dir, 'class_probabilities.png')
     plt.savefig(fname=class_probabilities_plot_path)
+    plt.cla()
+    plt.clf()
+    plt.close('all')
+    return class_probabilities_plot_path
 
 
 def predict_image_class(image_URL, dataset, model, dir):
@@ -41,9 +45,9 @@ def predict_image_class(image_URL, dataset, model, dir):
     class_probabilities = model.predict(np_img)
     classes = datasets[dataset]['categories']
     classes.sort()
-    plot_class_probabilities(classes, class_probabilities[0], dir)
+    plot_path = plot_class_probabilities(classes, class_probabilities[0], dir)
 
-    return np_img, datasets[dataset]['categories'][class_probabilities[0].argmax(axis=-1)]
+    return np_img, datasets[dataset]['categories'][class_probabilities[0].argmax(axis=-1)], plot_path
 
 
 def load_keras_model(dataset, model_path):
@@ -66,9 +70,10 @@ def predict_image(image_URL, dataset, model_path=None, transfer_learning=False):
     if not os.path.exists(temporary_plots_dir):
         os.mkdir(temporary_plots_dir)
     model = load_keras_model(dataset, model_path)
-    image, image_class = predict_image_class(image_URL, dataset, model, temporary_plots_dir)
-    visualize_intermediate_activations(image, model, transfer_learning, temporary_plots_dir)
+    image, image_class, plot_path = predict_image_class(image_URL, dataset, model, temporary_plots_dir)
+    layers = visualize_intermediate_activations(image, model, transfer_learning, temporary_plots_dir)
     visualize_heatmaps(image_URL, image, model, transfer_learning, temporary_plots_dir)
+    return image_class, plot_path, layers
 
 
 '''

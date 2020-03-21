@@ -1,7 +1,8 @@
+import os
 import sys
 import gui.config as CONFIG
 import gui.gui_components as GUI
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import QtCore, QtWidgets, QtGui
 from gui.window import Window
 from gui.help.simple_window import SimpleWindow
 from gui.help.about_models_window import AboutModelsWindow
@@ -9,6 +10,7 @@ from gui.help.about_author_window import AboutAuthorWindow
 from gui.help.about_datasets_window import AboutDatasetsWindow
 from gui.further_analysis.heatmap_window import HeatmapWindow
 from gui.further_analysis.inspect_conv_window import InspectConvWindow
+from utils.predict_image import predict_image
 
 
 class MainWindow(Window):
@@ -27,7 +29,8 @@ class MainWindow(Window):
                                                    CONFIG.FONT,
                                                    True,
                                                    MAIN_CONFIG['INPUT_IMAGE_NAME'],
-                                                   MAIN_CONFIG['INPUT_IMAGE_PATH'])
+                                                   None)
+        self.image_path = ''
         self.breastTissueRadioButton = GUI.get_radio_button(self.centralwidget,
                                                             *MAIN_CONFIG['BREAST_TISSUE_RADIO_BUTTON_POSITION'],
                                                             CONFIG.FONT,
@@ -53,7 +56,7 @@ class MainWindow(Window):
                                                           CONFIG.FONT,
                                                           True,
                                                           MAIN_CONFIG['CLASS_PROBABILITIES_PLOT_NAME'],
-                                                          MAIN_CONFIG['CLASS_PROBABILITIES_PLOT_PATH'])
+                                                          None)
         MainWindow.setCentralWidget(self.centralwidget)
 
     def create_menu(self, MainWindow, MAIN_CONFIG):
@@ -112,8 +115,6 @@ class MainWindow(Window):
         self.colorectalTissueRadioButton.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'],
                                                                  MAIN_CONFIG['COLORECTAL_TISSUE_RADIO_BUTTON_TEXT']))
         self.classifyButton.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['CLASSIFY_BUTTON_TEXT']))
-        self.predictedClassLabel.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'],
-                                                         MAIN_CONFIG['PREDICTED_CLASS_LABEL_TEXT']))
         self.menuFile.setTitle(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['MENU']['FILE_TEXT']))
         self.menuFurtherAnalysis.setTitle(self._translate(MAIN_CONFIG['WINDOW_NAME'],
                                                           MAIN_CONFIG['MENU']['FURTHER_ANALYSIS_TEXT']))
@@ -138,8 +139,8 @@ class MainWindow(Window):
 
     def inspectConvWindow(self, INSPECT_CONV_CONFIG):
         self.InspectConvWindow = QtWidgets.QMainWindow()
-        inspect_conv_window = InspectConvWindow()
-        inspect_conv_window.setup(self.InspectConvWindow, INSPECT_CONV_CONFIG)
+        self.inspect_conv_window = InspectConvWindow()
+        self.inspect_conv_window.setup(self.InspectConvWindow, INSPECT_CONV_CONFIG)
         self.InspectConvWindow.show()
 
     def classActivationsWindow(self):
@@ -150,20 +151,20 @@ class MainWindow(Window):
 
     def heatmapWindow(self):
         self.HeatmapWindow = QtWidgets.QMainWindow()
-        heatmap_window = HeatmapWindow()
-        heatmap_window.setup(self.HeatmapWindow, CONFIG.HEATMAP_CONFIG)
+        self.heatmap_window = HeatmapWindow()
+        self.heatmap_window.setup(self.HeatmapWindow, CONFIG.HEATMAP_CONFIG)
         self.HeatmapWindow.show()
 
     def aboutAuthorWindow(self):
         self.AboutAuthorWindow = QtWidgets.QMainWindow()
-        about_author_window = AboutAuthorWindow()
-        about_author_window.setup(self.AboutAuthorWindow, CONFIG.ABOUT_AUTHOR_CONFIG)
+        self.about_author_window = AboutAuthorWindow()
+        self.about_author_window.setup(self.AboutAuthorWindow, CONFIG.ABOUT_AUTHOR_CONFIG)
         self.AboutAuthorWindow.show()
 
     def aboutDatasetsWindow(self, DATASETS_CONFIG):
         self.AboutDatasetsWindow = QtWidgets.QMainWindow()
-        about_datasets_window = AboutDatasetsWindow()
-        about_datasets_window.setup(self.AboutDatasetsWindow, DATASETS_CONFIG)
+        self.about_datasets_window = AboutDatasetsWindow()
+        self.about_datasets_window.setup(self.AboutDatasetsWindow, DATASETS_CONFIG)
         self.AboutDatasetsWindow.show()
 
     def aboutDatasetNCT_CRC_HE_100K(self):
@@ -174,8 +175,8 @@ class MainWindow(Window):
 
     def aboutModelsWindow(self, MODELS_CONFIG):
         self.AboutModelsWindow = QtWidgets.QMainWindow()
-        about_models_window = AboutModelsWindow()
-        about_models_window.setup(self.AboutModelsWindow, MODELS_CONFIG)
+        self.about_models_window = AboutModelsWindow()
+        self.about_models_window.setup(self.AboutModelsWindow, MODELS_CONFIG)
         self.AboutModelsWindow.show()
 
     def aboutModelVGG19Simple(self):
@@ -186,8 +187,8 @@ class MainWindow(Window):
 
     def simpleWindow(self, SIMPLE_CONFIG):
         self.SimpleWindow = QtWidgets.QMainWindow()
-        simple_window = SimpleWindow()
-        simple_window.setup(self.SimpleWindow, SIMPLE_CONFIG)
+        self.simple_window = SimpleWindow()
+        self.simple_window.setup(self.SimpleWindow, SIMPLE_CONFIG)
         self.SimpleWindow.show()
 
     def generalWindow(self):
@@ -208,6 +209,30 @@ class MainWindow(Window):
         self.actionGeneral.triggered.connect(self.generalWindow)
         self.actionHowTo.triggered.connect(self.howToWindow)
         self.actionExit.triggered.connect(sys.exit)
+
+        self.loadImageButton.clicked.connect(self.loadImageButtonEvent)
+        self.classifyButton.clicked.connect(self.classifyButtonEvent)
+
+    def loadImageButtonEvent(self):
+        image_path = QtWidgets.QFileDialog.getOpenFileName(None, 'Select Image', '',
+                                                           "Image File Types(*.jpg *.png *.tif *.tiff)")
+        self.image_path = image_path[0]
+        self.inputImageLabel.setPixmap(QtGui.QPixmap(self.image_path))
+        CONFIG.HEATMAP_CONFIG['INPUT_IMAGE_PATH'] = self.image_path
+
+    def classifyButtonEvent(self):
+        if self.image_path != '':
+            if self.breastTissueRadioButton.isChecked():
+                dataset, model_path, tl = 'break_his', CONFIG.MAIN_CONFIG['VGG19_SIMPLE_MODEL_PATH'], True
+            elif self.colorectalTissueRadioButton.isChecked():
+                dataset, model_path, tl = 'nct_crc_he_100k', CONFIG.MAIN_CONFIG['CNN_SIMPLE_MODEL_PATH'], False
+            image_class, plot_path, layers = predict_image(self.image_path, dataset, model_path, tl)
+            self.predictedClassLabel.setText(self._translate(CONFIG.MAIN_CONFIG['WINDOW_NAME'], image_class))
+            self.classProbabilitiesPlot.setPixmap(QtGui.QPixmap(plot_path))
+            CONFIG.HEATMAP_CONFIG['HEATMAP_IMAGE_PATH'] = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                                                       'temporary_plots', 'heatmap.jpg')
+            for layer in layers:
+                CONFIG.INSPECT_CONV_CONFIG['CLASS_ACTIVATIONS']['COMBO_BOX_ITEMS'].append(layer)
 
     def setup(self, MainWindow, MAIN_CONFIG):
         self.set_main_window(MainWindow, MAIN_CONFIG)

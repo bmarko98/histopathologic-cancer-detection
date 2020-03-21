@@ -34,7 +34,8 @@ def get_label(widget, x, y, width, height, label_font, scale, label_name, allign
 
 def get_image_label(widget, x, y, width, height, image_label_font, scale, image_label_name, image_URL):
     image_label = get_label(widget, x, y, width, height, image_label_font, scale, image_label_name)
-    image_label.setPixmap(QtGui.QPixmap(image_URL))
+    if image_URL is not None:
+        image_label.setPixmap(QtGui.QPixmap(image_URL))
     return image_label
 
 

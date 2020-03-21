@@ -1,5 +1,7 @@
+import os
 import gui.config as CONFIG
 import gui.gui_components as GUI
+from PyQt5 import QtGui
 from gui.window import Window
 
 
@@ -52,5 +54,17 @@ class InspectConvWindow(Window):
         for index, item in enumerate(INSPECT_CONV_CONFIG['COMBO_BOX_ITEMS']):
             self.layerComboBox.setItemText(index, self._translate(INSPECT_CONV_CONFIG['WINDOW_NAME'], item))
 
+    def showButtonEvent(self):
+        line_edit_text = self.numberEdit.text()
+        combo_box_text = self.layerComboBox.currentText()
+        if line_edit_text and combo_box_text:
+            image_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'temporary_plots',
+                                      'layer_activations', combo_box_text + '.png')
+            if self.showButton.objectName() == 'showActivationButton':
+                if line_edit_text == 'all':
+                    print(image_path)
+                    self.imageLabel.setPixmap(QtGui.QPixmap(image_path))
+
     def setup(self, InspectConvWindow, INSPECT_CONV_CONFIG):
         super().setup(InspectConvWindow, INSPECT_CONV_CONFIG)
+        self.showButton.clicked.connect(self.showButtonEvent)

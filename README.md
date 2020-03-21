@@ -10,6 +10,7 @@ Tensorflow & Keras implementation of Deep Convolutional Neural Networks for clas
  - numpy
  - pandas
  - Pillow
+ - PyQt5
  - scikit-image
  - scikit-learn
  - seaborn

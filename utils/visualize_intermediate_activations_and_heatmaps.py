@@ -67,6 +67,7 @@ def visualize_intermediate_activations(image, model, transfer_learning, dir):
             plt.imshow(display_grid, aspect='auto', cmap='viridis')
             plt.savefig(fname=os.path.join(activation_plots_dir, layer_name + '.png'), bbox_inches='tight')
             plt.close('all')
+    return layer_names
 
 
 def get_heatmap(image, model, transfer_learning):
@@ -103,4 +104,5 @@ def visualize_heatmaps(image_URL, image, model, transfer_learning, dir):
     heatmap = np.uint8(255 * heatmap)
     heatmap = cv2.applyColorMap(heatmap, cv2.COLORMAP_JET)
     superimposed_img = heatmap * 0.4 + img
-    cv2.imwrite('/home/lenovo/Desktop/heatmap.jpg', superimposed_img)
+    heatmap_path = os.path.join(dir, 'heatmap.jpg')
+    cv2.imwrite(heatmap_path, superimposed_img)
