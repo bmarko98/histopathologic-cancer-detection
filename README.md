@@ -29,13 +29,7 @@ BreakHis is composed of 9,109 microscopic images of breast tumor tissue collecte
 
  - [Download BreakHis](https://www.kaggle.com/ambarish/breakhis)
 
-### 2. PatchCamelyon Dataset (PCam)
-
-PCam is composed of 327.680 color images (96x96 pixels) extracted from histopathologic scans of lymph node sections. Each image is annoted with a binary label indicating presence of metastatic tissue, where a positive label indicates that the center 32x32px region of a patch contains at least one pixel of tumor tissue.
-
- - [Download PCam](https://www.kaggle.com/c/histopathologic-cancer-detection/data)
-
-### 3. NCT-CRC-HE-100K Dataset
+### 2. NCT-CRC-HE-100K Dataset
 
 NCT-CRC-HE-100K Dataset is composed of 100,000 non-overlapping image patches (224x224 pixels) from hematoxylin & eosin (H&E) stained histological images of human colorectal cancer and normal tissue. Tissue classes are: adipose, background, debris, lymphocytes, mucus, smooth muscle, normal colon mucosa, cancer-associated stroma, colorectal adenocarcinoma epithelium.
 
@@ -44,12 +38,10 @@ NCT-CRC-HE-100K Dataset is composed of 100,000 non-overlapping image patches (22
 ### Copying images to Training, Validation and Test sets
  - In order to create training, validation and test sets, first:
    - move *BreaKHis_v1.tar.gz* into data/break_his directory
-   - move *histopathologic-cancer-detection.zip*  into data/pcam directory
    - move *NCT-CRC-HE-100K.zip* into data/nct_crc_he_100k directory
  - Next, execute following commands:
 ```
 $ python3 data/break_his/break_his_dataset_creation.py
-$ python3 data/pcam/pcam_dataset_creation.py
 $ python3 data/nct_crc_he_100k/nct_crc_he_100k_dataset_creation.py
 ```
  - In order to plot sample images and obtain basic dataset information, run following command:

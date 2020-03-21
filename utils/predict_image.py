@@ -17,9 +17,7 @@ datasets = {'break_his': {'categories': ['mucinous_carcinoma', 'adenosis', 'duct
                           'image_size': (150, 150, 3)},
             'nct_crc_he_100k': {'categories': ['cancer_associated_stroma', 'adipose', 'debris', 'mucus', 'background',
                                 'smooth_muscle', 'lymphocytes', 'colorectal_adenocarcinoma_epithelium', 'normal_colon_mucosa'],
-                                'image_size': (150, 150, 3)},
-            'pcam': {'categories': ['non_tumor_tissue', 'tumor_tissue'],
-                     'image_size': (150, 150, 3)}}
+                                'image_size': (150, 150, 3)}}
 
 
 def plot_class_probabilities(classes, class_probabilities, dir):
