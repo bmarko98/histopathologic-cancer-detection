@@ -79,7 +79,7 @@ VGG19Simple is model trained on BreakHis dataset. It's architecture consists of 
 $ python3 experiments/hyperparameter_tuning.py
 ```
 
-## 3. Graphical User Interface
+## Graphical User Interface
 
 GUI is implemented using PyQt5 library, and it consists of several window classes, all derived from Window class. In order to run the Application, run the following command:
 ```
