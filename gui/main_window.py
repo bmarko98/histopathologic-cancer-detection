@@ -10,7 +10,6 @@ from gui.help.simple_window import SimpleWindow
 from gui.help.about_models_window import AboutModelsWindow
 from gui.help.about_author_window import AboutAuthorWindow
 from gui.help.about_datasets_window import AboutDatasetsWindow
-from gui.further_analysis.heatmap_window import HeatmapWindow
 from gui.further_analysis.inspect_conv_window import InspectConvWindow
 from utils.predict_image import predict_image
 
@@ -61,6 +60,9 @@ class MainWindow(Window):
                                                           None)
         self.image = None
         self.model = None
+        self.heatmap_path = None
+        self.layer_activations = True
+        self.filter_patterns = True
         MainWindow.setCentralWidget(self.centralwidget)
 
     def create_menu(self, MainWindow, MAIN_CONFIG):
@@ -85,14 +87,14 @@ class MainWindow(Window):
         self.actionVGG19Simple = GUI.get_action(MainWindow, MAIN_CONFIG['ACTION']['VGG19_SIMPLE_NAME'])
         self.actionNetworkFilters = GUI.get_action(MainWindow, MAIN_CONFIG['ACTION']['MODELS_NAME'])
         self.actionIntermediateActivations = GUI.get_action(MainWindow, MAIN_CONFIG['ACTION']['INTERMEDIATE_ACTIVATIONS_NAME'])
-        self.actionHeatmaps = GUI.get_action(MainWindow, MAIN_CONFIG['ACTION']['HEATMAPS_NAME'])
+        self.actionHeatmap = GUI.get_action(MainWindow, MAIN_CONFIG['ACTION']['HEATMAP_NAME'])
         self.actionExit = GUI.get_action(MainWindow, MAIN_CONFIG['ACTION']['EXIT_NAME'])
         self.actionGeneral = GUI.get_action(MainWindow, MAIN_CONFIG['ACTION']['GENERAL_NAME'])
 
     def add_actions(self):
         self.menuFile.addAction(self.actionExit)
         self.menuFurtherAnalysis.addAction(self.actionIntermediateActivations)
-        self.menuFurtherAnalysis.addAction(self.actionHeatmaps)
+        self.menuFurtherAnalysis.addAction(self.actionHeatmap)
         self.menuFurtherAnalysis.addSeparator()
         self.menuFurtherAnalysis.addAction(self.actionNetworkFilters)
         self.menuApplication.addAction(self.actionGeneral)
@@ -137,7 +139,7 @@ class MainWindow(Window):
                                                           MAIN_CONFIG['ACTION']['NETWORK_FILTERS_TEXT']))
         self.actionIntermediateActivations.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'],
                                                                    MAIN_CONFIG['ACTION']['INTERMEDIATE_ACTIVATIONS_TEXT']))
-        self.actionHeatmaps.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['ACTION']['HEATMAPS_TEXT']))
+        self.actionHeatmap.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['ACTION']['HEATMAP_TEXT']))
         self.actionExit.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['ACTION']['EXIT_TEXT']))
         self.actionGeneral.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['ACTION']['GENERAL_TEXT']))
 
@@ -150,16 +152,24 @@ class MainWindow(Window):
         self.InspectConvWindow.show()
 
     def layerActivationsWindow(self):
-        self.inspectConvWindow(CONFIG.INSPECT_CONV_CONFIG['LAYER_ACTIVATIONS'])
+        if self.layer_activations:
+            self.inspectConvWindow(CONFIG.INSPECT_CONV_CONFIG['LAYER_ACTIVATIONS'])
 
     def filterPatternsWindow(self):
-        self.inspectConvWindow(CONFIG.INSPECT_CONV_CONFIG['FILTER_PATTERNS'])
+        if self.filter_patterns:
+            self.inspectConvWindow(CONFIG.INSPECT_CONV_CONFIG['FILTER_PATTERNS'])
 
     def heatmapWindow(self):
-        self.HeatmapWindow = QtWidgets.QMainWindow()
-        self.heatmap_window = HeatmapWindow()
-        self.heatmap_window.setup(self.HeatmapWindow, CONFIG.HEATMAP_CONFIG)
-        self.HeatmapWindow.show()
+        if self.heatmap_path:
+            img = image.load_img(self.heatmap_path)
+            np_img = image.img_to_array(img)
+            np_img = np.expand_dims(np_img, axis=0)
+            np_img /= 255.
+            CONFIG.SIMPLE_CONFIG['HEATMAP']['WINDOW_X'] = np_img.shape[2]
+            CONFIG.SIMPLE_CONFIG['HEATMAP']['WINDOW_Y'] = np_img.shape[1]
+            CONFIG.SIMPLE_CONFIG['HEATMAP']['SIMPLE_INFO_LABEL_POSITION'] = [0, 0, np_img.shape[2], np_img.shape[1]]
+            CONFIG.SIMPLE_CONFIG['HEATMAP']['SIMPLE_INFO_LABEL_IMAGE_PATH'] = self.heatmap_path
+            self.simpleWindow(CONFIG.SIMPLE_CONFIG['HEATMAP'])
 
     def aboutAuthorWindow(self):
         self.AboutAuthorWindow = QtWidgets.QMainWindow()
@@ -206,7 +216,7 @@ class MainWindow(Window):
     def triggers(self):
         self.actionNetworkFilters.triggered.connect(self.filterPatternsWindow)
         self.actionIntermediateActivations.triggered.connect(self.layerActivationsWindow)
-        self.actionHeatmaps.triggered.connect(self.heatmapWindow)
+        self.actionHeatmap.triggered.connect(self.heatmapWindow)
         self.actionAuthor.triggered.connect(self.aboutAuthorWindow)
         self.actionNCT_CRC_HE_100K.triggered.connect(self.aboutDatasetNCT_CRC_HE_100K)
         self.actionBreakHis.triggered.connect(self.aboutDatasetBreakHis)
@@ -226,7 +236,6 @@ class MainWindow(Window):
                                                            "Image File Types(*.jpg *.png *.tif *.tiff)")
         self.image_path = image_path[0]
         self.inputImageLabel.setPixmap(QtGui.QPixmap(self.image_path))
-        CONFIG.HEATMAP_CONFIG['INPUT_IMAGE_PATH'] = self.image_path
 
     def classifyButtonEvent(self):
         if self.image_path != '':
@@ -240,8 +249,10 @@ class MainWindow(Window):
                                                                                                   tl)
             self.predictedClassLabel.setText(self._translate(CONFIG.MAIN_CONFIG['WINDOW_NAME'], self.image_class))
             self.classProbabilitiesPlot.setPixmap(QtGui.QPixmap(self.plot_path))
-            CONFIG.HEATMAP_CONFIG['HEATMAP_IMAGE_PATH'] = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                                                                       'temporary_plots', 'heatmap.jpg')
+            self.heatmap_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                                             'temporary_plots', 'heatmap.jpg')
+            self.layer_activations = True
+            self.filter_patterns = True
             for layer in self.layers:
                 CONFIG.INSPECT_CONV_CONFIG['LAYER_ACTIVATIONS']['COMBO_BOX_ITEMS'].append(layer)
                 if layer.find('conv') >= 0:
