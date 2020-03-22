@@ -12,9 +12,6 @@ from utils.visualize_intermediate_activations_and_heatmaps import visualize_inte
 
 class InspectConvWindow(Window):
 
-    def set_inspect_conv_window(self, InspectConvWindow, INSPECT_CONV_CONFIG):
-        super().set_window(InspectConvWindow, INSPECT_CONV_CONFIG)
-
     def create_central_widget(self, InspectConvWindow, INSPECT_CONV_CONFIG):
         self.centralwidget = GUI.get_widget(InspectConvWindow, 'centralwidget')
         self.convLayerLabel = GUI.get_label(self.centralwidget,

@@ -1,6 +1,7 @@
 import os
 import numpy as np
 import logging
+import shutil
 import seaborn as sns
 import matplotlib.pyplot as plt
 from keras.models import load_model
@@ -67,8 +68,9 @@ def load_keras_model(dataset, model_path):
 
 def predict_image(image_URL, dataset, model_path=None, transfer_learning=False):
     temporary_plots_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'gui', 'temporary_plots')
-    if not os.path.exists(temporary_plots_dir):
-        os.mkdir(temporary_plots_dir)
+    if os.path.exists(temporary_plots_dir):
+        shutil.rmtree(temporary_plots_dir)
+    os.mkdir(temporary_plots_dir)
     model = load_keras_model(dataset, model_path)
     image, image_class, plot_path = predict_image_class(image_URL, dataset, model, temporary_plots_dir)
     layers = visualize_intermediate_activations(image, model, transfer_learning, None, None, temporary_plots_dir)

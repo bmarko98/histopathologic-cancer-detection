@@ -1,6 +1,8 @@
 import os
 import sys
+import shutil
 import numpy as np
+from datetime import datetime
 from keras.preprocessing import image
 from PyQt5 import QtCore, QtWidgets, QtGui
 import gui.config as CONFIG
@@ -61,8 +63,8 @@ class MainWindow(Window):
         self.image = None
         self.model = None
         self.heatmap_path = None
-        self.layer_activations = True
-        self.filter_patterns = True
+        self.layer_activations = False
+        self.filter_patterns = False
         MainWindow.setCentralWidget(self.centralwidget)
 
     def create_menu(self, MainWindow, MAIN_CONFIG):
@@ -89,9 +91,12 @@ class MainWindow(Window):
         self.actionIntermediateActivations = GUI.get_action(MainWindow, MAIN_CONFIG['ACTION']['INTERMEDIATE_ACTIVATIONS_NAME'])
         self.actionHeatmap = GUI.get_action(MainWindow, MAIN_CONFIG['ACTION']['HEATMAP_NAME'])
         self.actionExit = GUI.get_action(MainWindow, MAIN_CONFIG['ACTION']['EXIT_NAME'])
+        self.actionSave = GUI.get_action(MainWindow, MAIN_CONFIG['ACTION']['SAVE_NAME'])
         self.actionGeneral = GUI.get_action(MainWindow, MAIN_CONFIG['ACTION']['GENERAL_NAME'])
 
     def add_actions(self):
+        self.menuFile.addAction(self.actionSave)
+        self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionExit)
         self.menuFurtherAnalysis.addAction(self.actionIntermediateActivations)
         self.menuFurtherAnalysis.addAction(self.actionHeatmap)
@@ -141,6 +146,7 @@ class MainWindow(Window):
                                                                    MAIN_CONFIG['ACTION']['INTERMEDIATE_ACTIVATIONS_TEXT']))
         self.actionHeatmap.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['ACTION']['HEATMAP_TEXT']))
         self.actionExit.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['ACTION']['EXIT_TEXT']))
+        self.actionSave.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['ACTION']['SAVE_TEXT']))
         self.actionGeneral.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['ACTION']['GENERAL_TEXT']))
 
     def inspectConvWindow(self, INSPECT_CONV_CONFIG):
@@ -213,6 +219,17 @@ class MainWindow(Window):
     def howToWindow(self):
         self.simpleWindow(CONFIG.SIMPLE_CONFIG['HOWTO'])
 
+    def exit(self):
+        if os.path.exists(CONFIG.TEMPORARY_PLOTS_DIR):
+            shutil.rmtree(CONFIG.TEMPORARY_PLOTS_DIR)
+        sys.exit()
+
+    def save(self):
+        dir_name = QtWidgets.QFileDialog.getExistingDirectory(None, 'Save Images')
+        current_time = datetime.now()
+        current_time = current_time.strftime("_%d-%m-%Y_%H:%M:%S")
+        shutil.copytree(CONFIG.TEMPORARY_PLOTS_DIR, os.path.join(dir_name, 'hpd' + current_time))
+
     def triggers(self):
         self.actionNetworkFilters.triggered.connect(self.filterPatternsWindow)
         self.actionIntermediateActivations.triggered.connect(self.layerActivationsWindow)
@@ -224,7 +241,8 @@ class MainWindow(Window):
         self.actionCNNSimple.triggered.connect(self.aboutModelCNNSimple)
         self.actionGeneral.triggered.connect(self.generalWindow)
         self.actionHowTo.triggered.connect(self.howToWindow)
-        self.actionExit.triggered.connect(sys.exit)
+        self.actionExit.triggered.connect(self.exit)
+        self.actionSave.triggered.connect(self.save)
 
         self.loadImageButton.clicked.connect(self.loadImageButtonEvent)
         self.classifyButton.clicked.connect(self.classifyButtonEvent)

@@ -10,9 +10,6 @@ from utils.misc import file_get_contents
 
 class AboutModelsWindow(Window):
 
-    def set_about_models_window(self, AboutModelsWindow, ABOUT_MODELS_CONFIG):
-        super().set_window(AboutModelsWindow, ABOUT_MODELS_CONFIG)
-
     def create_central_widget(self, AboutModelsWindow, ABOUT_MODELS_CONFIG):
         super().create_central_widget(AboutModelsWindow, ABOUT_MODELS_CONFIG)
         self.modelNameLabel = GUI.get_label(self.centralwidget,

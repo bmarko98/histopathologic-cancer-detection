@@ -5,9 +5,6 @@ from gui.window import Window
 
 class AboutAuthorWindow(Window):
 
-    def set_about_author_window(self, AboutAuthorWindow, ABOUT_AUTHOR_CONFIG):
-        super().set_window(AboutAuthorWindow, ABOUT_AUTHOR_CONFIG)
-
     def create_central_widget(self, AboutAuthorWindow, ABOUT_AUTHOR_CONFIG):
         super().create_central_widget(AboutAuthorWindow, ABOUT_AUTHOR_CONFIG)
         self.authorImageLabel = GUI.get_image_label(self.centralwidget,
@@ -27,6 +24,3 @@ class AboutAuthorWindow(Window):
         super().retranslate(AboutAuthorWindow, ABOUT_AUTHOR_CONFIG)
         self.resumeLabel.setText(self._translate(ABOUT_AUTHOR_CONFIG['WINDOW_NAME'],
                                                  ABOUT_AUTHOR_CONFIG['RESUME']))
-
-    def setup(self, AboutAuthorWindow, ABOUT_AUTHOR_CONFIG):
-        super().setup(AboutAuthorWindow, ABOUT_AUTHOR_CONFIG)
