@@ -62,6 +62,7 @@ class MainWindow(Window):
                                                           None)
         self.image = None
         self.model = None
+        self.plot_path = None
         self.heatmap_path = None
         self.layer_activations = False
         self.filter_patterns = False
@@ -277,10 +278,12 @@ class MainWindow(Window):
                     CONFIG.INSPECT_CONV_CONFIG['FILTER_PATTERNS']['COMBO_BOX_ITEMS'].append(layer)
 
     def inputImageClickedEvent(self, event):
-        self.imageClickedEvent(self.image_path)
+        if self.image_path:
+            self.imageClickedEvent(self.image_path)
 
     def classProbabilitiesPlotClickedEvent(self, event):
-        self.imageClickedEvent(self.plot_path)
+        if self.plot_path:
+            self.imageClickedEvent(self.plot_path)
 
     def imageClickedEvent(self, image_path):
         img = image.load_img(image_path)

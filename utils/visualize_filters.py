@@ -40,7 +40,8 @@ def create_pattern(model, layer_name, filter_index, size=150, save=False):
         input_img_data += grads_value * rate
     img = input_img_data[0]
     if save:
-        filter_plot_path = os.path.join('/home/lenovo/Desktop/tmp', layer_name + ' ' + str(filter_index) + '.png')
+        filter_plot_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'gui', 'temporary_plots',
+                                        'filters', layer_name + '_filter_' + str(filter_index) + '.png')
         matplotlib.image.imsave(filter_plot_path, deprocess_image(img))
         return filter_plot_path
     else:

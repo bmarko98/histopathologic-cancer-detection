@@ -71,6 +71,7 @@ def predict_image(image_URL, dataset, model_path=None, transfer_learning=False):
     if os.path.exists(temporary_plots_dir):
         shutil.rmtree(temporary_plots_dir)
     os.mkdir(temporary_plots_dir)
+    os.mkdir(os.path.join(temporary_plots_dir, 'filters'))
     model = load_keras_model(dataset, model_path)
     image, image_class, plot_path = predict_image_class(image_URL, dataset, model, temporary_plots_dir)
     layers = visualize_intermediate_activations(image, model, transfer_learning, None, None, temporary_plots_dir)

@@ -64,25 +64,25 @@ class InspectConvWindow(Window):
                 if line_edit_text == 'all':
                     self.image_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'temporary_plots',
                                                   'layer_activations', combo_box_text + '.png')
-                    #self.imageLabel.setPixmap(QtGui.QPixmap(self.image_path))
-                    self.labelClickedEvent()
+                    if self.image_path:
+                        self.labelClickedEvent()
                 elif line_edit_text.isdigit():
                     channel_number = int(line_edit_text)
                     self.image_path = visualize_intermediate_activations(self.input_image, self.model, False, combo_box_text,
                                                                          channel_number, CONFIG.TEMPORARY_PLOTS_DIR)
-                    #self.imageLabel.setPixmap(QtGui.QPixmap(self.image_path))
-                    self.labelClickedEvent()
+                    if self.image_path:
+                        self.labelClickedEvent()
             elif self.showButton.objectName() == 'showFilterButton':
                 if line_edit_text == 'all':
                     self.image_path = os.path.join(CONFIG.INSPECT_CONV_CONFIG['FILTER_PATTERNS']['FILTERS_DIR_PATH'],
                                                    combo_box_text + '_filter_patterns.png')
-                    #self.imageLabel.setPixmap(QtGui.QPixmap(self.image_path))
-                    self.labelClickedEvent()
+                    if self.image_path:
+                        self.labelClickedEvent()
                 elif line_edit_text.isdigit():
                     filter_number = int(line_edit_text)
                     self.image_path = create_pattern(self.model, combo_box_text, filter_number, save=True)
-                    #self.imageLabel.setPixmap(QtGui.QPixmap(self.image_path))
-                    self.labelClickedEvent()
+                    if self.image_path:
+                        self.labelClickedEvent()
 
     def simpleWindow(self, SIMPLE_CONFIG):
         self.SimpleWindow = QtWidgets.QMainWindow()
