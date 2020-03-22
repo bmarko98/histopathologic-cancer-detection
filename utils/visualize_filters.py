@@ -1,8 +1,11 @@
 import os
 import logging
+import math
 import numpy as np
+import matplotlib
 import matplotlib.pyplot as plt
 from keras import backend as K
+from utils.predict_image import load_keras_model
 
 
 logging.basicConfig(level=logging.INFO)
@@ -20,9 +23,11 @@ def deprocess_image(x):
     return x
 
 
-def create_pattern(model, layer_name, filter_index, size):
+def create_pattern(model, layer_name, filter_index, size=150, save=False):
     _logger.info('Creating filter patterns for ' + str(layer_name) + ', filter number ' + str(filter_index))
     layer_output = model.get_layer(layer_name).output
+    if layer_output.shape[-1] < filter_index:
+        return ''
     loss = K.mean(layer_output[:, :, :, filter_index])
     grads = K.gradients(loss, model.input)[0]
     grads /= (K.sqrt(K.mean(K.square(grads))) + 1e-5)
@@ -34,7 +39,12 @@ def create_pattern(model, layer_name, filter_index, size):
         loss_value, grads_value = iterate([input_img_data])
         input_img_data += grads_value * rate
     img = input_img_data[0]
-    return deprocess_image(img)
+    if save:
+        filter_plot_path = os.path.join('/home/lenovo/Desktop/tmp', layer_name + ' ' + str(filter_index) + '.png')
+        matplotlib.image.imsave(filter_plot_path, deprocess_image(img))
+        return filter_plot_path
+    else:
+        return deprocess_image(img)
 
 
 def create_layer_patterns(model, layer_name, N, size, margin, directory):
@@ -59,14 +69,24 @@ def create_layer_patterns(model, layer_name, N, size, margin, directory):
 
 def create_and_save_model_patterns(model, directory):
     _logger.info('Creating model patterns...')
-    number_of_images = 8
     image_height_width = 150
     margin_size = 7
     for layer in model.layers:
         if layer.name.find('conv') >= 0:
             create_layer_patterns(model=model,
                                   layer_name=layer.name,
-                                  N=number_of_images,
+                                  N=int(math.sqrt(32*2**(int(layer.name[5])-1))),
                                   size=image_height_width,
                                   margin=margin_size,
                                   directory=directory)
+
+
+def main():
+    model = load_keras_model('nct_crc_he_100k', '/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/experiments/nct_crc_he_100k_models/CNNSimpleTest_12-03-2020_15:49:03/CNNSimpleTest.h5')
+    dir = '/home/lenovo/Desktop/tmp'
+    create_and_save_model_patterns(model, dir)
+    #create_pattern(model, 'block1_conv1', 14, save=True)
+
+
+if __name__ == '__main__':
+    main()

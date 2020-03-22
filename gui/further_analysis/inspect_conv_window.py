@@ -6,6 +6,7 @@ import gui.config as CONFIG
 import gui.gui_components as GUI
 from gui.window import Window
 from gui.help.simple_window import SimpleWindow
+from utils.visualize_filters import create_pattern
 from utils.visualize_intermediate_activations_and_heatmaps import visualize_intermediate_activations
 
 
@@ -71,6 +72,15 @@ class InspectConvWindow(Window):
                     channel_number = int(line_edit_text)
                     self.image_path = visualize_intermediate_activations(self.input_image, self.model, False, combo_box_text,
                                                                          channel_number, CONFIG.TEMPORARY_PLOTS_DIR)
+                    self.imageLabel.setPixmap(QtGui.QPixmap(self.image_path))
+            elif self.showButton.objectName() == 'showFilterButton':
+                if line_edit_text == 'all':
+                    self.image_path = os.path.join(CONFIG.INSPECT_CONV_CONFIG['FILTER_PATTERNS']['FILTERS_DIR_PATH'],
+                                                   combo_box_text + '_filter_patterns.png')
+                    self.imageLabel.setPixmap(QtGui.QPixmap(self.image_path))
+                elif line_edit_text.isdigit():
+                    filter_number = int(line_edit_text)
+                    self.image_path = create_pattern(self.model, combo_box_text, filter_number, save=True)
                     self.imageLabel.setPixmap(QtGui.QPixmap(self.image_path))
 
     def simpleWindow(self, SIMPLE_CONFIG):

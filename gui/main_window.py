@@ -244,6 +244,8 @@ class MainWindow(Window):
                                                                        'temporary_plots', 'heatmap.jpg')
             for layer in self.layers:
                 CONFIG.INSPECT_CONV_CONFIG['LAYER_ACTIVATIONS']['COMBO_BOX_ITEMS'].append(layer)
+                if layer.find('conv') >= 0:
+                    CONFIG.INSPECT_CONV_CONFIG['FILTER_PATTERNS']['COMBO_BOX_ITEMS'].append(layer)
 
     def inputImageClickedEvent(self, event):
         self.imageClickedEvent(self.image_path)

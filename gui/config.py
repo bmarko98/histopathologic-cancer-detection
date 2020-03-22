@@ -174,9 +174,10 @@ INSPECT_CONV_CONFIG = {
         'BUTTON_TEXT': 'Show Filter Patterns',
         'COMBO_BOX_POSITION': [225, 50, 140, 25],
         'COMBO_BOX_NAME': 'layerComboBox',
-        'COMBO_BOX_ITEMS': ['item1', 'item2', 'item3'],
+        'COMBO_BOX_ITEMS': [],
         'LINE_EDIT_POSITION': [175, 80, 50, 25],
-        'LINE_EDIT_NAME': 'filterNumberEdit'
+        'LINE_EDIT_NAME': 'filterNumberEdit',
+        'FILTERS_DIR_PATH': '/home/lenovo/Desktop/tmp'
     },
     'LAYER_ACTIVATIONS': {
         'WINDOW_NAME': 'InspectConvWindow',
