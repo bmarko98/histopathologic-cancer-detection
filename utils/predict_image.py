@@ -1,6 +1,7 @@
 import os
 import numpy as np
 import logging
+import seaborn as sns
 import matplotlib.pyplot as plt
 from keras.models import load_model
 from keras.preprocessing import image
@@ -23,6 +24,7 @@ datasets = {'break_his': {'categories': ['mucinous_carcinoma', 'adenosis', 'duct
 def plot_class_probabilities(classes, class_probabilities, dir):
     _logger.info('Plotting bar of classes and class probabilities...')
     index = np.arange(len(classes))
+    sns.set_style('darkgrid')
     plt.bar(classes, class_probabilities)
     plt.xticks(index, classes, fontsize=12, rotation=45)
     class_probabilities_plot_path = os.path.join(dir, 'class_probabilities.png')

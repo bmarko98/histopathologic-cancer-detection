@@ -1,8 +1,8 @@
 import os
 import random
 import logging
-
 import numpy as np
+import seaborn as sns
 import matplotlib.pyplot as plt
 from PIL import Image
 
@@ -36,6 +36,7 @@ def sample_images(dataset, categories, number_of_images, image_width, image_heig
             vertical_end = vertical_start + image_width
             results[horizontal_start: horizontal_end, vertical_start: vertical_end, :] = img
     figsize = (20, 20)
+    sns.set_style('darkgrid')
     plt.figure(figsize=figsize)
     plt.imshow((results).astype(np.uint8))
     plt.axis('off')
