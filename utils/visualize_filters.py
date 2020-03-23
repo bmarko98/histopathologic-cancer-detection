@@ -81,7 +81,7 @@ def create_and_save_model_patterns(model, directory):
                                   margin=margin_size,
                                   directory=directory)
 
-
+'''
 def main():
     model = load_keras_model('nct_crc_he_100k', '/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/experiments/nct_crc_he_100k_models/CNNSimpleTest_12-03-2020_15:49:03/CNNSimpleTest.h5')
     dir = '/home/lenovo/Desktop/tmp'
@@ -91,3 +91,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+'''

@@ -66,29 +66,26 @@ def load_keras_model(dataset, model_path):
     return model
 
 
+def copy_filters(model_path, temporary_plots_dir):
+    if model_path is not None:
+        filters_dir = os.path.join(os.path.dirname(model_path), 'conv_filters')
+        dest_dir = os.path.join(temporary_plots_dir, 'filters')
+        filter_images = [im.path for im in os.scandir(filters_dir) if im.is_file()]
+        for filter_image in filter_images:
+            filter_image_name = filter_image.split('/')[-1]
+            copied_filter_image = os.path.join(dest_dir, filter_image_name)
+            shutil.copy2(filter_image, copied_filter_image)
+
+
 def predict_image(image_URL, dataset, model_path=None, transfer_learning=False):
     temporary_plots_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'gui', 'temporary_plots')
     if os.path.exists(temporary_plots_dir):
         shutil.rmtree(temporary_plots_dir)
     os.mkdir(temporary_plots_dir)
     os.mkdir(os.path.join(temporary_plots_dir, 'filters'))
+    copy_filters(model_path, temporary_plots_dir)
     model = load_keras_model(dataset, model_path)
     image, image_class, plot_path = predict_image_class(image_URL, dataset, model, temporary_plots_dir)
     layers = visualize_intermediate_activations(image, model, transfer_learning, None, None, temporary_plots_dir)
     visualize_heatmaps(image_URL, image, model, transfer_learning, temporary_plots_dir)
     return model, image, image_class, plot_path, layers
-
-
-'''
-def main():
-    image_URL = "/home/lenovo/Desktop/test.png"
-    model_path = "/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/experiments/break_his_models/" + \
-                 "VGG19Test_03-03-2020_09:38:50/VGG19Test.h5"
-    model_path_2 = "/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/experiments/" + \
-                   "nct_crc_he_100k_models/CNNSimpleTest_12-03-2020_15:49:03/CNNSimpleTest.h5"
-    predict_image(image_URL, 'nct_crc_he_100k', model_path_2, False)
-    predict_image(image_URL, 'break_his', model_path, True)
-
-if __name__ == '__main__':
-    main()
-'''

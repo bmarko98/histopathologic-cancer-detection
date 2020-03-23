@@ -5,7 +5,10 @@ FONT = GUI.get_font('Sans Serif', 12)
 BACKGROUND_COLOR = 'rgb(42, 49, 56)'
 FONT_COLOR = 'white'
 CENTRAL_WIDGET = 'central_widget'
-TEMPORARY_PLOTS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'temporary_plots')
+REPO_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
+TEMPORARY_PLOTS_DIR = os.path.join(REPO_DIR, 'gui', 'temporary_plots')
+VGG19_SIMPLE_MODEL_PATH = os.path.join(REPO_DIR, 'experiments', 'break_his_models', 'VGG19Simple', 'VGG19Simple.h5')
+CNN_SIMPLE_MODEL_PATH = os.path.join(REPO_DIR, 'experiments', 'nct_crc_he_100k_models', 'CNNSimple', 'CNNSimple.h5')
 
 ABOUT_AUTHOR_CONFIG = {
     'WINDOW_NAME': 'AboutAuthorWindow',
@@ -14,7 +17,7 @@ ABOUT_AUTHOR_CONFIG = {
     'WINDOW_Y': 400,
     'IMAGE_LABEL_POSITION': [50, 75, 100, 150],
     'IMAGE_LABEL_NAME': 'authorImageLabel',
-    'AUTHOR_IMAGE_PATH': os.path.join(os.path.dirname(os.path.abspath(__file__)), 'resources', 'author.jpg'),
+    'AUTHOR_IMAGE_PATH': os.path.join(REPO_DIR, 'gui', 'resources', 'author.jpg'),
     'RESUME_LABEL_POSITION': [250, 75, 250, 250],
     'RESUME_LABEL_NAME': 'resumeLabel',
     'RESUME': 'Write decent CV...'
@@ -30,10 +33,8 @@ ABOUT_DATASETS_CONFIG = {
         'OVERVIEW_LABEL_NAME': 'datasetOverviewLabel',
         'IMAGES_LABEL_POSITIONS': [550, 200, 950, 600],
         'IMAGES_LABEL_NAME': 'datasetImagesLabel',
-        'IMAGES_URL': '/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/' +
-                      'data/break_his/break_his_sample_images.jpg',
-        'DATASET_OVERVIEW_PATH': '/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/' +
-                                 'data/break_his/break_his_dataset_overview.txt'
+        'IMAGES_URL': os.path.join(REPO_DIR, 'data', 'break_his', 'break_his_sample_images.jpg'),
+        'DATASET_OVERVIEW_PATH': os.path.join(REPO_DIR, 'data', 'break_his', 'break_his_dataset_overview.txt')
         },
     'NCT_CRC_HE_100K': {
         'WINDOW_NAME': 'AboutDatasetsWindow',
@@ -44,10 +45,8 @@ ABOUT_DATASETS_CONFIG = {
         'OVERVIEW_LABEL_NAME': 'datasetOverviewLabel',
         'IMAGES_LABEL_POSITIONS': [550, 200, 950, 600],
         'IMAGES_LABEL_NAME': 'datasetImagesLabel',
-        'IMAGES_URL': '/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/data/' +
-                      'nct_crc_he_100k/nct_crc_he_100k_sample_images.jpg',
-        'DATASET_OVERVIEW_PATH': '/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/' +
-                                 'data/nct_crc_he_100k/nct_crc_he_100k_dataset_overview.txt'
+        'IMAGES_URL': os.path.join(REPO_DIR, 'data', 'nct_crc_he_100k', 'nct_crc_he_100k_sample_images.jpg'),
+        'DATASET_OVERVIEW_PATH': os.path.join(REPO_DIR, 'data', 'nct_crc_he_100k', 'nct_crc_he_100k_dataset_overview.txt')
         }
 }
 
@@ -64,17 +63,14 @@ ABOUT_MODELS_CONFIG = {
         'MODEL_SUMMARY_LABEL_NAME': 'modelSummaryLabel',
         'ACCURACY_LABEL_POSITION': [550, 50, 400, 400],
         'ACCURACY_LABEL_NAME': 'accuracyLabel',
-        'ACCURACY_PATH': '/home/lenovo//Documents/bachelors_thesis/histopathologic-cancer-detection/' +
-                         'experiments/break_his_models/VGG19Test_16-03-2020_16:36:34/plots/accuracy_plot.png',
+        'ACCURACY_PATH': os.path.join(os.path.dirname(VGG19_SIMPLE_MODEL_PATH), 'plots', 'accuracy_plot.png'),
         'LOSS_LABEL_POSITION': [550, 450, 400, 400],
         'LOSS_LABEL_NAME': 'lossLabel',
-        'LOSS_PATH': '/home/lenovo//Documents/bachelors_thesis/histopathologic-cancer-detection/' +
-                     'experiments/break_his_models/VGG19Test_16-03-2020_16:36:34/plots/loss_plot.png',
+        'LOSS_PATH': os.path.join(os.path.dirname(VGG19_SIMPLE_MODEL_PATH), 'plots', 'loss_plot.png'),
         'CONF_MATRIX_LABEL_POSITION': [950, 50, 800, 800],
         'CONF_MATRIX_LABEL_NAME': 'confMatrixLabel',
-        'CONF_MATRIX_PATH': '/home/lenovo//Documents/bachelors_thesis/histopathologic-cancer-detection/' +
-                            'experiments/break_his_models/VGG19Test_16-03-2020_16:36:34/plots/confusion_matrix.png',
-        'MODEL_SUMMARY_PATH': '/home/lenovo/Downloads/vgg19_summary.txt',
+        'CONF_MATRIX_PATH': os.path.join(os.path.dirname(VGG19_SIMPLE_MODEL_PATH), 'plots', 'confusion_matrix.png'),
+        'MODEL_SUMMARY_PATH': os.path.join(os.path.dirname(VGG19_SIMPLE_MODEL_PATH), 'VGG19Simple_architecture.txt'),
     },
     'CNN_SIMPLE': {
         'WINDOW_NAME': 'AboutModelsWindow',
@@ -88,17 +84,14 @@ ABOUT_MODELS_CONFIG = {
         'MODEL_SUMMARY_LABEL_NAME': 'modelSummaryLabel',
         'ACCURACY_LABEL_POSITION': [550, 50, 400, 400],
         'ACCURACY_LABEL_NAME': 'accuracyLabel',
-        'ACCURACY_PATH': '/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/experiments/' +
-                         'nct_crc_he_100k_models/CNNSimpleTest_12-03-2020_15:49:03/plots/accuracy_plot.png',
+        'ACCURACY_PATH': os.path.join(os.path.dirname(CNN_SIMPLE_MODEL_PATH), 'plots', 'accuracy_plot.png'),
         'LOSS_LABEL_POSITION': [550, 450, 400, 400],
         'LOSS_LABEL_NAME': 'lossLabel',
-        'LOSS_PATH': '/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/experiments/' +
-                     'nct_crc_he_100k_models/CNNSimpleTest_12-03-2020_15:49:03/plots/loss_plot.png',
+        'LOSS_PATH': os.path.join(os.path.dirname(CNN_SIMPLE_MODEL_PATH), 'plots', 'loss_plot.png'),
         'CONF_MATRIX_LABEL_POSITION': [950, 50, 800, 800],
         'CONF_MATRIX_LABEL_NAME': 'confMatrixLabel',
-        'CONF_MATRIX_PATH': '/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/experiments/' +
-                            'nct_crc_he_100k_models/CNNSimpleTest_12-03-2020_15:49:03/plots/confusion_matrix.png',
-        'MODEL_SUMMARY_PATH': '/home/lenovo/Downloads/cnn_summary.txt',
+        'CONF_MATRIX_PATH': os.path.join(os.path.dirname(CNN_SIMPLE_MODEL_PATH), 'plots', 'confusion_matrix.png'),
+        'MODEL_SUMMARY_PATH': os.path.join(os.path.dirname(CNN_SIMPLE_MODEL_PATH), 'CNNSimple_architecture.txt'),
     }
 }
 
@@ -159,7 +152,6 @@ INSPECT_CONV_CONFIG = {
         'NUMBER_LABEL_TEXT': 'Filter Number',
         'IMAGE_LABEL_POSITION': [450, 80, 600, 600],
         'IMAGE_LABEL_NAME': 'filterPatternLabel',
-        'IMAGE_PATH': '/home/lenovo/Pictures/filter.jpg',
         'BUTTON_POSITION': [100, 100, 200, 40],
         'BUTTON_NAME': 'showFilterButton',
         'BUTTON_TEXT': 'Show Filter Patterns',
@@ -168,7 +160,6 @@ INSPECT_CONV_CONFIG = {
         'COMBO_BOX_ITEMS': [],
         'LINE_EDIT_POSITION': [160, 55, 50, 25],
         'LINE_EDIT_NAME': 'filterNumberEdit',
-        'FILTERS_DIR_PATH': '/home/lenovo/Desktop/tmp'
     },
     'LAYER_ACTIVATIONS': {
         'WINDOW_NAME': 'InspectConvWindow',
@@ -213,10 +204,8 @@ MAIN_CONFIG = {
     'CLASSIFY_BUTTON_POSITION': [565, 360, 150, 50],
     'CLASSIFY_BUTTON_NAME': 'classifyButton',
     'CLASSIFY_BUTTON_TEXT': 'Classify',
-    'VGG19_SIMPLE_MODEL_PATH': '/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/experiments/' +
-                               'break_his_models/VGG19Test_03-03-2020_08:51:10/VGG19Test.h5',
-    'CNN_SIMPLE_MODEL_PATH': '/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/experiments/' +
-                             'nct_crc_he_100k_models/CNNSimpleTest_12-03-2020_15:49:03/CNNSimpleTest.h5',
+    'VGG19_SIMPLE_MODEL_PATH': VGG19_SIMPLE_MODEL_PATH,
+    'CNN_SIMPLE_MODEL_PATH': CNN_SIMPLE_MODEL_PATH,
     'PREDICTED_CLASS_LABEL_POSITION': [955, 85, 200, 50],
     'PREDICTED_CLASS_LABEL_NAME': 'predictedClassLabel',
     'PREDICTED_CLASS_LABEL_TEXT': 'Class',

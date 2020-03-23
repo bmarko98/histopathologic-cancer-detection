@@ -150,11 +150,19 @@ dmypy.json
 TO_DO.txt
 
 # experiments folder (temporarily)
-experiments/*
 !experiments/hyperparameter_tuning.py
+experiments/break_his_models/*
+!experiments/break_his_models/VGG19Simple/
+!experiments/break_his_models/VGG19Simple/plots/*
+experiments/nct_crc_he_100k_models/*
+!experiments/nct_crc_he_100k_models/CNNSimple/
+!experiments/nct_crc_he_100k_models/CNNSimple/plots/*
 
 # code length calculator
 thesis_code_length.py
 
 # __init__.py
 __init__.py
+
+# files needed for App execution
+!gui/resources/author.jpg

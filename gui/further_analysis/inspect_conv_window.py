@@ -62,8 +62,7 @@ class InspectConvWindow(Window):
         if line_edit_text and combo_box_text:
             if self.showButton.objectName() == 'showActivationButton':
                 if line_edit_text == 'all':
-                    self.image_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'temporary_plots',
-                                                  'layer_activations', combo_box_text + '.png')
+                    self.image_path = os.path.join(CONFIG.TEMPORARY_PLOTS_DIR, 'layer_activations', combo_box_text + '.png')
                     if self.image_path:
                         self.labelClickedEvent()
                 elif line_edit_text.isdigit():
@@ -74,7 +73,7 @@ class InspectConvWindow(Window):
                         self.labelClickedEvent()
             elif self.showButton.objectName() == 'showFilterButton':
                 if line_edit_text == 'all':
-                    self.image_path = os.path.join(CONFIG.INSPECT_CONV_CONFIG['FILTER_PATTERNS']['FILTERS_DIR_PATH'],
+                    self.image_path = os.path.join(CONFIG.TEMPORARY_PLOTS_DIR, 'filters',
                                                    combo_box_text + '_filter_patterns.png')
                     if self.image_path:
                         self.labelClickedEvent()
@@ -104,4 +103,3 @@ class InspectConvWindow(Window):
     def setup(self, InspectConvWindow, INSPECT_CONV_CONFIG):
         super().setup(InspectConvWindow, INSPECT_CONV_CONFIG)
         self.showButton.clicked.connect(self.showButtonEvent)
-        #self.imageLabel.mousePressEvent = self.labelClickedEvent
