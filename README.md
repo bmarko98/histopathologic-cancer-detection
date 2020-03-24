@@ -6,8 +6,11 @@ Tensorflow & Keras implementation of Deep Convolutional Neural Networks for clas
 
  - h5py
  - Keras
+ - Keras-Applications
+ - Keras-Preprocessing
  - matplotlib
  - numpy
+ - opencv-python
  - pandas
  - Pillow
  - PyQt5
@@ -16,9 +19,10 @@ Tensorflow & Keras implementation of Deep Convolutional Neural Networks for clas
  - seaborn
  - tensorflow
 
-You can install dependencies by executing following command in terminal:
+You can install dependencies by executing following commands in terminal:
 ```
 $ pip3 install -r requirements.txt
+$ cat requirements2.txt | xargs sudo apt-get install
 ```
 
 ## Datasets
