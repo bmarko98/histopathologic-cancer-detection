@@ -132,7 +132,8 @@ def save_model(network, skip_filters):
     save_plots(plots_directory, network)
     save_test_results(file, network.model, network.test_generator, network.dataset_count, network.batch_size)
     if skip_filters is False:
-        create_and_save_model_patterns(network.model, filter_directory)
+        transfer_learning = True if network.network_name.find('VGG') >= 0 else False
+        create_and_save_model_patterns(network.model, transfer_learning, filter_directory)
     save_as_h5(base_directory, network.model, network.network_name)
 
     file.close()

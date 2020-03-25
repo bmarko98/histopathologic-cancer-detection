@@ -29,9 +29,9 @@ def create_pattern(model, layer_name, filter_index, size=150, save=False):
     if layer_output.shape[-1] < filter_index:
         return ''
     loss = K.mean(layer_output[:, :, :, filter_index])
-    grads = K.gradients(loss, model.input)[0]
+    grads = K.gradients(loss, model.inputs[-1])[0]
     grads /= (K.sqrt(K.mean(K.square(grads))) + 1e-5)
-    iterate = K.function([model.input], [loss, grads])
+    iterate = K.function([model.inputs[-1]], [loss, grads])
     input_img_data = np.random.random((1, size, size, 3)) * 20 + 128
     rate = 1
     steps = 40
@@ -68,27 +68,25 @@ def create_layer_patterns(model, layer_name, N, size, margin, directory):
     plt.savefig(fname=image_path, bbox_inches='tight')
 
 
-def create_and_save_model_patterns(model, directory):
+def create_and_save_model_patterns(model, transfer_learning, directory):
     _logger.info('Creating model patterns...')
     image_height_width = 150
-    margin_size = 7
-    for layer in model.layers:
-        if layer.name.find('conv') >= 0:
-            create_layer_patterns(model=model,
-                                  layer_name=layer.name,
-                                  N=int(math.sqrt(32*2**(int(layer.name[5])-1))),
-                                  size=image_height_width,
-                                  margin=margin_size,
-                                  directory=directory)
-
-'''
-def main():
-    model = load_keras_model('nct_crc_he_100k', '/home/lenovo/Documents/bachelors_thesis/histopathologic-cancer-detection/experiments/nct_crc_he_100k_models/CNNSimpleTest_12-03-2020_15:49:03/CNNSimpleTest.h5')
-    dir = '/home/lenovo/Desktop/tmp'
-    create_and_save_model_patterns(model, dir)
-    #create_pattern(model, 'block1_conv1', 14, save=True)
-
-
-if __name__ == '__main__':
-    main()
-'''
+    margin_size = 5
+    if transfer_learning:
+        for layer in model.layers[0].layers:
+            if layer.name.find('conv') >= 0:
+                create_layer_patterns(model=model.layers[0],
+                                      layer_name=layer.name,
+                                      N=int(math.sqrt(32*2**(int(layer.name[5])-1))),
+                                      size=image_height_width,
+                                      margin=margin_size,
+                                      directory=directory)
+    else:
+        for layer in model.layers:
+            if layer.name.find('conv') >= 0:
+                create_layer_patterns(model=model,
+                                      layer_name=layer.name,
+                                      N=int(math.sqrt(32*2**(int(layer.name[5])-1))),
+                                      size=image_height_width,
+                                      margin=margin_size,
+                                      directory=directory)
