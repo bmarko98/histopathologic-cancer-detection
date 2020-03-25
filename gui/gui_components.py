@@ -1,3 +1,4 @@
+import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
@@ -33,6 +34,8 @@ def get_label(widget, x, y, width, height, label_font, scale, label_name, allign
 
 
 def get_image_label(widget, x, y, width, height, image_label_font, scale, image_label_name, image_URL):
+    if not check_screen_size(width, height):
+        width, height = resize(width, height)
     image_label = get_label(widget, x, y, width, height, image_label_font, scale, image_label_name)
     if image_URL is not None:
         image_label.setPixmap(QtGui.QPixmap(image_URL))
@@ -91,3 +94,16 @@ def get_line_edit(widget, x, y, width, height, line_edit_font, line_edit_name):
     line_edit.setFont(line_edit_font)
     line_edit.setObjectName(line_edit_name)
     return line_edit
+
+
+def check_screen_size(width, height):
+    MIN_WIDTH, MIN_HEIGHT = 300, 200
+    MAX_WIDTH, MAX_HEIGHT = 1920, 1080
+    return (MIN_WIDTH <= width <= MAX_WIDTH) and (MIN_HEIGHT <= height <= MAX_HEIGHT)
+
+
+def resize(width, height):
+    while not check_screen_size(width, height):
+        width = int(width/1.2)
+        height = int(height/1.2)
+    return width, height

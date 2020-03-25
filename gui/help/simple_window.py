@@ -7,9 +7,10 @@ from gui.window import Window
 class SimpleWindow(Window):
 
     def set_window(self, SimpleWindow, SIMPLE_CONFIG):
+        if not GUI.check_screen_size(SIMPLE_CONFIG['WINDOW_X'], SIMPLE_CONFIG['WINDOW_Y']):
+            SIMPLE_CONFIG['WINDOW_X'], SIMPLE_CONFIG['WINDOW_Y'] = GUI.resize(SIMPLE_CONFIG['WINDOW_X'],
+                                                                                 SIMPLE_CONFIG['WINDOW_Y'])
         super().set_window(SimpleWindow, SIMPLE_CONFIG)
-        SimpleWindow.setMinimumSize(QtCore.QSize(0, 0))
-        SimpleWindow.setMaximumSize(QtCore.QSize(2000, 1000))
 
     def create_central_widget(self, SimpleWindow, SIMPLE_CONFIG):
         super().create_central_widget(SimpleWindow, SIMPLE_CONFIG)
