@@ -262,21 +262,23 @@ class MainWindow(Window):
     def classifyButtonEvent(self):
         if self.image_path != '':
             if self.breastTissueRadioButton.isChecked():
-                dataset, model_path, tl = 'break_his', CONFIG.MAIN_CONFIG['VGG19_SIMPLE_MODEL_PATH'], True
+                dataset, model_path = 'break_his', CONFIG.MAIN_CONFIG['VGG19_SIMPLE_MODEL_PATH']
             elif self.colorectalTissueRadioButton.isChecked():
-                dataset, model_path, tl = 'nct_crc_he_100k', CONFIG.MAIN_CONFIG['CNN_SIMPLE_MODEL_PATH'], False
+                dataset, model_path = 'nct_crc_he_100k', CONFIG.MAIN_CONFIG['CNN_SIMPLE_MODEL_PATH']
             self.model, self.image, self.image_class, self.plot_path, self.layers = predict_image(self.image_path,
                                                                                                   dataset,
-                                                                                                  model_path,
-                                                                                                  tl)
+                                                                                                  model_path)
             self.predictedClassLabel.setText(self._translate(CONFIG.MAIN_CONFIG['WINDOW_NAME'], self.image_class))
             self.classProbabilitiesPlot.setPixmap(QtGui.QPixmap(self.plot_path))
             self.heatmap_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                                              'temporary_plots', 'heatmap.jpg')
             self.layer_activations = True
             self.filter_patterns = True
+            CONFIG.INSPECT_CONV_CONFIG['LAYER_ACTIVATIONS']['COMBO_BOX_ITEMS'] = []
+            CONFIG.INSPECT_CONV_CONFIG['FILTER_PATTERNS']['COMBO_BOX_ITEMS'] = []
             for layer in self.layers:
-                CONFIG.INSPECT_CONV_CONFIG['LAYER_ACTIVATIONS']['COMBO_BOX_ITEMS'].append(layer)
+                if layer.find('conv') >= 0 or layer.find('pool') >= 0:
+                    CONFIG.INSPECT_CONV_CONFIG['LAYER_ACTIVATIONS']['COMBO_BOX_ITEMS'].append(layer)
                 if layer.find('conv') >= 0:
                     CONFIG.INSPECT_CONV_CONFIG['FILTER_PATTERNS']['COMBO_BOX_ITEMS'].append(layer)
 

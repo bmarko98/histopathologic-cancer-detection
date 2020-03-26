@@ -1,8 +1,8 @@
 import os
 import logging
 
-from keras.layers import Flatten, Dropout, Dense
-from keras.models import Sequential
+from keras.layers import Input, Flatten, Dropout, Dense
+from keras.models import Model
 from keras.applications import VGG19
 from keras.preprocessing.image import ImageDataGenerator
 
@@ -126,24 +126,26 @@ class VGG19Simple(BaseCNN):
         input_shape = list(self.image_size)
         input_shape.insert(2, 3)
         input_shape = tuple(input_shape)
+
+        input = Input(list(input_shape))
         self.convolutional_base = VGG19(weights=self.weights,
                                         include_top=self.include_top,
-                                        input_shape=input_shape)
+                                        input_tensor=input)
         for layer in self.convolutional_base.layers:
             layer.trainable = False
 
-        model = Sequential(name='sequential')
-        model.add(self.convolutional_base)
-
         if self.include_top is False:
-            model.add(Flatten(name='flatten'))
-            model.add(Dense(512, activation='relu', name='dense_1'))
-            model.add(Dropout(0.5, name='dropout_1'))
-            model.add(Dense(1024, activation='relu', name='dense_2'))
-            model.add(Dropout(0.5, name='dropout_2'))
-            model.add(Dense(len(self.classes), activation='softmax', name='predictions'))
+            x = Flatten(name='flatten')(self.convolutional_base.output)
+            x = Dense(512, activation='relu', name='dense_1')(x)
+            x = Dropout(0.5, name='dropout_1')(x)
+            x = Dense(1024, activation='relu', name='dense_2')(x)
+            x = Dropout(0.5, name='dropout_2')(x)
+            x = Dense(len(self.classes), activation='softmax', name='predictions')(x)
 
-        self.model = model
+            model = Model(input, x)
+            self.model = model
+        else:
+            model = Model(input, self.convolutional_base)
 
     def fine_tune_model(self):
         _logger.info('Fine tuning...')

@@ -58,15 +58,15 @@ def fine_tune_vgg19_simple():
                             optimizer=vgg19_simple_parameter_dictonary['optimizer'][i],
                             metrics=['acc'],
                             epochs=vgg19_simple_parameter_dictonary['epochs'][i],
-                            skip_filters=False,
-                            fine_tune=False,
+                            skip_filters=True,
+                            fine_tune=True,
                             first_trainable_block=vgg19_simple_parameter_dictonary['first_trainable_block'][i],
                             fine_tune_learning_rate=vgg19_simple_parameter_dictonary['fine_tune_learning_rate'][i],
                             fine_tune_epochs=vgg19_simple_parameter_dictonary['fine_tune_epochs'][i])
 
 
 def main():
-    fine_tune_cnn_simple()
+    # fine_tune_cnn_simple()
     fine_tune_vgg19_simple()
 
 

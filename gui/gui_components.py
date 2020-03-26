@@ -97,7 +97,7 @@ def get_line_edit(widget, x, y, width, height, line_edit_font, line_edit_name):
 
 
 def check_screen_size(width, height):
-    MIN_WIDTH, MIN_HEIGHT = 300, 200
+    MIN_WIDTH, MIN_HEIGHT = 0, 0
     MAX_WIDTH, MAX_HEIGHT = 1920, 1080
     return (MIN_WIDTH <= width <= MAX_WIDTH) and (MIN_HEIGHT <= height <= MAX_HEIGHT)
 

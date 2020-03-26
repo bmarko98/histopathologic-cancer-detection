@@ -68,25 +68,16 @@ def create_layer_patterns(model, layer_name, N, size, margin, directory):
     plt.savefig(fname=image_path, bbox_inches='tight')
 
 
-def create_and_save_model_patterns(model, transfer_learning, directory):
+def create_and_save_model_patterns(model, directory):
     _logger.info('Creating model patterns...')
     image_height_width = 150
     margin_size = 5
-    if transfer_learning:
-        for layer in model.layers[0].layers:
-            if layer.name.find('conv') >= 0:
-                create_layer_patterns(model=model.layers[0],
-                                      layer_name=layer.name,
-                                      N=int(math.sqrt(32*2**(int(layer.name[5])-1))),
-                                      size=image_height_width,
-                                      margin=margin_size,
-                                      directory=directory)
-    else:
-        for layer in model.layers:
-            if layer.name.find('conv') >= 0:
-                create_layer_patterns(model=model,
-                                      layer_name=layer.name,
-                                      N=int(math.sqrt(32*2**(int(layer.name[5])-1))),
-                                      size=image_height_width,
-                                      margin=margin_size,
-                                      directory=directory)
+
+    for layer in model.layers:
+        if layer.name.find('conv') >= 0:
+            create_layer_patterns(model=model,
+                                  layer_name=layer.name,
+                                  N=int(math.sqrt(32*2**(int(layer.name[5])-1))),
+                                  size=image_height_width,
+                                  margin=margin_size,
+                                  directory=directory)

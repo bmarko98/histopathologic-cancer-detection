@@ -62,12 +62,13 @@ class InspectConvWindow(Window):
         if line_edit_text and combo_box_text:
             if self.showButton.objectName() == 'showActivationButton':
                 if line_edit_text == 'all':
-                    self.image_path = os.path.join(CONFIG.TEMPORARY_PLOTS_DIR, 'layer_activations', combo_box_text + '.png')
+                    self.image_path = visualize_intermediate_activations(self.input_image, self.model, combo_box_text, None,
+                                                                         CONFIG.TEMPORARY_PLOTS_DIR)
                     if self.image_path:
                         self.labelClickedEvent()
                 elif line_edit_text.isdigit():
                     channel_number = int(line_edit_text)
-                    self.image_path = visualize_intermediate_activations(self.input_image, self.model, False, combo_box_text,
+                    self.image_path = visualize_intermediate_activations(self.input_image, self.model, combo_box_text,
                                                                          channel_number, CONFIG.TEMPORARY_PLOTS_DIR)
                     if self.image_path:
                         self.labelClickedEvent()
@@ -99,6 +100,7 @@ class InspectConvWindow(Window):
         CONFIG.SIMPLE_CONFIG['IMAGE']['SIMPLE_INFO_LABEL_POSITION'] = [0, 0, np_img.shape[2], np_img.shape[1]]
         CONFIG.SIMPLE_CONFIG['IMAGE']['SIMPLE_INFO_LABEL_IMAGE_PATH'] = self.image_path
         self.simpleWindow(CONFIG.SIMPLE_CONFIG['IMAGE'])
+
 
     def setup(self, InspectConvWindow, INSPECT_CONV_CONFIG):
         super().setup(InspectConvWindow, INSPECT_CONV_CONFIG)

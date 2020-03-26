@@ -13,7 +13,7 @@ logging.basicConfig(level=logging.INFO)
 _logger = logging.getLogger(__name__)
 
 
-def visualize_intermediate_activations(image, model, transfer_learning, requested_layer_name, channel_number, dir):
+def visualize_intermediate_activations(image, model, requested_layer_name, channel_number, dir):
     _logger.info("Visualizing intermediate activations...")
     activation_plots_dir = os.path.join(dir, 'layer_activations')
     if not os.path.exists(activation_plots_dir):
@@ -27,20 +27,14 @@ def visualize_intermediate_activations(image, model, transfer_learning, requeste
             break
 
     layer_names = []
-    if transfer_learning is False:
-        layer_outputs = [layer.output for layer in model.layers[:(n-1)]]
-        activation_model = Model(inputs=model.input, outputs=layer_outputs)
-        for layer in model.layers[:(n-1)]:
-            layer_names.append(layer.name)
-    else:
-        layer_outputs = [layer.output for layer in model.layers[0].layers]
-        activation_model = Model(inputs=model.layers[0].layers[0].input, outputs=layer_outputs)
-        for layer in model.layers[0].layers:
-            layer_names.append(layer.name)
+    layer_outputs = [layer.output for layer in model.layers[:(n-1)]]
+    activation_model = Model(inputs=model.input, outputs=layer_outputs)
+    for layer in model.layers[:(n-1)]:
+        layer_names.append(layer.name)
 
     activations = activation_model.predict(image)
 
-    if requested_layer_name:
+    if channel_number:
         for layer_name in layer_names:
             if layer_name == requested_layer_name:
                 layer_number = layer_names.index(requested_layer_name)
@@ -60,7 +54,7 @@ def visualize_intermediate_activations(image, model, transfer_learning, requeste
         images_per_row = 16
 
         for layer_name, layer_activation in zip(layer_names, activations):
-            if (layer_name != 'input_1'):
+            if (layer_name == requested_layer_name):
                 _logger.info("Visualizing activations for layer: " + layer_name)
                 n_features = layer_activation.shape[-1]
                 size = layer_activation.shape[1]
@@ -82,23 +76,21 @@ def visualize_intermediate_activations(image, model, transfer_learning, requeste
                 plt.grid(False)
                 plt.axis('off')
                 plt.imshow(display_grid, aspect='auto', cmap='viridis')
-                plt.savefig(fname=os.path.join(activation_plots_dir, layer_name + '.png'), bbox_inches='tight')
+                plot_path = os.path.join(activation_plots_dir, layer_name + '.png')
+                plt.savefig(fname=plot_path, bbox_inches='tight')
                 plt.close('all')
-        return layer_names
+        return plot_path
 
 
-def get_heatmap(image, model, transfer_learning):
+def get_heatmap(image, model):
     _logger.info('Producing heatmap of class activation over input image...')
     class_probabilities = model.predict(image)
     class_output = model.output[:, np.argmax(class_probabilities[0])]
-    if transfer_learning is False:
-        for i, layer in enumerate(model.layers):
-            if layer.name[0:7] == 'flatten':
-                last_conv_layer_name = model.layers[i-2].name
-        last_conv_layer = model.get_layer(last_conv_layer_name)
-    else:
-        last_conv_layer_name = model.layers[0].layers[-2].name
-        last_conv_layer = model.layers[0].get_layer(last_conv_layer_name)
+
+    for i, layer in enumerate(model.layers):
+        if layer.name[0:7] == 'flatten':
+            last_conv_layer_name = model.layers[i-2].name
+    last_conv_layer = model.get_layer(last_conv_layer_name)
 
     grads = K.gradients(class_output, last_conv_layer.output)[0]
     pooled_grads = K.mean(grads, axis=(0, 1, 2))
@@ -106,16 +98,16 @@ def get_heatmap(image, model, transfer_learning):
     pooled_grads_value, conv_layer_output_value = iterate([image])
     for i in range(256):
         conv_layer_output_value[:, :, i] *= pooled_grads_value[i]
-        heatmap = np.mean(conv_layer_output_value, axis=-1)
 
+    heatmap = np.mean(conv_layer_output_value, axis=-1)
     heatmap = np.maximum(heatmap, 0)
     heatmap /= np.max(heatmap)
 
     return heatmap
 
 
-def visualize_heatmaps(image_URL, image, model, transfer_learning, dir):
-    heatmap = get_heatmap(image, model, transfer_learning)
+def visualize_heatmaps(image_URL, image, model, dir):
+    heatmap = get_heatmap(image, model)
     img = cv2.imread(image_URL)
     heatmap = cv2.resize(heatmap, (img.shape[1], img.shape[0]))
     heatmap = np.uint8(255 * heatmap)

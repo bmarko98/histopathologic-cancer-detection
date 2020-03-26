@@ -77,7 +77,7 @@ def copy_filters(model_path, temporary_plots_dir):
             shutil.copy2(filter_image, copied_filter_image)
 
 
-def predict_image(image_URL, dataset, model_path=None, transfer_learning=False):
+def predict_image(image_URL, dataset, model_path=None):
     temporary_plots_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'gui', 'temporary_plots')
     if os.path.exists(temporary_plots_dir):
         shutil.rmtree(temporary_plots_dir)
@@ -85,7 +85,9 @@ def predict_image(image_URL, dataset, model_path=None, transfer_learning=False):
     os.mkdir(os.path.join(temporary_plots_dir, 'filters'))
     copy_filters(model_path, temporary_plots_dir)
     model = load_keras_model(dataset, model_path)
+    layers = []
+    for layer in model.layers:
+        layers.append(layer.name)
     image, image_class, plot_path = predict_image_class(image_URL, dataset, model, temporary_plots_dir)
-    layers = visualize_intermediate_activations(image, model, transfer_learning, None, None, temporary_plots_dir)
-    visualize_heatmaps(image_URL, image, model, transfer_learning, temporary_plots_dir)
+    visualize_heatmaps(image_URL, image, model, temporary_plots_dir)
     return model, image, image_class, plot_path, layers
