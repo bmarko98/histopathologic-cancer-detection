@@ -54,9 +54,6 @@ class MainWindow(Window):
                                                  CONFIG.FONT,
                                                  False,
                                                  MAIN_CONFIG['PREDICTED_CLASS_LABEL_NAME'])
-        self.classificationProgressBar = GUI.get_progress_bar(self.centralwidget,
-                                                              *MAIN_CONFIG['PROGRESS_BAR_POSITION'],
-                                                              MAIN_CONFIG['PROGRESS_BAR_NAME'])
         self.classProbabilitiesPlot = GUI.get_image_label(self.centralwidget,
                                                           *MAIN_CONFIG['CLASS_PROBABILITIES_PLOT_POSITION'],
                                                           CONFIG.FONT,
