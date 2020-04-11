@@ -101,15 +101,67 @@ Fully-Connected layer contains the most parameters in the network, and as a resu
 
 \subsection{CNNSimple Implementation}
 
-Text.
+CNNSimple convolutional neural network (\textcolor{red}{Code \ref{src:py1}}) was created using Keras Sequential model in order to classify images from NCT-CRC-HE-100K dataset, which contains 80.000 images divided into 9 tissue/cancer categories. 
+
+Convolutional base of CNNSimple is composed of four blocks of convolution and max-pooling layers, where first two blocks have two convolution and one max-pooling layer, and last two blocks have three convolution and one max-pooling layer. Each convolution layer has 3x3 convolution window, uses ReLU activation function, and number of feature maps (filters) increases exponentially from 32 to 256. Each max-pooling layer has 2x2 pool size. 
+
+Classification top of CNNSimple is composed of two fully-connected layers, each followed by a dropout layer, and an output (also fully-connected) layer. Fully-connected layers use ReLU activation function, and number of neurons grows from 512 to 1024. Dropout layers use 50\% dropout rate (fraction of neurons which will be ignored in each passing). Output layer uses softmax activation function, and has nine neurons (one neuron per tissue/cancer subtype output). 
+\vspace{3mm}
+\lstset{caption={CNNSimple network architecture},label=src:py1}
+\begin{lstlisting}[language={Python}, basicstyle=\scriptsize]
+	model = Sequential()
+	model.add(Conv2D(32, (3, 3), activation='relu', input_shape=input_shape,     
+	                 name='block1_conv1'))
+	model.add(Conv2D(32, (3, 3), activation='relu', name='block1_conv2'))
+	model.add(MaxPooling2D((2, 2), name='block1_pool'))
+	model.add(Conv2D(64, (3, 3), activation='relu', name='block2_conv1'))
+	model.add(Conv2D(64, (3, 3), activation='relu', name='block2_conv2'))
+	model.add(MaxPooling2D((2, 2), name='block2_pool'))
+	model.add(Conv2D(128, (3, 3), activation='relu', name='block3_conv1'))
+	model.add(Conv2D(128, (3, 3), activation='relu', name='block3_conv2'))
+	model.add(Conv2D(128, (3, 3), activation='relu', name='block3_conv3'))
+	model.add(MaxPooling2D((2, 2), name='block3_pool'))
+	model.add(Conv2D(256, (3, 3), activation='relu', name='block4_conv1'))
+	model.add(Conv2D(256, (3, 3), activation='relu', name='block4_conv2'))
+	model.add(Conv2D(256, (3, 3), activation='relu', name='block4_conv3'))
+	model.add(MaxPooling2D((2, 2), name='block4_pool'))
+	model.add(Flatten(name='flatten'))
+	model.add(Dense(512, activation='relu', name='dense1'))
+	model.add(Dropout(0.5, name='dropout1'))
+	model.add(Dense(1024, activation='relu', name='dense2'))
+	model.add(Dropout(0.5, name='dropout2'))
+	model.add(Dense(9, activation='softmax', name='prediction'))
+\end{lstlisting} 
 
 \subsection{Transfer Learning}
 
-Text.
+Although CNNs are a powerful tool for image classification, in order to achieve high accuracy, large amount of data is needed. Problem occurs when only small dataset is available (as is often in healthcare, ex. BreakHis dataset). In such cases transfer learning can be used: take model trained on large dataset and transfer knowledge to small dataset, i.e. freeze convolutional base, and only train classification top of the network. Main idea is that early layers of convolutional base learns low-level features applicable across all images, such as edges and patterns.
 
-\subsection{VGG19 Simple Implementation}
+\subsection{VGG19Simple Implementation}
 
-Text.
+VGG19Simple convolutional neural network (\textcolor{red}{Code \ref{src:py2}}) was created using Keras Graphical API in order to classify images from BreakHis dataset, which contains 2.000 images divided into 8 tissue/cancer categories. 
+
+Convolutional base of VGG19Simple is VGG19 pre-built network pre-trained on ImageNet dataset (without top classification part), using imagenet weights.
+
+Classification top of CNNSimple is composed of two fully-connected layers, each followed by a dropout layer, and an output (also fully-connected) layer. Fully-connected layers use ReLU activation function, and number of neurons grows from 512 to 1024. Dropout layers use 50\% dropout rate (fraction of neurons which will be ignored in each passing). Output layer uses softmax activation function, and has nine neurons (one neuron per tissue/cancer subtype output). 
+
+\vspace{3mm}
+\lstset{caption={VGG19Simple network architecture},label=src:py2}
+\begin{lstlisting}[language={Python}, basicstyle=\scriptsize]
+	input = Input((150, 150, 3))
+	convolutional_base = VGG19(weights='imagenet', include_top=False,
+	                           input_tensor=input)
+	for layer in convolutional_base.layers:
+		layer.trainable = False
+	x = Flatten(name='flatten')(convolutional_base.output)
+	x = Dense(512, activation='relu', name='dense_1')(x)
+	x = Dropout(0.5, name='dropout_1')(x)
+	x = Dense(1024, activation='relu', name='dense_2')(x)
+	x = Dropout(0.5, name='dropout_2')(x)
+	x = Dense(8, activation='softmax', name='predictions')(x)
+	
+	model = Model(input, x)
+\end{lstlisting} 
 
 \section{Experiments and Results}
 
