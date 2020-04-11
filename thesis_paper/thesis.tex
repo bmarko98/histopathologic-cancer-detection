@@ -1,0 +1,69 @@
+\documentclass{elteikthesis}
+
+\usepackage[final]{pdfpages}
+\usepackage{caption}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{biblatex}
+
+% Document's metadata
+\title{Histopathologic Cancer Detection: Identifying metastatic tissue in histopathologic slides using Deep Neural Networks} 
+\date{2020}
+
+% Author's metadata
+\author{Bauer Marko}
+\degree{Computer Science BSc}
+
+% Superivsor(s)' metadata
+\supervisor{Kitlei Róbert}
+\affiliation{assistant lecturer, MSc} 
+
+% University's metadata
+\university{Eötvös Loránd University}
+\faculty{Faculty of Informatics}
+\department{Department of Programming Languages\\ and Compilers}
+\city{Budapest}
+\logo{elte_logo}
+
+% Add bibliography file
+\addbibresource{thesis.bib}
+
+% The document
+\begin{document}
+	
+% Set document language
+\documentlang{english}
+
+% Some document settings
+\input{settings.tex}
+
+% Title page
+\maketitle
+
+% Thesis topic declaration
+\setboolean{@twoside}{false}
+\includepdf[pages=-]{topic_declaration.pdf}
+
+% Table of contents (mandatory)
+\tableofcontents
+\cleardoublepage
+
+% Main content
+\input{chapters/intro.tex}
+\cleardoublepage
+
+\input{chapters/user.tex}
+\cleardoublepage
+
+\input{chapters/impl.tex}
+\cleardoublepage
+
+\input{chapters/sum.tex}
+\cleardoublepage
+
+% Bibliography (mandatory)
+\addcontentsline{toc}{chapter}{\biblabel}
+\printbibliography[title=\biblabel]
+\cleardoublepage
+
+\end{document}

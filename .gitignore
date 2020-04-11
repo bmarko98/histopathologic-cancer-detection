@@ -133,6 +133,7 @@ dmypy.json
 *.jpeg
 *.png
 *.tif
+*.eps
 !break_his_sample_images.jpg
 !nct_crc_he_100k_sample_images.jpg
 
