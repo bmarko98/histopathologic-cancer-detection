@@ -165,7 +165,48 @@ Classification top of CNNSimple is composed of two fully-connected layers, each 
 
 \section{Experiments and Results}
 
-Text.
+Performance of neural networks is determined by how well will it generalize, i.e. how high accuracy will it achieve on previously unseen data (if it performs well on training data, but underachieves on test data, it is said that CNN overfits). In order to prevent overfitting, number of techniques can be used: increase size of dataset, change network architecture or apply hyperparameter tuning techniques, which consist of selecting a set optimal hyperparameters for learning algorithm. Selection of such parameters for networks is done in \textbf{\emph{hyperparameter\_tuning.py}}. First step consists of defining hyperparameter dictionary with parameters and values to be tested, such as number of epochs for which network is to be trained, optimization techniques, etc. Next step consists of training network with all combination of parameters and values defined, after which network performances are compared in order to determine the best hyperparameter set.
+
+CNNSimple network trained on NCT-CRC-HE-100K dataset was trained for 50 epochs, using RMSProp optimizer with learning rate of 0.00002, using categorical crossentropy loss function. Before feeding data to the network, data augmentation (applying random transformations in order to produce more images, such as translation, rotation, sheer) has been used. In order to judge performance of the network, accuracy metrics function was employed. CNNSimple achieved 91.3\% validation and 91.3\% test accuracy, and 0.18 validation and 0.28 test loss (\textcolor{red}{\autoref{fig:cnnperf}}).
+
+\begin{figure}[h]
+	\centering
+	\subfigure[\scriptsize Accuracy]{\label{fig:a}\includegraphics[width=65mm]{cnn_acc.png}}
+	\subfigure[\scriptsize Loss]{\label{fig:b}\includegraphics[width=65mm]{cnn_loss.png}}
+	\caption{CNNSimple performance on NCT-CRC-HE-100K train and validation dataset}
+	\label{fig:cnnperf}
+\end{figure}
+
+\clearpage
+VGG19Simple network trained on BreakHis dataset was trained for 150 epochs, using Adam optimizer with learning rate of 0.0001, using categorical crossentropy loss function. Before feeding data to the network, data augmentation (applying random transformations in order to produce more images, such as translation, rotation, sheer) has been used. In order to judge performance of the network, accuracy metrics function was employed. After training network with frozen convolutional base, last convolutional block was unfreezed, and network was trained again using Adam optimizer with learning rate of 0.00005. VGG19Simple achieved 61.7\% validation and 62.1\% test accuracy, and 1.18 validation and 0.62 test loss (\textcolor{red}{\autoref{fig:vgg19perf}}).
+
+\begin{figure}[h]
+	\centering
+	\subfigure[\scriptsize Accuracy]{\label{fig:vgg19perf}\includegraphics[width=65mm]{vgg19_acc.png}}
+	\subfigure[\scriptsize Loss]{\label{fig:b}\includegraphics[width=65mm]{vgg19_loss.png}}
+	\caption{VGG19Simple performance on BreakHis train and validation dataset}
+	\label{fig:vgg19perf}
+\end{figure}
+
+Another way of interpreting network performance is by plotting confusion matrix, which is a summary table of correct and incorrect predictions broken down by each class (\textcolor{red}{\autoref{fig:cnncf}, \autoref{fig:vgg19cf}}).
+
+\begin{figure}[h]
+	\centering
+	\begin{minipage}{.5\textwidth}
+		\centering
+		\includegraphics[scale=0.31]{cnn_cf.png}
+		\captionof{figure}{Confusion Matrix of CNNSimple on NCT-CRC-HE-1OOK test dataset}
+		\label{fig:cnncf}
+	\end{minipage}%
+	\begin{minipage}{.5\textwidth}
+		\centering
+		\includegraphics[scale=0.31]{vgg19_cf.png}
+		\captionof{figure}{Confusion Matrix of VGG19Simple on BreakHis test dataset}
+		\label{fig:vgg19cf}
+	\end{minipage}
+\end{figure}
+
+\clearpage
 
 \section{Graphical User Interface} \label{gui}
 
@@ -173,4 +214,16 @@ Text.
 
 \section{Implementing Additional Features}
 
-Text.
+In addition to the ease of use of Histopathologic Cancer Detection program, source code was written in such a way to make expanding scope (problem space) of the program by including additional features quite simple and fast. If new tissue type, along with tissue/cancer subtype classification was to be added to the program, it would be done in four steps:
+\begin{enumerate}
+	\itemsep 0em
+	\item Creating dataset \\
+	...
+	\item Building neural network \\
+	...
+	\item Choosing optimal hyperparameters \\
+	...
+	\item Extending graphical user interface \\
+	...
+\end{enumerate}
+
