@@ -65,7 +65,7 @@ Performance and accuracy of convolutional neural networks relies largely on data
 They work by extracting datasets downloaded from \cite{breakhis_bib}, \cite{nctcrche100k_bib}, creating necessary directory tree and distributing images between created subdirectories. After executing scripts, datasets are ready to be fed into convolutional neural networks in order to train them, but before that, neural network architecture is to be built.
 \clearpage
 
-\section{Convolutional Neural Networks} \label{cnn}
+\section{Convolutional Neural Networks*} \label{cnn}
 
 Convolutional Neural Networks for image classification take image as an input, \textbf{process} it, and output category to which that image belongs. Processing part consists of a series of layers through which we propagate image in order to learn features, which in turn determine to which class an image belongs. (\textcolor{red}{\autoref{fig:cnn1}}).
 
@@ -210,20 +210,48 @@ Another way of interpreting network performance is by plotting confusion matrix,
 
 \section{Graphical User Interface} \label{gui}
 
-Text.
+In order to make using program simple and straightforward, graphical user interface using PyQt5 has been created. Following window classes have been constructed:
+\begin{itemize}
+	\itemsep 0em
+	\item Window class in \textbf{\emph{window.py}}, used as base class for every other window, which contains primitive functions for setting up window, creating central widget, etc.
+	\item AboutAuthorWindow class in \textbf{\emph{about\_author\_window.py}}, which contains two labels (containing image and CV respectively)
+	\item AboutDatasetsWindow class in \textbf{\emph{about\_datasets\_window.py}}, which contains two labels (containing dataset sample images and dataset overview numbers respectively)
+	\item AboutModelsWindow class in \textbf{\emph{about\_models\_window.py}}, which contains five labels (containing network name, network architecture, accuracy, loss and confusion matrix plots respectively)
+	\item SimpleWindow class in \textbf{\emph{simple\_window.py}}, which contains one image label
+	\item InspectConvWindow class in \textbf{\emph{inspect\_conv\_window.py}}, which contains three labels (containing convolution layer text, number text and image respectively), button (with associated action), combo box (containing network layer names)  and line edit (for input of numbers)
+	\item MainWindow class in \textbf{\emph{main\_window.py}}, which connects every other window and provides main program functionality 
+\end{itemize}
+In addition, every window specific information is located in \textbf{\emph{config.py}}, such as window sizes, positions and names of labels, paths to images, etc. GUI component definitions are located in \textbf{\emph{gui\_components.py}}.
+
+\subsection{Main Window}
+
+MainWindow class is the central part of the GUI, as it defines the window which pops up when program is started. It has menu bar from which every other window can be reached, and central widget which contains input image, tissue-type radio buttons, classify button and output class label and probabilities plot. Function \emph{classifyButtonEvent}, associated with \emph{classifyButton} is the integral part of the class, as it loads network based on the input image tissue type, classifies it, and writes output to labels.
+
+
+\section{Utilities}
+
+For program to work seamlessly, certain utilities needed to be implemented:
+\begin{itemize}
+	\itemsep 0em
+	\item \textbf{\emph{dataset\_overview.py}}, used for obtaining basic information about dataset, such as sample images and image distribution per class
+	\item \textbf{\emph{misc.py}}, containing function for reading file contents 
+	\item \textbf{\emph{predict\_image.py}}, used for predicting class to which an image belongs
+	\item \textbf{\emph{save\_model.py}}, used for saving neural network information and performance after being trained, such as arguments, architecture, accuracy, loss and confusion matrix plots, filters, etc.  
+	\item \textbf{\emph{visualize\_filters.py}}, used for visualizing network filter patterns
+	\item \textbf{\emph{visualize\_intermediate\_activations\_and\_heatmaps.py}}, used for visualizing intermediate activations of network and heatmaps of class activation
+\end{itemize}
 
 \section{Implementing Additional Features}
 
-In addition to the ease of use of Histopathologic Cancer Detection program, source code was written in such a way to make expanding scope (problem space) of the program by including additional features quite simple and fast. If new tissue type, along with tissue/cancer subtype classification was to be added to the program, it would be done in four steps:
+In addition to the ease of use of Histopathologic Cancer Detection program, source code was written in such a way to make expanding scope (problem space) of the program by including additional features quite simple and fast. If new tissue type (ex. lung tissue), along with tissue/cancer subtype classification was to be added to the program, it would be accomplished in four steps:
 \begin{enumerate}
 	\itemsep 0em
-	\item Creating dataset \\
-	...
-	\item Building neural network \\
-	...
-	\item Choosing optimal hyperparameters \\
-	...
-	\item Extending graphical user interface \\
-	...
+	\item \textbf{Creating dataset} \\
+	Obtaining dataset of new tissue type, and preparing dataset to be fed to Keras-built CNN, which includes creating appropriate directory structure
+	\item \textbf{Building CNN} \\
+	Crating new convolutional neural network class inherited from BaseCNN by defining data generator transformations, network architecture, etc.
+	\item \textbf{Fine-tuning CNN} \\
+	Defining hyperparameter dictionary and training neural networks in order to increase classification accuracy and prevent overfitting
+	\item \textbf{Extending GUI} \\
+	Adding additional radio button to MainWindow class, and extending action associated with classify button, as well as further analysis actions, to use newly created network
 \end{enumerate}
-
