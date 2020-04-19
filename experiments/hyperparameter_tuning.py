@@ -1,5 +1,4 @@
 import logging
-
 from models.cnn_simple import CNNSimple
 from models.vgg19_simple import VGG19Simple
 
@@ -7,22 +6,8 @@ from models.vgg19_simple import VGG19Simple
 logging.basicConfig(level=logging.INFO)
 _logger = logging.getLogger(__name__)
 
-cnn_simple_parameter_dictonary = {'model_number': 1,
-                                  'learning_rate': [2e-5],
-                                  'optimizer': ['rmsprop'],
-                                  'epochs': [1]}
 
-
-vgg19_simple_parameter_dictonary = {'model_number': 1,
-                                    'learning_rate': [1e-4],
-                                    'optimizer': ['rmsprop'],
-                                    'epochs': [1],
-                                    'first_trainable_block': [5],
-                                    'fine_tune_learning_rate': [1e-4],
-                                    'fine_tune_epochs': [1]}
-
-
-def fine_tune_cnn_simple():
+def fine_tune_cnn_simple(cnn_simple_parameter_dictonary):
     for i in range(cnn_simple_parameter_dictonary['model_number']):
         _logger.info('Creating CNNSimple object number ' + str(i) + '...')
 
@@ -37,10 +22,11 @@ def fine_tune_cnn_simple():
                           learning_rate=cnn_simple_parameter_dictonary['learning_rate'][i],
                           optimizer=cnn_simple_parameter_dictonary['optimizer'][i],
                           metrics=['acc'],
-                          epochs=cnn_simple_parameter_dictonary['epochs'][i])  # noqa: F841
+                          epochs=cnn_simple_parameter_dictonary['epochs'][i])  # NOQA: F841
+    return 0
 
 
-def fine_tune_vgg19_simple():
+def fine_tune_vgg19_simple(vgg19_simple_parameter_dictonary):
     for i in range(vgg19_simple_parameter_dictonary['model_number']):
         _logger.info('Creating VGG19Simple object number ' + str(i) + '...')
 
@@ -63,13 +49,13 @@ def fine_tune_vgg19_simple():
                             first_trainable_block=vgg19_simple_parameter_dictonary['first_trainable_block'][i],
                             fine_tune_learning_rate=vgg19_simple_parameter_dictonary['fine_tune_learning_rate'][i],
                             fine_tune_epochs=vgg19_simple_parameter_dictonary['fine_tune_epochs'][i])
+    return 0
 
-
-def main():
-    # fine_tune_cnn_simple()
-    fine_tune_vgg19_simple()
-
-
-if __name__ == '__main__':
-    _logger.info('Started the program...')
-    main()
+def main(cnn_simple_parameter_dictonary, vgg19_simple_parameter_dictonary):
+    try:
+        fine_tune_cnn_simple(cnn_simple_parameter_dictonary)
+        fine_tune_vgg19_simple(vgg19_simple_parameter_dictonary)
+    except Exception as e:
+        _logger.error('Exception caught in main: {}'.format(e), exc_info=True)
+        return 1
+    return 0
