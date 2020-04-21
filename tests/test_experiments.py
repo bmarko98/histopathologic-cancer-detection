@@ -9,10 +9,10 @@ def dummy_save_model(*args, **kwargs):
 
 @pytest.mark.slow
 def test_hyperparameter_tuning_cnn(monkeypatch):
-    dummy_dict= {'model_number': 1,
-                'learning_rate': [2e-5],
-                'optimizer': ['rmsprop'],
-                'epochs': [1]}
+    dummy_dict = {'model_number': 1,
+                 'learning_rate': [2e-5],
+                 'optimizer': ['rmsprop'],
+                 'epochs': [1]}
 
     monkeypatch.setattr(save_model, 'save_model', dummy_save_model, raising=True)
 
