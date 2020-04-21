@@ -23,7 +23,7 @@ def get_image_paths(dataset, category, number_of_images, data_dir):
 
 
 def sample_images(dataset, categories, number_of_images, image_width, image_height, data_dir):
-    margin = 7
+    margin = 0
     results = np.zeros((len(categories) * image_height + len(categories) * margin, number_of_images * image_width, 3))
     for i in range(len(categories)):
         image_paths = get_image_paths(dataset, categories[i], number_of_images, data_dir)
@@ -108,7 +108,7 @@ def main():
         number_of_images = 10
         image_path = [im.path for im in os.scandir(os.path.join(train_dir, categories[0])) if im.is_file()][0]
         image = Image.open(image_path)
-        dataset_numbers(dataset, categories, data_dir)
+        #dataset_numbers(dataset, categories, data_dir)
         sample_images(dataset, categories, number_of_images, image.size[0], image.size[1], data_dir)
 
 
