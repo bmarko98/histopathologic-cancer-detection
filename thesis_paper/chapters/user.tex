@@ -4,11 +4,11 @@
 There are three main ways of using Histopathologic Cancer Detection program:
 \begin{enumerate}
 	\itemsep 0em
-	\item Predicting tissue subtype of breast and colorectal tissue, i.e. predicting whether patient has breast or colorectal cancer or not
-	\item Visualizing what Convolutional Neural Networks learns, i.e. visualizing how network transforms input image, and which parts of input image lead to predicting tissue and cancer subtype
-	\item Adding new datasets and networks, in order to increase the scope of the program, and predict even more tissue and cancer subtypes
+	\item Predicting tissue and cancer subtype of breast and colorectal tissue, i.e. predicting whether patient has breast or colorectal cancer or not
+	\item Visualizing what Convolutional Neural Network learns, i.e. visualizing how network transforms input image, and which parts of input image lead to predicting tissue and cancer subtype
+	\item Adding new datasets and networks in order to increase the scope of the program, and predict even more tissue and cancer subtypes
 \end{enumerate}
-In order to use the program to predict tissue and cancer subtype, or to visualize what CNNs learn, certain general software requirements are needed, while in order to expand scope of the program, certain additional software requirements are needed.
+In order to use the program to predict tissue and cancer subtype, or to visualize what CNNs learn, certain general software requirements are needed, while in order to expand the scope of the program, certain additional software requirements are needed.
 
 \section{General Software Requirements}
 
@@ -52,13 +52,13 @@ From here, it is possible to:
 \begin{enumerate}
 	\itemsep 0em
 	\item Inspect datasets and networks
-	\item Load histopathologic slide of breast or colorectal tissue and to predict the tissue and cancer subtype
+	\item Load histopathologic slide of breast or colorectal tissue and predict the tissue and cancer subtype
 	\item Further visualize network representations by analyzing heatmaps of class activations, filters of convolutional layers and intermediate activations
 \end{enumerate}
 
 \section{Inspecting Datasets}
 
-In order to find basic information about datasets, which include sample images from dataset, tissue and cancer subtypes, as well as number of images per subtypes, go to \emph{About $\rightarrow$ About\;Datasets} and choose dataset (\textcolor{red}{\autoref{fig:inspectdataset}}).
+In order to find basic information about datasets, which include sample images from dataset, tissue and cancer subtypes, as well as number of images per category, go to \emph{About $\rightarrow$ About\;Datasets} and choose dataset (\textcolor{red}{\autoref{fig:inspectdataset}}). In current implementation there are two datasets available: BreakHis and NCT-CRC-HE-100K.
 \clearpage
 
 \begin{figure}[h]
@@ -70,11 +70,11 @@ In order to find basic information about datasets, which include sample images f
 
 \section{Inspecting Networks}
 
-In order to find basic information about networks, which include network architecture and network performance on trainin dataset (accuracy, loss and confusion matrix) go to \emph{About $\rightarrow$ About\;Models} and choose network. (\textcolor{red}{\autoref{fig:inspectdataset}}).
+In order to find basic information about networks, which include network architecture and network performance on training, validation and test datasets (accuracy, loss and confusion matrix), go to \emph{About $\rightarrow$ About\;Models} and choose network (\textcolor{red}{\autoref{fig:inspectdataset}}). In current implementation there are two networks available: CNNSimple and VGG19Simple.
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[scale=0.22]{inspect_network.png}
+	\includegraphics[scale=0.2]{inspect_network.png}
 	\caption{CNNSimple Network basic information}
 	\label{fig:inspectdataset}
 \end{figure}
