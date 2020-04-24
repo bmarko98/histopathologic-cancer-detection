@@ -14,7 +14,7 @@ class SimpleWindow(Window):
 
     def create_central_widget(self, SimpleWindow, SIMPLE_CONFIG):
         super().create_central_widget(SimpleWindow, SIMPLE_CONFIG)
-        self.simpleInfoLabel = GUI.get_image_label(self.centralwidget,
+        self.simple_info_label = GUI.get_image_label(self.centralwidget,
                                                    *SIMPLE_CONFIG['SIMPLE_INFO_LABEL_POSITION'],
                                                    CONFIG.FONT,
                                                    True,
@@ -24,5 +24,5 @@ class SimpleWindow(Window):
 
     def retranslate(self, SimpleWindow, SIMPLE_CONFIG):
         super().retranslate(SimpleWindow, SIMPLE_CONFIG)
-        self.simpleInfoLabel.setText(self._translate(SIMPLE_CONFIG['WINDOW_NAME'],
+        self.simple_info_label.setText(self._translate(SIMPLE_CONFIG['WINDOW_NAME'],
                                                      SIMPLE_CONFIG['TEXT']))

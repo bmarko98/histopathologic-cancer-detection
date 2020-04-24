@@ -26,35 +26,35 @@ class MainWindow(Window):
 
     def create_central_widget(self, MainWindow, MAIN_CONFIG):
         super().create_central_widget(MainWindow, MAIN_CONFIG)
-        self.loadImageButton = GUI.get_button(self.centralwidget,
+        self.load_image_button = GUI.get_button(self.centralwidget,
                                               *MAIN_CONFIG['LOAD_IMAGE_BUTTON_POSITION'],
                                               CONFIG.FONT,
                                               MAIN_CONFIG['LOAD_IMAGE_BUTTON_NAME'])
-        self.inputImageLabel = GUI.get_image_label(self.centralwidget,
+        self.input_image_label = GUI.get_image_label(self.centralwidget,
                                                    *MAIN_CONFIG['INPUT_IMAGE_POSITION'],
                                                    CONFIG.FONT,
                                                    True,
                                                    MAIN_CONFIG['INPUT_IMAGE_NAME'],
                                                    None)
         self.image_path = ''
-        self.breastTissueRadioButton = GUI.get_radio_button(self.centralwidget,
+        self.breast_tissue_radio_button = GUI.get_radio_button(self.centralwidget,
                                                             *MAIN_CONFIG['BREAST_TISSUE_RADIO_BUTTON_POSITION'],
                                                             CONFIG.FONT,
                                                             MAIN_CONFIG['BREAST_TISSUE_RADIO_BUTTON_NAME'])
-        self.colorectalTissueRadioButton = GUI.get_radio_button(self.centralwidget,
+        self.colorectal_tissue_radio_button = GUI.get_radio_button(self.centralwidget,
                                                                 *MAIN_CONFIG['COLORECTAL_TISSUE_RADIO_BUTTON_POSITION'],
                                                                 CONFIG.FONT,
                                                                 MAIN_CONFIG['COLORECTAL_TISSUE_RADIO_BUTTON_NAME'])
-        self.classifyButton = GUI.get_button(self.centralwidget,
+        self.classify_button = GUI.get_button(self.centralwidget,
                                              *MAIN_CONFIG['CLASSIFY_BUTTON_POSITION'],
                                              CONFIG.FONT,
                                              MAIN_CONFIG['CLASSIFY_BUTTON_NAME'])
-        self.predictedClassLabel = GUI.get_label(self.centralwidget,
+        self.predicted_class_label = GUI.get_label(self.centralwidget,
                                                  *MAIN_CONFIG['PREDICTED_CLASS_LABEL_POSITION'],
                                                  CONFIG.FONT,
                                                  False,
                                                  MAIN_CONFIG['PREDICTED_CLASS_LABEL_NAME'])
-        self.classProbabilitiesPlot = GUI.get_image_label(self.centralwidget,
+        self.class_probabilities_plot = GUI.get_image_label(self.centralwidget,
                                                           *MAIN_CONFIG['CLASS_PROBABILITIES_PLOT_POSITION'],
                                                           CONFIG.FONT,
                                                           True,
@@ -73,84 +73,84 @@ class MainWindow(Window):
                                         *MAIN_CONFIG['MENU_BAR_POSITION'],
                                         CONFIG.FONT,
                                         MAIN_CONFIG['MENU_BAR_NAME'])
-        self.menuFile = GUI.get_menu(self.menubar, MAIN_CONFIG['MENU']['FILE_NAME'])
-        self.menuFurtherAnalysis = GUI.get_menu(self.menubar, MAIN_CONFIG['MENU']['FURTHER_ANALYSIS_NAME'])
-        self.menuAbout = GUI.get_menu(self.menubar, MAIN_CONFIG['MENU']['ABOUT_NAME'])
-        self.menuApplication = GUI.get_menu(self.menubar, MAIN_CONFIG['MENU']['APPLICATION_NAME'])
-        self.menuDatasets = GUI.get_menu(self.menubar, MAIN_CONFIG['MENU']['DATASETS_NAME'])
-        self.menuModels = GUI.get_menu(self.menubar, MAIN_CONFIG['MENU']['MODELS_NAME'])
+        self.menu_file = GUI.get_menu(self.menubar, MAIN_CONFIG['MENU']['FILE_NAME'])
+        self.menu_further_analysis = GUI.get_menu(self.menubar, MAIN_CONFIG['MENU']['FURTHER_ANALYSIS_NAME'])
+        self.menu_about = GUI.get_menu(self.menubar, MAIN_CONFIG['MENU']['ABOUT_NAME'])
+        self.menu_application = GUI.get_menu(self.menubar, MAIN_CONFIG['MENU']['APPLICATION_NAME'])
+        self.menu_datasets = GUI.get_menu(self.menubar, MAIN_CONFIG['MENU']['DATASETS_NAME'])
+        self.menu_models = GUI.get_menu(self.menubar, MAIN_CONFIG['MENU']['MODELS_NAME'])
 
         MainWindow.setMenuBar(self.menubar)
 
-        self.actionAuthor = GUI.get_action(MainWindow, MAIN_CONFIG['ACTION']['AUTHOR_NAME'])
-        self.actionHowTo = GUI.get_action(MainWindow, MAIN_CONFIG['ACTION']['HOW_TO_NAME'])
-        self.actionBreakHis = GUI.get_action(MainWindow, MAIN_CONFIG['ACTION']['BREAK_HIS_NAME'])
-        self.actionNCT_CRC_HE_100K = GUI.get_action(MainWindow, MAIN_CONFIG['ACTION']['NCT_CRC_HE_100K_NAME'])
-        self.actionCNNSimple = GUI.get_action(MainWindow, MAIN_CONFIG['ACTION']['CNN_SIMPLE_NAME'])
-        self.actionVGG19Simple = GUI.get_action(MainWindow, MAIN_CONFIG['ACTION']['VGG19_SIMPLE_NAME'])
-        self.actionNetworkFilters = GUI.get_action(MainWindow, MAIN_CONFIG['ACTION']['MODELS_NAME'])
-        self.actionIntermediateActivations = GUI.get_action(MainWindow, MAIN_CONFIG['ACTION']['INTERMEDIATE_ACTIVATIONS_NAME'])
-        self.actionHeatmap = GUI.get_action(MainWindow, MAIN_CONFIG['ACTION']['HEATMAP_NAME'])
-        self.actionExit = GUI.get_action(MainWindow, MAIN_CONFIG['ACTION']['EXIT_NAME'])
-        self.actionSave = GUI.get_action(MainWindow, MAIN_CONFIG['ACTION']['SAVE_NAME'])
-        self.actionGeneral = GUI.get_action(MainWindow, MAIN_CONFIG['ACTION']['GENERAL_NAME'])
+        self.action_author = GUI.get_action(MainWindow, MAIN_CONFIG['ACTION']['AUTHOR_NAME'])
+        self.action_how_to = GUI.get_action(MainWindow, MAIN_CONFIG['ACTION']['HOW_TO_NAME'])
+        self.action_breakhis = GUI.get_action(MainWindow, MAIN_CONFIG['ACTION']['BREAK_HIS_NAME'])
+        self.action_nctcrche100k = GUI.get_action(MainWindow, MAIN_CONFIG['ACTION']['NCT_CRC_HE_100K_NAME'])
+        self.action_cnnsimple = GUI.get_action(MainWindow, MAIN_CONFIG['ACTION']['CNN_SIMPLE_NAME'])
+        self.action_vgg19simple = GUI.get_action(MainWindow, MAIN_CONFIG['ACTION']['VGG19_SIMPLE_NAME'])
+        self.action_network_filters = GUI.get_action(MainWindow, MAIN_CONFIG['ACTION']['MODELS_NAME'])
+        self.action_intermediate_activations = GUI.get_action(MainWindow, MAIN_CONFIG['ACTION']['INTERMEDIATE_ACTIVATIONS_NAME'])
+        self.action_heatmap = GUI.get_action(MainWindow, MAIN_CONFIG['ACTION']['HEATMAP_NAME'])
+        self.action_exit = GUI.get_action(MainWindow, MAIN_CONFIG['ACTION']['EXIT_NAME'])
+        self.action_save = GUI.get_action(MainWindow, MAIN_CONFIG['ACTION']['SAVE_NAME'])
+        self.action_general = GUI.get_action(MainWindow, MAIN_CONFIG['ACTION']['GENERAL_NAME'])
 
     def add_actions(self):
-        self.menuFile.addAction(self.actionSave)
-        self.menuFile.addSeparator()
-        self.menuFile.addAction(self.actionExit)
-        self.menuFurtherAnalysis.addAction(self.actionIntermediateActivations)
-        self.menuFurtherAnalysis.addAction(self.actionHeatmap)
-        self.menuFurtherAnalysis.addSeparator()
-        self.menuFurtherAnalysis.addAction(self.actionNetworkFilters)
-        self.menuApplication.addAction(self.actionGeneral)
-        self.menuApplication.addAction(self.actionHowTo)
-        self.menuApplication.addSeparator()
-        self.menuApplication.addAction(self.actionAuthor)
-        self.menuDatasets.addAction(self.actionBreakHis)
-        self.menuDatasets.addAction(self.actionNCT_CRC_HE_100K)
-        self.menuModels.addAction(self.actionCNNSimple)
-        self.menuModels.addAction(self.actionVGG19Simple)
-        self.menuAbout.addAction(self.menuApplication.menuAction())
-        self.menuAbout.addSeparator()
-        self.menuAbout.addAction(self.menuDatasets.menuAction())
-        self.menuAbout.addAction(self.menuModels.menuAction())
-        self.menubar.addAction(self.menuFile.menuAction())
-        self.menubar.addAction(self.menuFurtherAnalysis.menuAction())
-        self.menubar.addAction(self.menuAbout.menuAction())
+        self.menu_file.addAction(self.action_save)
+        self.menu_file.addSeparator()
+        self.menu_file.addAction(self.action_exit)
+        self.menu_further_analysis.addAction(self.action_intermediate_activations)
+        self.menu_further_analysis.addAction(self.action_heatmap)
+        self.menu_further_analysis.addSeparator()
+        self.menu_further_analysis.addAction(self.action_network_filters)
+        self.menu_application.addAction(self.action_general)
+        self.menu_application.addAction(self.action_how_to)
+        self.menu_application.addSeparator()
+        self.menu_application.addAction(self.action_author)
+        self.menu_datasets.addAction(self.action_breakhis)
+        self.menu_datasets.addAction(self.action_nctcrche100k)
+        self.menu_models.addAction(self.action_cnnsimple)
+        self.menu_models.addAction(self.action_vgg19simple)
+        self.menu_about.addAction(self.menu_application.menuAction())
+        self.menu_about.addSeparator()
+        self.menu_about.addAction(self.menu_datasets.menuAction())
+        self.menu_about.addAction(self.menu_models.menuAction())
+        self.menubar.addAction(self.menu_file.menuAction())
+        self.menubar.addAction(self.menu_further_analysis.menuAction())
+        self.menubar.addAction(self.menu_about.menuAction())
 
     def retranslate(self, MainWindow, MAIN_CONFIG):
         super().retranslate(MainWindow, MAIN_CONFIG)
-        self.loadImageButton.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['LOAD_IMAGE_BUTTON_TEXT']))
-        self.breastTissueRadioButton.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'],
+        self.load_image_button.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['LOAD_IMAGE_BUTTON_TEXT']))
+        self.breast_tissue_radio_button.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'],
                                                              MAIN_CONFIG['BREAST_TISSUE_RADIO_BUTTON_TEXT']))
-        self.colorectalTissueRadioButton.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'],
+        self.colorectal_tissue_radio_button.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'],
                                                                  MAIN_CONFIG['COLORECTAL_TISSUE_RADIO_BUTTON_TEXT']))
-        self.classifyButton.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['CLASSIFY_BUTTON_TEXT']))
-        self.menuFile.setTitle(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['MENU']['FILE_TEXT']))
-        self.menuFurtherAnalysis.setTitle(self._translate(MAIN_CONFIG['WINDOW_NAME'],
+        self.classify_button.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['CLASSIFY_BUTTON_TEXT']))
+        self.menu_file.setTitle(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['MENU']['FILE_TEXT']))
+        self.menu_further_analysis.setTitle(self._translate(MAIN_CONFIG['WINDOW_NAME'],
                                                           MAIN_CONFIG['MENU']['FURTHER_ANALYSIS_TEXT']))
-        self.menuAbout.setTitle(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['MENU']['ABOUT_TEXT']))
-        self.menuApplication.setTitle(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['MENU']['APPLICATION_TEXT']))
-        self.menuDatasets.setTitle(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['MENU']['DATASETS_TEXT']))
-        self.menuModels.setTitle(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['MENU']['MODELS_TEXT']))
-        self.actionHowTo.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['ACTION']['HOW_TO_TEXT']))
-        self.actionAuthor.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['ACTION']['AUTHOR_TEXT']))
-        self.actionBreakHis.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['ACTION']['BREAK_HIS_TEXT']))
-        self.actionNCT_CRC_HE_100K.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'],
+        self.menu_about.setTitle(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['MENU']['ABOUT_TEXT']))
+        self.menu_application.setTitle(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['MENU']['APPLICATION_TEXT']))
+        self.menu_datasets.setTitle(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['MENU']['DATASETS_TEXT']))
+        self.menu_models.setTitle(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['MENU']['MODELS_TEXT']))
+        self.action_how_to.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['ACTION']['HOW_TO_TEXT']))
+        self.action_author.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['ACTION']['AUTHOR_TEXT']))
+        self.action_breakhis.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['ACTION']['BREAK_HIS_TEXT']))
+        self.action_nctcrche100k.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'],
                                                            MAIN_CONFIG['ACTION']['NCT_CRC_HE_100K_TEXT']))
-        self.actionCNNSimple.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['ACTION']['CNN_SIMPLE_TEXT']))
-        self.actionVGG19Simple.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['ACTION']['VGG19_SIMPLE_TEXT']))
-        self.actionNetworkFilters.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'],
+        self.action_cnnsimple.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['ACTION']['CNN_SIMPLE_TEXT']))
+        self.action_vgg19simple.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['ACTION']['VGG19_SIMPLE_TEXT']))
+        self.action_network_filters.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'],
                                                           MAIN_CONFIG['ACTION']['NETWORK_FILTERS_TEXT']))
-        self.actionIntermediateActivations.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'],
+        self.action_intermediate_activations.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'],
                                                                    MAIN_CONFIG['ACTION']['INTERMEDIATE_ACTIVATIONS_TEXT']))
-        self.actionHeatmap.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['ACTION']['HEATMAP_TEXT']))
-        self.actionExit.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['ACTION']['EXIT_TEXT']))
-        self.actionSave.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['ACTION']['SAVE_TEXT']))
-        self.actionGeneral.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['ACTION']['GENERAL_TEXT']))
+        self.action_heatmap.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['ACTION']['HEATMAP_TEXT']))
+        self.action_exit.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['ACTION']['EXIT_TEXT']))
+        self.action_save.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['ACTION']['SAVE_TEXT']))
+        self.action_general.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['ACTION']['GENERAL_TEXT']))
 
-    def inspectConvWindow(self, INSPECT_CONV_CONFIG):
+    def inspect_conv_window_fun(self, INSPECT_CONV_CONFIG):
         self.InspectConvWindow = QtWidgets.QMainWindow()
         self.inspect_conv_window = InspectConvWindow()
         self.inspect_conv_window.input_image = self.image
@@ -158,15 +158,15 @@ class MainWindow(Window):
         self.inspect_conv_window.setup(self.InspectConvWindow, INSPECT_CONV_CONFIG)
         self.InspectConvWindow.show()
 
-    def layerActivationsWindow(self):
+    def layer_activations_window_fun(self):
         if self.layer_activations:
-            self.inspectConvWindow(CONFIG.INSPECT_CONV_CONFIG['LAYER_ACTIVATIONS'])
+            self.inspect_conv_window_fun(CONFIG.INSPECT_CONV_CONFIG['LAYER_ACTIVATIONS'])
 
-    def filterPatternsWindow(self):
+    def filter_patterns_window_fun(self):
         if self.filter_patterns:
-            self.inspectConvWindow(CONFIG.INSPECT_CONV_CONFIG['FILTER_PATTERNS'])
+            self.inspect_conv_window_fun(CONFIG.INSPECT_CONV_CONFIG['FILTER_PATTERNS'])
 
-    def heatmapWindow(self):
+    def heatmap_window_fun(self):
         if self.heatmap_path:
             img = image.load_img(self.heatmap_path)
             np_img = image.img_to_array(img)
@@ -176,49 +176,49 @@ class MainWindow(Window):
             CONFIG.SIMPLE_CONFIG['HEATMAP']['WINDOW_Y'] = np_img.shape[1]
             CONFIG.SIMPLE_CONFIG['HEATMAP']['SIMPLE_INFO_LABEL_POSITION'] = [0, 0, np_img.shape[2], np_img.shape[1]]
             CONFIG.SIMPLE_CONFIG['HEATMAP']['SIMPLE_INFO_LABEL_IMAGE_PATH'] = self.heatmap_path
-            self.simpleWindow(CONFIG.SIMPLE_CONFIG['HEATMAP'])
+            self.simple_window_fun(CONFIG.SIMPLE_CONFIG['HEATMAP'])
 
-    def aboutAuthorWindow(self):
+    def about_author_window_fun(self):
         self.AboutAuthorWindow = QtWidgets.QMainWindow()
         self.about_author_window = AboutAuthorWindow()
         self.about_author_window.setup(self.AboutAuthorWindow, CONFIG.ABOUT_AUTHOR_CONFIG)
         self.AboutAuthorWindow.show()
 
-    def aboutDatasetsWindow(self, DATASETS_CONFIG):
+    def about_datasets_window_fun(self, DATASETS_CONFIG):
         self.AboutDatasetsWindow = QtWidgets.QMainWindow()
         self.about_datasets_window = AboutDatasetsWindow()
         self.about_datasets_window.setup(self.AboutDatasetsWindow, DATASETS_CONFIG)
         self.AboutDatasetsWindow.show()
 
-    def aboutDatasetNCT_CRC_HE_100K(self):
-        self.aboutDatasetsWindow(CONFIG.ABOUT_DATASETS_CONFIG['NCT_CRC_HE_100K'])
+    def about_dataset_nctcrche100k_window_fun(self):
+        self.about_datasets_window_fun(CONFIG.ABOUT_DATASETS_CONFIG['NCT_CRC_HE_100K'])
 
-    def aboutDatasetBreakHis(self):
-        self.aboutDatasetsWindow(CONFIG.ABOUT_DATASETS_CONFIG['BREAK_HIS'])
+    def about_dataset_breakhis_window_fun(self):
+        self.about_datasets_window_fun(CONFIG.ABOUT_DATASETS_CONFIG['BREAK_HIS'])
 
-    def aboutModelsWindow(self, MODELS_CONFIG):
+    def about_models_window_fun(self, MODELS_CONFIG):
         self.AboutModelsWindow = QtWidgets.QMainWindow()
         self.about_models_window = AboutModelsWindow()
         self.about_models_window.setup(self.AboutModelsWindow, MODELS_CONFIG)
         self.AboutModelsWindow.show()
 
-    def aboutModelVGG19Simple(self):
-        self.aboutModelsWindow(CONFIG.ABOUT_MODELS_CONFIG['VGG19_SIMPLE'])
+    def about_model_vgg19simple_window_fun(self):
+        self.about_models_window_fun(CONFIG.ABOUT_MODELS_CONFIG['VGG19_SIMPLE'])
 
-    def aboutModelCNNSimple(self):
-        self.aboutModelsWindow(CONFIG.ABOUT_MODELS_CONFIG['CNN_SIMPLE'])
+    def about_model_cnnsimple_window_fun(self):
+        self.about_models_window_fun(CONFIG.ABOUT_MODELS_CONFIG['CNN_SIMPLE'])
 
-    def simpleWindow(self, SIMPLE_CONFIG):
+    def simple_window_fun(self, SIMPLE_CONFIG):
         self.SimpleWindow = QtWidgets.QMainWindow()
         self.simple_window = SimpleWindow()
         self.simple_window.setup(self.SimpleWindow, SIMPLE_CONFIG)
         self.SimpleWindow.show()
 
-    def generalWindow(self):
-        self.simpleWindow(CONFIG.SIMPLE_CONFIG['GENERAL'])
+    def general_window_fun(self):
+        self.simple_window_fun(CONFIG.SIMPLE_CONFIG['GENERAL'])
 
-    def howToWindow(self):
-        self.simpleWindow(CONFIG.SIMPLE_CONFIG['HOWTO'])
+    def how_to_window_fun(self):
+        self.simple_window_fun(CONFIG.SIMPLE_CONFIG['HOWTO'])
 
     def exit(self):
         if os.path.exists(CONFIG.TEMPORARY_PLOTS_DIR):
@@ -232,41 +232,41 @@ class MainWindow(Window):
         shutil.copytree(CONFIG.TEMPORARY_PLOTS_DIR, os.path.join(dir_name, 'hpd' + current_time))
 
     def triggers(self):
-        self.actionNetworkFilters.triggered.connect(self.filterPatternsWindow)
-        self.actionIntermediateActivations.triggered.connect(self.layerActivationsWindow)
-        self.actionHeatmap.triggered.connect(self.heatmapWindow)
-        self.actionAuthor.triggered.connect(self.aboutAuthorWindow)
-        self.actionNCT_CRC_HE_100K.triggered.connect(self.aboutDatasetNCT_CRC_HE_100K)
-        self.actionBreakHis.triggered.connect(self.aboutDatasetBreakHis)
-        self.actionVGG19Simple.triggered.connect(self.aboutModelVGG19Simple)
-        self.actionCNNSimple.triggered.connect(self.aboutModelCNNSimple)
-        self.actionGeneral.triggered.connect(self.generalWindow)
-        self.actionHowTo.triggered.connect(self.howToWindow)
-        self.actionExit.triggered.connect(self.exit)
-        self.actionSave.triggered.connect(self.save)
+        self.action_network_filters.triggered.connect(self.filter_patterns_window_fun)
+        self.action_intermediate_activations.triggered.connect(self.layer_activations_window_fun)
+        self.action_heatmap.triggered.connect(self.heatmap_window_fun)
+        self.action_author.triggered.connect(self.about_author_window_fun)
+        self.action_nctcrche100k.triggered.connect(self.about_dataset_nctcrche100k_window_fun)
+        self.action_breakhis.triggered.connect(self.about_dataset_breakhis_window_fun)
+        self.action_vgg19simple.triggered.connect(self.about_model_vgg19simple_window_fun)
+        self.action_cnnsimple.triggered.connect(self.about_model_cnnsimple_window_fun)
+        self.action_general.triggered.connect(self.general_window_fun)
+        self.action_how_to.triggered.connect(self.how_to_window_fun)
+        self.action_exit.triggered.connect(self.exit)
+        self.action_save.triggered.connect(self.save)
 
-        self.loadImageButton.clicked.connect(self.loadImageButtonEvent)
-        self.classifyButton.clicked.connect(self.classifyButtonEvent)
-        self.inputImageLabel.mousePressEvent = self.inputImageClickedEvent
-        self.classProbabilitiesPlot.mousePressEvent = self.classProbabilitiesPlotClickedEvent
+        self.load_image_button.clicked.connect(self.load_image_button_event)
+        self.classify_button.clicked.connect(self.classify_button_event)
+        self.input_image_label.mousePressEvent = self.input_image_clicked_event
+        self.class_probabilities_plot.mousePressEvent = self.class_probabilities_plot_clicked_event
 
-    def loadImageButtonEvent(self):
+    def load_image_button_event(self):
         image_path = QtWidgets.QFileDialog.getOpenFileName(None, 'Select Image', '',
                                                            "Image File Types(*.jpg *.png *.tif *.tiff)")
         self.image_path = image_path[0]
-        self.inputImageLabel.setPixmap(QtGui.QPixmap(self.image_path))
+        self.input_image_label.setPixmap(QtGui.QPixmap(self.image_path))
 
-    def classifyButtonEvent(self):
+    def classify_button_event(self):
         if self.image_path != '':
-            if self.breastTissueRadioButton.isChecked():
+            if self.breast_tissue_radio_button.isChecked():
                 dataset, model_path = 'break_his', CONFIG.MAIN_CONFIG['VGG19_SIMPLE_MODEL_PATH']
-            elif self.colorectalTissueRadioButton.isChecked():
+            elif self.colorectal_tissue_radio_button.isChecked():
                 dataset, model_path = 'nct_crc_he_100k', CONFIG.MAIN_CONFIG['CNN_SIMPLE_MODEL_PATH']
             self.model, self.image, self.image_class, self.plot_path, self.layers = predict_image(self.image_path,
                                                                                                   dataset,
                                                                                                   model_path)
-            self.predictedClassLabel.setText(self._translate(CONFIG.MAIN_CONFIG['WINDOW_NAME'], self.image_class))
-            self.classProbabilitiesPlot.setPixmap(QtGui.QPixmap(self.plot_path))
+            self.predicted_class_label.setText(self._translate(CONFIG.MAIN_CONFIG['WINDOW_NAME'], self.image_class))
+            self.class_probabilities_plot.setPixmap(QtGui.QPixmap(self.plot_path))
             self.heatmap_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                                              'temporary_plots', 'heatmap.jpg')
             self.layer_activations = True
@@ -279,15 +279,15 @@ class MainWindow(Window):
                 if layer.find('conv') >= 0:
                     CONFIG.INSPECT_CONV_CONFIG['FILTER_PATTERNS']['COMBO_BOX_ITEMS'].append(layer)
 
-    def inputImageClickedEvent(self, event):
+    def input_image_clicked_event(self, event):
         if self.image_path:
-            self.imageClickedEvent(self.image_path)
+            self.image_clicked_event(self.image_path)
 
-    def classProbabilitiesPlotClickedEvent(self, event):
+    def class_probabilities_plot_clicked_event(self, event):
         if self.plot_path:
-            self.imageClickedEvent(self.plot_path)
+            self.image_clicked_event(self.plot_path)
 
-    def imageClickedEvent(self, image_path):
+    def image_clicked_event(self, image_path):
         img = image.load_img(image_path)
         np_img = image.img_to_array(img)
         np_img = np.expand_dims(np_img, axis=0)
@@ -296,7 +296,7 @@ class MainWindow(Window):
         CONFIG.SIMPLE_CONFIG['IMAGE']['WINDOW_Y'] = np_img.shape[1]
         CONFIG.SIMPLE_CONFIG['IMAGE']['SIMPLE_INFO_LABEL_POSITION'] = [0, 0, np_img.shape[2], np_img.shape[1]]
         CONFIG.SIMPLE_CONFIG['IMAGE']['SIMPLE_INFO_LABEL_IMAGE_PATH'] = image_path
-        self.simpleWindow(CONFIG.SIMPLE_CONFIG['IMAGE'])
+        self.simple_window_fun(CONFIG.SIMPLE_CONFIG['IMAGE'])
 
     def setup(self, MainWindow, MAIN_CONFIG):
         self.set_main_window(MainWindow, MAIN_CONFIG)
