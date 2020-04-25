@@ -1,11 +1,11 @@
 \chapter{Convolutional Neural Networks} % Simulation results
 \label{appx:simulation}
 
-Convolutional Neural Networks for image classification take image as an input, process it, and output category to which that image belongs. Processing part consists of a series of layers through which image is propagated in order to learn features, which in turn determine to which class an image belongs. (\textcolor{red}{\autoref{fig:cnn1}}).
+Convolutional Neural Networks for image classification \cite{krizhevsky2012imagenet} take image as an input, process it, and output category to which that image belongs. Processing part consists of a series of layers through which image is propagated in order to learn features, which in turn determine to which class an image belongs. (\textcolor{red}{\autoref{fig:cnn1}}).
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[scale=0.5]{cnn.png}
+	\includegraphics[scale=0.2]{cnn.png}
 	\caption{Convolutional Neural Network consisting of two Convolution layers, two Max-Pooling layers, Flatten layer and two Fully-Connected (Dense) layers}
 	\label{fig:cnn1}
 \end{figure}
@@ -29,5 +29,5 @@ After the high-level features of the image have been detected, series of fully-c
 
 \subsection{Dropout Layer}
 
-Fully-Connected layer contains the most parameters in the network, and as a result neurons develop co-dependency amongst each other during training, which leads to over-fitting the data (not generalizing well on new, unseen images). In order to prevent that, dropout layers are positioned right after dense layers in CNN architecture as a means of regularizing the network. Dropout consists of randomly ignoring (dropping out) fraction of neurons of fully-connected layer, which in turn makes network learn more robust features, and achieve better performance.
+Fully-Connected layer contains the most parameters in the network, and as a result neurons develop co-dependency amongst each other during training, which leads to overfitting the data (not generalizing well on new, unseen images). In order to prevent that, dropout layers are positioned right after dense layers in CNN architecture as a means of regularizing the network. Dropout consists of randomly ignoring (dropping out) fraction of neurons of fully-connected layer, which in turn makes network learn more robust features, and achieve better performance.
 \clearpage

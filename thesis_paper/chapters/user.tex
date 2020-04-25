@@ -96,7 +96,7 @@ Deep neural networks are highly complex models which have great expressive power
 
 \subsection{Visualizing Heatmaps of Class Activations}
 
-Different parts of an image have different weights in networks decision on tissue and cancer subtype classification, and because of that, we can highlight which parts of an image have the highest influence on the networks output. This class of methods is called class activation map visualization, and it produces heatmaps of class activations over input images. A class activation heatmap is a 2D grid of scores associated with a specific output class, computed for every location in any input image, indicating how important each location is with respect to the class under consideration. In order to produce heatmap, go to \emph{Further Analysis $\rightarrow$ Heatmap} (\textcolor{red}{\autoref{fig:heatmap}}).
+Different parts of an image have different weights in networks decision on tissue and cancer subtype classification, and because of that, we can highlight which parts of an image have the highest influence on the networks output. This class of methods is called class activation map visualization, and it produces heatmaps of class activations over input images. A class activation heatmap is a 2D grid of scores associated with a specific output class, computed for every location in any input image, indicating how important each location is with respect to the class under consideration \cite{chollet2018deep}. In order to produce heatmap, go to \emph{Further Analysis $\rightarrow$ Heatmap} (\textcolor{red}{\autoref{fig:heatmap}}).
 
 \begin{figure}[h]
 	\centering
@@ -116,7 +116,7 @@ Different parts of an image have different weights in networks decision on tissu
 
 \subsection{Visualizing Intermediate Activations}
 
-Visualizing intermediate activations consists of displaying the feature maps that are output by various convolution and pooling layers in a network, given a certain input (the output of a layer is often called its activation, the output of the activation function). This gives a view into how an input is decomposed into the different filters learned by the network. In order to visualize intermediate activations of layers, go to \emph{Further Analysis $\rightarrow$ Class Activations}. Next choose which network layer's intermediate activations should be visualized, along with channel number, or 'all', for visualizing all of layer's channels  (\textcolor{red}{\autoref{fig:interact}}).
+Visualizing intermediate activations consists of displaying the feature maps that are output by various convolution and pooling layers in a network, given a certain input (the output of a layer is often called its activation, the output of the activation function). This gives a view into how an input is decomposed into the different filters learned by the network \cite{chollet2018deep}. In order to visualize intermediate activations of layers, go to \emph{Further Analysis $\rightarrow$ Class Activations}. Next choose which network layer's intermediate activations should be visualized, along with channel number, or 'all', for visualizing all of layer's channels  (\textcolor{red}{\autoref{fig:interact}}).
 \clearpage
 
 \begin{figure}[h]
@@ -128,11 +128,11 @@ Visualizing intermediate activations consists of displaying the feature maps tha
 
 \subsection{Visualizing Filters of Convolutional Layers}
 
-Further analysis is not only dependent on an input image, as we can also inspect feature exractors (filters) of convolutional layers by displaying patterns on which each filter is supposed to respond to. This can be done with gradient ascent in input space : applying gradient descent to the value of the input image of a convnet so as to maximize the response of a specific filter, starting from a blank input image. The resulting input image will be one that the chosen filter is maximally responsive to. In order to visualize filters of convolutional layers, go to \emph{Further Analysis $\rightarrow$ Network Filters}.  Next choose which network convolutional layer's filters should be visualized, along with filter number, or 'all', for visualizing all of layer's filters  (\textcolor{red}{\autoref{fig:filters}}).
+Further analysis is not only dependent on an input image, as we can also inspect feature exractors (filters) of convolutional layers by displaying patterns on which each filter is supposed to respond to. This can be done with gradient ascent in input space: applying gradient descent to the value of the input image of a convnet so as to maximize the response of a specific filter, starting from a blank input image. The resulting input image will be one that the chosen filter is maximally responsive to \cite{chollet2018deep}. In order to visualize filters of convolutional layers, go to \emph{Further Analysis $\rightarrow$ Network Filters}.  Next choose which network convolutional layer's filters should be visualized, along with filter number, or 'all', for visualizing all of layer's filters  (\textcolor{red}{\autoref{fig:filters}}).
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[scale=0.25]{filters.png}
+	\includegraphics[scale=0.23]{filters.png}
 	\caption{Filter patterns for second convolutional layer of CNNSimple network}
 	\label{fig:filters}
 \end{figure}

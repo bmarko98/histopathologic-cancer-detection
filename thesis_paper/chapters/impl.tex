@@ -67,12 +67,12 @@ They work by extracting datasets downloaded from \cite{breakhis_bib}, \cite{nctc
 
 \section{CNNSimple Implementation}
 
-CNNSimple convolutional neural network (\textcolor{red}{Code \ref{src:py1}}) was created using Keras Sequential model in order to classify images from NCT-CRC-HE-100K dataset, which contains 80.000 images divided into 9 tissue/cancer categories. 
+CNNSimple convolutional neural network (\textcolor{red}{Code \ref{src:py1}}) was created using Keras Sequential model in order to classify images from NCT-CRC-HE-100K dataset, which contains 100.000 images divided into 9 tissue/cancer categories. 
 
-Convolutional base of CNNSimple is composed of four blocks of convolution and max-pooling layers, where first two blocks have two convolution and one max-pooling layer, and last two blocks have three convolution and one max-pooling layer. Each convolution layer has 3x3 convolution window, uses ReLU activation function, and number of feature maps (filters) increases exponentially from 32 to 256. Each max-pooling layer has 2x2 pool size. 
+Convolutional base of CNNSimple is composed of four blocks of convolution and max-pooling layers, where first two blocks have two convolution and one max-pooling layer, and last two blocks have three convolution and one max-pooling layer. Each convolution layer has 3x3 convolution window, uses ReLU activation function, and number of feature maps (filters) increases exponentially from 32 to 256. Each max-pooling layer has pool size of 2x2. 
 
 Classification top of CNNSimple is composed of two fully-connected layers, each followed by a dropout layer, and an output (also fully-connected) layer. Fully-connected layers use ReLU activation function, and number of neurons grows from 512 to 1024. Dropout layers use 50\% dropout rate (fraction of neurons which will be ignored in each passing). Output layer uses softmax activation function, and has nine neurons (one neuron per tissue/cancer subtype output). 
-\vspace{3mm}
+\vspace{1mm}
 \lstset{caption={CNNSimple network architecture},label=src:py1}
 \begin{lstlisting}[language={Python}, basicstyle=\scriptsize]
 	model = Sequential()
@@ -105,11 +105,11 @@ Although CNNs are a powerful tool for image classification, in order to achieve 
 
 \subsection{VGG19Simple Implementation}
 
-VGG19Simple convolutional neural network (\textcolor{red}{Code \ref{src:py2}}) was created using Keras Graphical API in order to classify images from BreakHis dataset, which contains 2.000 images divided into 8 tissue/cancer categories. 
+VGG19Simple convolutional neural network (\textcolor{red}{Code \ref{src:py2}}) was created using Keras Graphical API in order to classify images from BreakHis dataset, which contains 2.081 images divided into 8 tissue/cancer categories. 
 
 Convolutional base of VGG19Simple is VGG19 pre-built network pre-trained on ImageNet dataset (without top classification part), using imagenet weights.
 
-Classification top of CNNSimple is composed of two fully-connected layers, each followed by a dropout layer, and an output (also fully-connected) layer. Fully-connected layers use ReLU activation function, and number of neurons grows from 512 to 1024. Dropout layers use 50\% dropout rate (fraction of neurons which will be ignored in each passing). Output layer uses softmax activation function, and has nine neurons (one neuron per tissue/cancer subtype output). 
+Classification top of CNNSimple is composed of two fully-connected layers, each followed by a dropout layer, and an output (also fully-connected) layer. Fully-connected layers use ReLU activation function, and number of neurons grows from 512 to 1024. Dropout layers use 50\% dropout rate (fraction of neurons which will be ignored in each passing). Output layer uses softmax activation function, and has eight neurons (one neuron per tissue/cancer subtype output). 
 
 \vspace{3mm}
 \lstset{caption={VGG19Simple network architecture},label=src:py2}
@@ -131,9 +131,9 @@ Classification top of CNNSimple is composed of two fully-connected layers, each 
 
 \section{Experiments and Results}
 
-Performance of neural networks is determined by how well will it generalize, i.e. how high accuracy will it achieve on previously unseen data (if it performs well on training data, but underachieves on test data, it is said that CNN overfits). In order to prevent overfitting, number of techniques can be used: increase size of dataset, change network architecture or apply hyperparameter tuning techniques, which consist of selecting a set optimal hyperparameters for learning algorithm. Selection of such parameters for networks is done in \textbf{\emph{hyperparameter\_tuning.py}}. First step consists of defining hyperparameter dictionary with parameters and values to be tested, such as number of epochs for which network is to be trained, optimization techniques, etc. Next step consists of training network with all combination of parameters and values defined, after which network performances are compared in order to determine the best hyperparameter set.
+Performance of neural networks is determined by how well will it generalize, i.e. how high accuracy will it achieve on previously unseen data (if it performs well on training data, but underachieves on test data, it is said that CNN overfits). In order to prevent overfitting, number of techniques can be used: increase size of dataset, change network architecture or apply hyperparameter tuning techniques, which consist of selecting a set optimal hyperparameters for learning algorithm. Selection of such parameters for networks is done in \textbf{\emph{hyperparameter\_tuning.py}}. First step consists of defining hyperparameter dictionary with parameters and values to be tested, such as number of epochs for which network is to be trained, optimization techniques, etc. Next step consists of training network with all combination of parameters and values defined, after which network performances are compared in order to determine the optimal hyperparameter set.
 
-CNNSimple network trained on NCT-CRC-HE-100K dataset was trained for 50 epochs, using RMSProp optimizer with learning rate of 0.00002, using categorical crossentropy loss function. Before feeding data to the network, data augmentation (applying random transformations in order to produce more images, such as translation, rotation, sheer) has been used. In order to judge performance of the network, accuracy metrics function was employed. CNNSimple achieved 91.3\% validation and 91.3\% test accuracy, and 0.18 validation and 0.28 test loss (\textcolor{red}{\autoref{fig:cnnperf}}).
+CNNSimple network trained on NCT-CRC-HE-100K dataset was trained for 50 epochs, using RMSProp optimizer with learning rate of 0.00002, using categorical crossentropy loss function. Before feeding data to the network, data augmentation (applying random transformations in order to produce more images, such as translation, rotation, sheer) has been used. In order to assess performance of the network, accuracy metrics function was employed. CNNSimple achieved 91.3\% validation and 91.3\% test accuracy, and 0.18 validation and 0.28 test loss (\textcolor{red}{\autoref{fig:cnnperf}}).
 
 \begin{figure}[h]
 	\centering
@@ -142,9 +142,9 @@ CNNSimple network trained on NCT-CRC-HE-100K dataset was trained for 50 epochs, 
 	\caption{CNNSimple performance on NCT-CRC-HE-100K train and validation dataset}
 	\label{fig:cnnperf}
 \end{figure}
-
 \clearpage
-VGG19Simple network trained on BreakHis dataset was trained for 150 epochs, using Adam optimizer with learning rate of 0.0001, using categorical crossentropy loss function. Before feeding data to the network, data augmentation (applying random transformations in order to produce more images, such as translation, rotation, sheer) has been used. In order to judge performance of the network, accuracy metrics function was employed. After training network with frozen convolutional base, last convolutional block was unfreezed, and network was trained again using Adam optimizer with learning rate of 0.00005. VGG19Simple achieved 61.7\% validation and 62.1\% test accuracy, and 1.18 validation and 0.62 test loss (\textcolor{red}{\autoref{fig:vgg19perf}}).
+
+VGG19Simple network trained on BreakHis dataset was trained for 150 epochs, using Adam optimizer with learning rate of 0.0001, using categorical crossentropy loss function. Before feeding data to the network, data augmentation (applying random transformations in order to produce more images, such as translation, rotation, sheer) has been used. In order to assess performance of the network, accuracy metrics function was employed. After training network with frozen convolutional base, last convolutional block was unfreezed, and network was trained again using Adam optimizer with learning rate of 0.00005. VGG19Simple achieved 61.7\% validation and 62.1\% test accuracy, and 1.18 validation and 0.62 test loss (\textcolor{red}{\autoref{fig:vgg19perf}}).
 
 \begin{figure}[h]
 	\centering
@@ -172,8 +172,6 @@ Another way of interpreting network performance is by plotting confusion matrix,
 	\end{minipage}
 \end{figure}
 
-\clearpage
-
 \section{Graphical User Interface} \label{gui}
 
 In order to make using program simple and straightforward, graphical user interface using PyQt5 has been created. Following window classes have been constructed:
@@ -185,13 +183,13 @@ In order to make using program simple and straightforward, graphical user interf
 	\item AboutModelsWindow class in \textbf{\emph{about\_models\_window.py}}, which contains five labels (containing network name, network architecture, accuracy, loss and confusion matrix plots respectively)
 	\item SimpleWindow class in \textbf{\emph{simple\_window.py}}, which contains one image label
 	\item InspectConvWindow class in \textbf{\emph{inspect\_conv\_window.py}}, which contains three labels (containing convolution layer text, number text and image respectively), button (with associated action), combo box (containing network layer names)  and line edit (for input of numbers)
-	\item MainWindow class in \textbf{\emph{main\_window.py}}, which connects every other window and provides main program functionality 
+	\item MainWindow class in \textbf{\emph{main\_window.py}}, which connects every other window and provides high-level program functionality 
 \end{itemize}
-In addition, every window specific information is located in \textbf{\emph{config.py}}, such as window sizes, positions and names of labels, paths to images, etc. GUI component definitions are located in \textbf{\emph{gui\_components.py}}.
+In addition, every window-specific information is located in \textbf{\emph{config.py}}, such as window sizes, positions and names of labels, paths to images, etc. GUI component definitions are located in \textbf{\emph{gui\_components.py}}.
 
 \subsection{Main Window}
 
-MainWindow class is the central part of the GUI, as it defines the window which pops up when program is started. It has menu bar from which every other window can be reached, and central widget which contains input image, tissue-type radio buttons, classify button and output class label and probabilities plot. Function \emph{classifyButtonEvent}, associated with \emph{classifyButton} is the integral part of the class, as it loads network based on the input image tissue type, classifies it, and writes output to labels.
+MainWindow class is the central part of the GUI, as it defines the window which appears when program is started. It has menu bar from which every other window can be reached, and central widget which contains input image, tissue-type radio buttons, classify button and output class label and probabilities plot. Function \emph{classifyButtonEvent}, associated with \emph{classifyButton} is the integral part of the class, as it loads network based on the input image tissue type, classifies it, and writes output to labels.
 
 
 \section{Utilities}
