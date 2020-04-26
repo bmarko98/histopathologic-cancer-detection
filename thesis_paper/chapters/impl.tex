@@ -45,7 +45,7 @@ Window class is the base class of all window classes, and it implements common m
 
 \clearpage
 
-BaseCNN class is the common class of all neural network classes, and it contains common attributes, such as dataset name, network name, compile parameters, and common methods, such as creation of data generators, compilation and training of the network. Neural network classes will be discussed in more detail in Section \textcolor{red}{\ref{cnn}}
+BaseCNN class is the common class of all neural network classes, and it contains common attributes, such as dataset name, network name, compile parameters, and common methods, such as creation of data generators, compilation and training of the network. Neural network classes will be discussed in more detail in Sections \textcolor{red}{\ref{cnn}, \ref{vgg19}}.
 
 \begin{figure}[h]
 	\centering
@@ -66,10 +66,11 @@ They work by extracting datasets downloaded from \cite{breakhis_bib}, \cite{nctc
 \clearpage
 
 \section{CNNSimple Implementation}
+\label{cnn}
 
 CNNSimple convolutional neural network (\textcolor{red}{Code \ref{src:py1}}) was created using Keras Sequential model in order to classify images from NCT-CRC-HE-100K dataset, which contains 100.000 images divided into 9 tissue/cancer categories. 
 
-Convolutional base of CNNSimple is composed of four blocks of convolution and max-pooling layers, where first two blocks have two convolution and one max-pooling layer, and last two blocks have three convolution and one max-pooling layer. Each convolution layer has 3x3 convolution window, uses ReLU activation function, and number of feature maps (filters) increases exponentially from 32 to 256. Each max-pooling layer has pool size of 2x2. 
+Convolutional base of CNNSimple is composed of four blocks of convolution and max-pooling layers, where first two blocks have two convolution and one max-pooling layer, and last two blocks have three convolution and one max-pooling layer. Each convolution layer has 3$\times$3 convolution window, uses ReLU activation function, and number of feature maps (filters) increases exponentially from 32 to 256. Each max-pooling layer has pool size of 2$\times$2. 
 
 Classification top of CNNSimple is composed of two fully-connected layers, each followed by a dropout layer, and an output (also fully-connected) layer. Fully-connected layers use ReLU activation function, and number of neurons grows from 512 to 1024. Dropout layers use 50\% dropout rate (fraction of neurons which will be ignored in each passing). Output layer uses softmax activation function, and has nine neurons (one neuron per tissue/cancer subtype output). 
 \vspace{1mm}
@@ -100,6 +101,7 @@ Classification top of CNNSimple is composed of two fully-connected layers, each 
 \end{lstlisting} 
 
 \section{Transfer Learning}
+\label{vgg19}
 
 Although CNNs are a powerful tool for image classification, in order to achieve high accuracy, large amount of data is needed. Problem occurs when only small dataset is available (as is often in healthcare, ex. BreakHis dataset). In such cases transfer learning can be used: take model trained on large dataset and transfer knowledge to small dataset, i.e. freeze convolutional base, and only train classification top of the network. Main idea is that early layers of convolutional base learns low-level features applicable across all images, such as edges and patterns.
 
