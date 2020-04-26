@@ -14,13 +14,23 @@ ABOUT_AUTHOR_CONFIG = {
     'WINDOW_NAME': 'AboutAuthorWindow',
     'WINDOW_TITLE': 'About Author',
     'WINDOW_X': 640,
-    'WINDOW_Y': 400,
-    'IMAGE_LABEL_POSITION': [50, 75, 100, 150],
+    'WINDOW_Y': 250,
+    'IMAGE_LABEL_POSITION': [50, 35, 100, 150],
     'IMAGE_LABEL_NAME': 'authorImageLabel',
     'AUTHOR_IMAGE_PATH': os.path.join(REPO_DIR, 'gui', 'resources', 'author.jpg'),
-    'RESUME_LABEL_POSITION': [250, 75, 250, 250],
+    'RESUME_LABEL_POSITION': [140, 20, 450, 200],
     'RESUME_LABEL_NAME': 'resumeLabel',
-    'RESUME': 'Write decent CV...'
+    'RESUME': '''
+              Student from Serbia, currently undertaking BSc
+              in Computer Science at Eötvös Loránd
+              University in Budapest. Strong mathematical
+              background, skilled in machine learning,
+              statistics and programming. Wrote
+              Histopathologic Cancer Detection as part of
+              final thesis paper.
+
+              github.com/bmarko98
+              '''
 }
 
 ABOUT_DATASETS_CONFIG = {
@@ -97,22 +107,63 @@ ABOUT_MODELS_CONFIG = {
 
 SIMPLE_CONFIG = {
     'GENERAL': {
-        'WINDOW_NAME': 'SimpleWindow',
-        'WINDOW_TITLE': 'General',
+        'WINDOW_NAME': 'BasicUseWindow',
+        'WINDOW_TITLE': 'Basic Use',
         'WINDOW_X': 640,
         'WINDOW_Y': 400,
-        'TEXT': 'Basic usability of the App...',
-        'SIMPLE_INFO_LABEL_POSITION': [50, 50, 540, 300],
+        'TEXT': '''
+                Basic use of Histopathologic Canced Detection:
+
+                1. Predicting tissue and cancer subtype of breast and colorectal
+                tissue, i.e. predicting whether patient has breast or colorectal
+                cancer or not
+                    - load image by clicking 'Load Image' button
+                    - set tissue type by choosing appropriate radio button
+                    - classify slide by clicking 'Classify' button
+
+                2. Visualizing what Convolutional Neural Network learns, i.e.
+                visualizing how network transforms input image, and which parts
+                of input image lead to predicting tissue and cancer subtype
+                    - visualize heatmap of class activations by selecting:
+                        Further Analysis -> Heatmap
+                    - visualize filters of convolutional layers by selecting:
+                        Further Analysis -> Network Filters
+                    - visualize intermediate activations by selecting:
+                        Further Analysis -> Class Activations
+                ''',
+        'SIMPLE_INFO_LABEL_POSITION': [-30, 0, 620, 380],
         'SIMPLE_INFO_LABEL_NAME': 'simpleInfoLabel',
         'SIMPLE_INFO_LABEL_IMAGE_PATH': None
     },
     'HOWTO': {
-        'WINDOW_NAME': 'AboutModelsWindow',
-        'WINDOW_TITLE': 'How To',
-        'WINDOW_X': 1080,
-        'WINDOW_Y': 720,
-        'TEXT': 'Advanced usability of the App...',
-        'SIMPLE_INFO_LABEL_POSITION': [50, 50, 940, 600],
+        'WINDOW_NAME': 'AdvancedUseWindow',
+        'WINDOW_TITLE': 'Advanced Use',
+        'WINDOW_X': 760,
+        'WINDOW_Y': 460,
+        'TEXT': '''
+                Advanced use of Histopathologic Cancer Detection:
+
+                Adding additional tissue type (ex. lung tissue), along with tissue/cancer subtype
+                classification can be accomplished in four steps:
+
+                1. Creating dataset
+                - Obtaining dataset of new tissue type, and preparing dataset to be fed to Keras-
+                built CNN, which includes creating appropriate directory structure
+
+                2. Building CNN
+                - Crating new convolutional neural network class inherited from BaseCNN by
+                defining data generator transformations, network architecture, etc.
+
+                3. Fine-tuning CNN
+                - Defining hyperparameter dictionary and training neural networks in order to
+                increase classification accuracy and prevent overfitting
+
+                4. Extending GUI
+                - Adding additional radio button to MainWindow class, and extending action
+                associated with classify button, as well as further analysis actions, to use newly
+                created network
+                ''',
+        'SIMPLE_INFO_LABEL_POSITION': [-40, 0, 740, 440],
         'SIMPLE_INFO_LABEL_NAME': 'simpleInfoLabel',
         'SIMPLE_INFO_LABEL_IMAGE_PATH': None
     },
@@ -224,7 +275,7 @@ MAIN_CONFIG = {
     'ACTION': {
         'MODELS_NAME': 'actionModels', 'MODELS_TEXT': 'Models',
         'AUTHOR_NAME': 'actionAuthor', 'AUTHOR_TEXT': 'Author',
-        'HOW_TO_NAME': 'actionHowTo', 'HOW_TO_TEXT': 'How To',
+        'HOW_TO_NAME': 'actionHowTo', 'HOW_TO_TEXT': 'Advanced Use',
         'BREAK_HIS_NAME': 'actionBreakHis', 'BREAK_HIS_TEXT': 'BreakHis',
         'NCT_CRC_HE_100K_NAME': 'actionNCT_CRC_HE_100K', 'NCT_CRC_HE_100K_TEXT': 'NCT_CRC_HE_100K',
         'CNN_SIMPLE_NAME': 'actionCNNSimple', 'CNN_SIMPLE_TEXT': 'CNNSimple',
@@ -232,7 +283,7 @@ MAIN_CONFIG = {
         'NETWORK_FILTERS_NAME': 'actionNetworkFilters', 'NETWORK_FILTERS_TEXT': 'Network Filters',
         'INTERMEDIATE_ACTIVATIONS_NAME': 'actionIntermediateActivations', 'INTERMEDIATE_ACTIVATIONS_TEXT': 'Layer Activations',
         'HEATMAP_NAME': 'actionHeatmap', 'HEATMAP_TEXT': 'Heatmap',
-        'GENERAL_NAME': 'actionGeneral', 'GENERAL_TEXT': 'General',
+        'GENERAL_NAME': 'actionGeneral', 'GENERAL_TEXT': 'Basic Use',
         'EXIT_NAME': 'actionExit', 'EXIT_TEXT': 'Exit',
         'SAVE_NAME': 'actionSave', 'SAVE_TEXT': 'Save'
      }
