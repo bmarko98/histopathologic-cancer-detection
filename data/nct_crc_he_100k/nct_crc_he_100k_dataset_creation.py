@@ -17,6 +17,7 @@ tissue_types_dict = {'adipose': 'ADI', 'background': 'BACK', 'debris': 'DEB', 'l
 
 
 def extract_and_create(archived_dataset, current_dir):
+    _logger.info("Extracting images and creating directory structure...")
     with zipfile.ZipFile(archived_dataset, 'r') as zip_ref:
         zip_ref.extractall(current_dir)
 
@@ -33,6 +34,7 @@ def extract_and_create(archived_dataset, current_dir):
 
 
 def move_to_train(current_dir):
+    _logger.info("Moving images to train directory...")
     for tissue_type in tissue_types:
         source_directory = current_dir + '/NCT-CRC-HE-100K/' + tissue_types_dict[tissue_type] + '/'
         destination_directory = current_dir + '/nct_crc_he_100k_train/' + tissue_type
@@ -42,8 +44,9 @@ def move_to_train(current_dir):
                 shutil.move(source_directory + image, destination_directory)
 
 
-def move_to_directory(directory, tissue_type, total, number_to_move, current_dir):
-    files = [f.path for f in os.scandir(current_dir + '/nct_crc_he_100k_train/' + tissue_type)]
+def move_to_directory(directory, tissue_type, total, number_to_move, current_dir, train_dir):
+    _logger.info("Moving {t} images to {d} directory...".format(t=tissue_type, d=directory))
+    files = [f.path for f in os.scandir(train_dir)]
     random_list = random.sample(range(0, total-1), number_to_move)
     files_to_move = []
     for random_number in random_list:
@@ -57,15 +60,16 @@ def main(archived_dataset, current_dir):
         extract_and_create(archived_dataset, current_dir)
         move_to_train(current_dir)
 
-        if os.path.isdir(current_dir + '/NCT-CRC-HE-100K'):
-            shutil.rmtree(current_dir + '/NCT-CRC-HE-100K')
+        shutil.rmtree(current_dir + '/NCT-CRC-HE-100K')
 
         for tissue_type in tissue_types:
-            if os.path.isdir(current_dir + '/nct_crc_he_100k_train/' + tissue_type):
-                total = len([name for name in os.listdir(current_dir + '/nct_crc_he_100k_train/' + tissue_type)])
-                number_to_move = int(total*0.15)
-                move_to_directory('/nct_crc_he_100k_validation/', tissue_type, total, number_to_move, current_dir)
-                move_to_directory('/nct_crc_he_100k_test/', tissue_type, total-number_to_move, number_to_move, current_dir)
+            cancer_type_train_dir = os.path.join(current_dir, 'nct_crc_he_100k_train', tissue_type)
+            total = len([name for name in os.listdir(cancer_type_train_dir)])
+            number_to_move = int(total*0.15)
+            move_to_directory('nct_crc_he_100k_validation', tissue_type, total, number_to_move, current_dir,
+                              cancer_type_train_dir)
+            move_to_directory('nct_crc_he_100k_test', tissue_type, total-number_to_move, number_to_move, current_dir,
+                              cancer_type_train_dir)
     except Exception as e:
         _logger.error('Exception caught in main: {}'.format(e), exc_info=True)
         return 1
