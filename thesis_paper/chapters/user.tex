@@ -8,32 +8,37 @@ There are three main ways of using Histopathologic Cancer Detection program:
 	\item Visualizing what Convolutional Neural Network learns, i.e. visualizing how network transforms input image, and which parts of input image lead to predicting tissue and cancer subtype
 	\item Adding new datasets and networks in order to increase the scope of the program, and predict even more tissue and cancer subtypes
 \end{enumerate}
-In order to use the program to predict tissue and cancer subtype, or to visualize what CNNs learn, certain general software requirements are needed, while in order to expand the scope of the program, certain additional software requirements are needed.
+Before using the program, certain system requirements need to be satisfied.
 
-\section{General Software Requirements}
+\section{System Requirements}
+\label{sysreq}
 
-Before running the program, Python3 programming language is required, along with following dependencies: 
+In order to run Histopathologic Cancer Detection, Python 3.5+ is required on one of the following operating systems: Windows 7 or later (64bit), macOS 10.12.6 (Sierra) or later (64bit), Ubuntu 16.04 or later (64bit) or Raspbian 9.0 or later. Moreover, considering computer needs to be powerful enough to perform large number of tensor operations and handle the computing power necessary, CPU Intel Core i5 6th generation processor or higher (or an MAD equivalent processor) and 8+GB of RAM are required.
+
+\subsection{General Software Requirements}
+
+In order to use the program to predict tissue and cancer subtype, and to visualize what CNNs learn, following Python3 dependencies are required: 
 \begin{itemize}
 	\itemsep 0em
-	\item h5py - interface to the HDF5 binary data format, which can store huge amounts of numerical data, and easily manipulate that data from NumPy (used to save and load network weights)
-	\item Keras, Keras-Applications, Keras-Preprocessing, tensorflow - neural networks APIs, which can build and deploy machine learning applications (used to build and train neural networks)
-	\item matplotlib, seaborn - data visualization libraries (used for visualization of datasets, neural networks and tissue and cancer subtype predictions)
-	\item NumPy - library which provides support for large, multi-dimensional arrays
-	\item opencv-python, Pillow, scikit-image - image processing libraries (used to load, process and save images)
-	\item pandas - data analysis and manipulation library (used for loading datasets)
-	\item PyQt5 - python binding of cross-platform GUI toolkit Qt, which contains substantial set of GUI widgets (used for implementing GUI part of the program)
-	\item scikit-learn - machine learning library for predictive data analysis (used for its metrics in order to assess network performance)
+	\item \texttt{h5py} - interface to the HDF5 binary data format, which can store huge amounts of numerical data, and easily manipulate that data from \texttt{NumPy} (used to save and load network weights)
+	\item \texttt{Keras}, \texttt{Keras-Applications}, \texttt{Keras-Preprocessing}, \texttt{tensorflow} - neural networks APIs, which can build and deploy machine learning applications (used to build and train neural networks)
+	\item \texttt{matplotlib}, \texttt{seaborn} - data visualization libraries (used for visualization of datasets, neural networks and tissue and cancer subtype predictions)
+	\item \texttt{NumPy} - library which provides support for large, multi-dimensional arrays
+	\item \texttt{opencv-python}, \texttt{Pillow}, \texttt{scikit-image} - image processing libraries (used to load, process and save images)
+	\item \texttt{pandas} - data analysis and manipulation library (used for loading datasets)
+	\item \texttt{PyQt5} - python binding of cross-platform GUI toolkit Qt, which contains substantial set of GUI widgets (used for implementing GUI part of the program)
+	\item \texttt{scikit-learn} - machine learning library for predictive data analysis (used for its metrics in order to assess network performance)
 \end{itemize}
 If general software requirements are satisfied, program can be used to predict tissue and cancer subtypes, as well as to visualize network representations.
 
-\section{Additional Software Requirements}
+\subsection{Additional Software Requirements}
 
-In order to replicate results of already existing networks, or to expand scope of the program by adding new datasets and training new networks, NVIDIA graphics card is required, along with the following:
+	In order to replicate results of already existing networks, or to expand scope of the program by adding new datasets and training new networks, NVIDIA GPU card with CUDA Compute Capability 3.5 or higher is required, along with the following:
 \begin{itemize}
 	\itemsep 0em
 	\item NVIDIA CUDA toolkit - provides a development environment for creating high performance GPU-accelerated applications
 	\item NVIDIA CUDA Deep Neural Network Library (cuDNN) - GPU-accelerated library of primitives for deep neural networks, which provides highly tuned implementations for standard routines
-	\item tensorflow-gpu - GPU-enabled version of tensorflow library
+	\item \texttt{tensorflow-gpu} - GPU-enabled version of \texttt{tensorflow} library
 \end{itemize}
 Training convolutional neural networks requires large amount of computations, and in order to decrease training time, networks are trained on GPU (it is not feasible on CPU, as GPU training is multiple times faster).
 
@@ -51,12 +56,13 @@ After running the program, new window appears (\textcolor{red}{\autoref{fig:star
 From here, it is possible to:
 \begin{enumerate}
 	\itemsep 0em
-	\item Inspect datasets and networks
-	\item Load histopathologic slide of breast or colorectal tissue and predict the tissue and cancer subtype
-	\item Further visualize network representations by analyzing heatmaps of class activations, filters of convolutional layers and intermediate activations
+	\item Inspect datasets (\textcolor{red}{\hyperref[inspdata]{Section 2.4}}) and networks (\textcolor{red}{\hyperref[inspnets]{Section 2.5}})
+	\item Load histopathologic slide of breast or colorectal tissue and predict the tissue and cancer subtype (\textcolor{red}{\hyperref[basicuse]{Section 2.6}})
+	\item Further visualize network representations by analyzing heatmaps of class activations, filters of convolutional layers and intermediate \\ activations (\textcolor{red}{\hyperref[advuse]{Section 2.7}})
 \end{enumerate}
 
 \section{Inspecting Datasets}
+\label{inspdata}
 
 In order to find basic information about datasets, which include sample images from dataset, tissue and cancer subtypes, as well as number of images per category, go to \emph{About $\rightarrow$ About\;Datasets} and choose dataset (\textcolor{red}{\autoref{fig:inspectdataset}}). In current implementation there are two datasets available: BreakHis and NCT-CRC-HE-100K.
 \clearpage
@@ -69,6 +75,7 @@ In order to find basic information about datasets, which include sample images f
 \end{figure}
 
 \section{Inspecting Networks}
+\label{inspnets}
 
 In order to find basic information about networks, which include network architecture and network performance on training, validation and test datasets (accuracy, loss and confusion matrix), go to \emph{About $\rightarrow$ About\;Models} and choose network (\textcolor{red}{\autoref{fig:inspectmodel}}). In current implementation there are two networks available: CNNSimple and VGG19Simple.
 
@@ -80,6 +87,7 @@ In order to find basic information about networks, which include network archite
 \end{figure}
 
 \section{Basic Use: Predicting Tissue Type}
+\label{basicuse}
 
 Main use of the Histopathologic Cancer Detection program is to make it easy and fast to load histopathologic slide and get a prediction on tissue and cancer subtype. In order to load a histopathologic slide, click on \emph{Load\; Image}, and select histopathologic slide for which the prediction is required. Next, select a tissue type of the slide by clicking on \emph{Breast\;Tissue} or \emph{Colorectal\;Tissue}. Afterwards, in order to get tissue and cancer subtype, along with probabilities graph, press \emph{Classify} button (\textcolor{red}{\autoref{fig:predict}}).
 
@@ -91,6 +99,7 @@ Main use of the Histopathologic Cancer Detection program is to make it easy and 
 \end{figure}
 
 \section{Advanced Use: Visualizing Network Representations}
+\label{advuse}
 
 Deep neural networks are highly complex models which have great expressive power and can achieve high accuracy while solving wide range of problems. Unfortunately, with high complexity comes low interpretability, which presents issue, especially in deep learning applications to healthcare. Fortunately, there are several methods to inspect convolutional neural networks, and interpret their output. In this paper, I covered three of them: visualizing heatmaps of class activations, visualizing filters of convolutional layers and visualizing intermediate activations.
 

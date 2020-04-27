@@ -452,5 +452,6 @@ TSWLatexianTemp*
 
 thesis_paper/thesis.pdf
 thesis_paper/topic_declaration.pdf
+thesis_paper/topic_declaration_2.pdf
 
 gui/tensorflow/*

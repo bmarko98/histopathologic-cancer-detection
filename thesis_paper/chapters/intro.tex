@@ -36,15 +36,3 @@ The NCT-CRC-HE-100K \cite{kather_jakob_nikolas_2018_1214456} is a dataset constr
 	\caption{NCT-CRC-HE-100K dataset tissue classes: adipose tissue, background, debris, lymphocytes, mucus, smooth muscle, normal colon mucosa, cancer-associated stroma, colorectal adenocarcinoma epithelium}
 	\label{fig:nctcrche100k}
 \end{figure}
-
-\section{Approach}
-
-I have divided the creation of the program for histopathologic cancer detection in four major parts:
-\begin{enumerate}
-	\itemsep0em
-	\item Assembling dataset structure (required for input to convolutional neural network), image preprocessing (loading, removing noise, normalization, whitening) and data augmentation (expanding size of dataset by applying a series of random transformations to each image)
-	\item Building the convolutional neural networks (class of deep neural networks applied to analyzing images), and training them on data
-	\item Improving prediction accuracy of networks (solving underfitting and overfitting problems) with hyperparameter tuning (choosing optimal parameters for learning algorithm) and changes to network architecture
-	\item Creating graphical user interface for the program, which allows user to load histopathologic slide and select network which has be applied on it, and to get as output category to which that slide belongs, with additional possibility to visualize network representations (heatmaps of class activations, filters of convolutional layers and intermediate activations)
-\end{enumerate}
-
