@@ -5,7 +5,7 @@ import pandas as pd
 import seaborn as sns
 from datetime import datetime
 from sklearn.metrics import confusion_matrix
-from utils.visualize_filters import create_and_save_model_patterns
+from utils.visualize_filters import visualize_filters
 
 
 logging.basicConfig(level=logging.INFO)
@@ -14,12 +14,15 @@ _logger = logging.getLogger(__name__)
 sns.set_style('darkgrid')
 
 
-def create_directory_and_txt_file(network_name, dataset_name):
+def create_directory_and_txt_file(network_name, dataset_name, save_dir=None):
     _logger.info('Creating output directories and .txt file...')
     current_time = datetime.now()
     current_time = current_time.strftime("_%d-%m-%Y_%H:%M:%S")
-    base_directory = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                                  '..', 'experiments', dataset_name + '_models', network_name + current_time)
+    if save_dir == None:
+        base_directory = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                      '..', 'experiments', dataset_name + '_models', network_name + current_time)
+    else:
+        base_directory = save_dir
     plots_directory = os.path.join(base_directory, 'plots')
     filter_directory = os.path.join(base_directory, 'conv_filters')
     os.mkdir(base_directory)
@@ -120,10 +123,11 @@ def save_plots(directory, network):
     save_confusion_matrix_plot(directory, network.test_generator, network.predictions, network.classes)
 
 
-def save_model(network, skip_filters):
+def save_model(network, skip_filters=True, save_dir=None):
     _logger.info('Started saving the model...')
     base_directory, plots_directory, filter_directory, file_path = create_directory_and_txt_file(network.network_name,
-                                                                                                 network.dataset_name)
+                                                                                                 network.dataset_name,
+                                                                                                 save_dir)
     file = open(file_path, 'a+')
 
     save_arguments(file, network)
@@ -132,7 +136,9 @@ def save_model(network, skip_filters):
     save_plots(plots_directory, network)
     save_test_results(file, network.model, network.test_generator, network.dataset_count, network.batch_size)
     if skip_filters is False:
-        create_and_save_model_patterns(network.model, filter_directory)
+        visualize_filters(network.model, filter_directory)
     save_as_h5(base_directory, network.model, network.network_name)
 
     file.close()
+
+    return 0

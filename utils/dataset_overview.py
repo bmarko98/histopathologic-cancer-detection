@@ -22,7 +22,7 @@ def get_image_paths(dataset, category, number_of_images, data_dir):
     return image_paths
 
 
-def sample_images(dataset, categories, number_of_images, image_width, image_height, data_dir):
+def sample_images(dataset, categories, number_of_images, image_width, image_height, data_dir, save_path=None):
     margin = 0
     results = np.zeros((len(categories) * image_height + len(categories) * margin, number_of_images * image_width, 3))
     for i in range(len(categories)):
@@ -42,7 +42,11 @@ def sample_images(dataset, categories, number_of_images, image_width, image_heig
     plt.axis('off')
     image_name = dataset + '_sample_images.jpg'
     image_path = os.path.join(data_dir, dataset, image_name)
-    plt.savefig(fname=image_path, bbox_inches='tight', pad_inches=0)
+    if save_path == None:
+        save_path = image_path
+    plt.savefig(fname=save_path, bbox_inches='tight', pad_inches=0)
+
+    return 0
 
 
 def category_numbers(dataset, categories, dir):
@@ -64,7 +68,7 @@ def write_dataset_numbers(txt_file, total, dictionary):
     txt_file.write('\n')
 
 
-def dataset_numbers(dataset, categories, data_dir):
+def dataset_numbers(dataset, categories, data_dir, txt_file_path):
     _logger.info(dataset + ' dataset numbers...')
     train_dictionary, train_total = category_numbers(dataset,
                                                      categories,
@@ -80,7 +84,6 @@ def dataset_numbers(dataset, categories, data_dir):
     for category in categories:
         total_dictionary[category] = train_dictionary[category] + validation_dictionary[category] + test_dictionary[category]
 
-    txt_file_path = os.path.join(data_dir, dataset, dataset + '_dataset_overview.txt')
     txt_file = open(txt_file_path, "w+")
     txt_file.write('\n')
     txt_file.write('Dataset: ' + dataset + '\n')
@@ -97,20 +100,28 @@ def dataset_numbers(dataset, categories, data_dir):
     write_dataset_numbers(txt_file, test_total, test_dictionary)
     txt_file.close()
 
+    return 0
 
-def main():
-    data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data')
-    datasets = [f.name for f in os.scandir(data_dir) if f.is_dir()]
-    for dataset in datasets:
-        _logger.info(dataset + ' dataset...')
-        train_dir = os.path.join(data_dir, dataset, dataset + '_train')
-        categories = [f.name for f in os.scandir(train_dir) if f.is_dir()]
-        number_of_images = 10
-        image_path = [im.path for im in os.scandir(os.path.join(train_dir, categories[0])) if im.is_file()][0]
-        image = Image.open(image_path)
-        #dataset_numbers(dataset, categories, data_dir)
-        sample_images(dataset, categories, number_of_images, image.size[0], image.size[1], data_dir)
+
+def main(data_dir, datasets, save_dir):
+    try:
+        for dataset in datasets:
+            _logger.info(dataset + ' dataset...')
+            train_dir = os.path.join(data_dir, dataset, dataset + '_train')
+            categories = [f.name for f in os.scandir(train_dir) if f.is_dir()]
+            number_of_images = 10
+            image_path = [im.path for im in os.scandir(os.path.join(train_dir, categories[0])) if im.is_file()][0]
+            image = Image.open(image_path)
+            txt_file_path = os.path.join(save_dir, dataset, dataset + '_dataset_overview.txt')
+            dataset_numbers(dataset, categories, data_dir, txt_file_path)
+            sample_images(dataset, categories, number_of_images, image.size[0], image.size[1], data_dir)
+    except Exception as e:
+        _logger.info('Exception caught in main: {}'.format(e), exc_info=True)
+        return 1
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data')
+    datasets = [f.name for f in os.scandir(data_dir) if f.is_dir()]
+    exit(main(data_dir, datasets, data_dir))

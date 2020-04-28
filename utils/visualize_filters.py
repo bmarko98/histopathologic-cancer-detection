@@ -68,7 +68,7 @@ def create_layer_patterns(model, layer_name, N, size, margin, directory):
     plt.savefig(fname=image_path, bbox_inches='tight')
 
 
-def create_and_save_model_patterns(model, directory):
+def visualize_filters(model, directory):
     _logger.info('Creating model patterns...')
     image_height_width = 150
     margin_size = 5
@@ -81,3 +81,5 @@ def create_and_save_model_patterns(model, directory):
                                   size=image_height_width,
                                   margin=margin_size,
                                   directory=directory)
+
+    return 0

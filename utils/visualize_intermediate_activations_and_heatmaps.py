@@ -101,17 +101,18 @@ def get_heatmap(image, model):
 
     heatmap = np.mean(conv_layer_output_value, axis=-1)
     heatmap = np.maximum(heatmap, 0)
-    heatmap /= np.max(heatmap)
+    heatmap /= np.max(heatmap) + 1e-5
 
     return heatmap
 
 
-def visualize_heatmaps(image_URL, image, model, dir):
+def visualize_heatmaps(image_path, image, model, dir):
     heatmap = get_heatmap(image, model)
-    img = cv2.imread(image_URL)
+    img = cv2.imread(image_path)
     heatmap = cv2.resize(heatmap, (img.shape[1], img.shape[0]))
     heatmap = np.uint8(255 * heatmap)
     heatmap = cv2.applyColorMap(heatmap, cv2.COLORMAP_JET)
     superimposed_img = heatmap * 0.4 + img
     heatmap_path = os.path.join(dir, 'heatmap.jpg')
     cv2.imwrite(heatmap_path, superimposed_img)
+    return 0

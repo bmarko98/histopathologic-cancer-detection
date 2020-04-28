@@ -51,7 +51,7 @@ def predict_image_class(image_URL, dataset, model, dir):
     return np_img, datasets[dataset]['categories'][class_probabilities[0].argmax(axis=-1)], plot_path
 
 
-def load_keras_model(dataset, model_path):
+def load_keras_model(dataset, model_path=None):
     _logger.info('Loading Keras model...')
     if model_path is None:
         assert(dataset in datasets)
@@ -77,8 +77,9 @@ def copy_filters(model_path, temporary_plots_dir):
             shutil.copy2(filter_image, copied_filter_image)
 
 
-def predict_image(image_URL, dataset, model_path=None):
-    temporary_plots_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'gui', 'temporary_plots')
+def predict_image(image_URL, dataset, model_path=None, temporary_plots_dir=None):
+    if temporary_plots_dir is None:
+        temporary_plots_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'gui', 'temporary_plots')
     if os.path.exists(temporary_plots_dir):
         shutil.rmtree(temporary_plots_dir)
     os.mkdir(temporary_plots_dir)
