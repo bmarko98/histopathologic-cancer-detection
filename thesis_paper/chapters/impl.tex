@@ -237,8 +237,12 @@ In addition to the ease of use of Histopathologic Cancer Detection program, sour
 
 \section{Testing}
 
-Text.
+Source code for Histopatologic Cancer Detection can be divided into two equal chunks: code responsible for CNN-related functionality and code responsible for GUI-related functionality.
+
+Code for CNN-related functionality has been unit-tested using \texttt{PyTest} testing framework, and has a code coverage of 97\%. Unit tests for data module can be found in \texttt{test\_data.py}, unit tests for models and experiments modules can be found in \texttt{test\_models\_experiments.py}, and unit tests for utils can be found in \texttt{test\_utils.py}.
+
+Code for GUI-related functionality has been tested manually, where numerous histopathologic slides have been loaded and classified, as well as further analyzed, in order to inspect program functionality. 
 
 \section{External Code}
 
-Text.
+Main ideas for advanced use of Histopathologic Cancer Detection, i.e. for further analysis of CNN representations and visualization of heatmap of class activations, intermediate activations and filters of convolutional layers, as well as some parts of source code, have been taken from \cite{chollet2018deep}. Code is licensed under MIT license.
