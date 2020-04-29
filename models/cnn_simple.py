@@ -1,12 +1,11 @@
 import os
 import logging
-
-from keras.layers import Conv2D, MaxPooling2D, Flatten, Dropout, Dense
 from keras.models import Sequential
-from keras.preprocessing.image import ImageDataGenerator
-
 from models.base_cnn import BaseCNN
 from utils.save_model import save_model
+from keras.preprocessing.image import ImageDataGenerator
+from keras.layers import Conv2D, MaxPooling2D, Flatten, Dropout, Dense
+
 
 # disable tensorflow logging
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
@@ -19,32 +18,35 @@ class CNNSimple(BaseCNN):
 
     def __init__(self,
                  network_name='cnn_simple',
-                 dataset_name=None,
-                 dataset_count=None,
-                 classes=None,
+                 dataset_name='nct_crc_he_100k',
+                 dataset_count=(70010, 14995, 14995),
+                 classes=['ADI', 'BACK', 'CAS', 'CAE', 'DEB', 'LYM', 'MUC', 'NCM', 'SM'],
                  image_size=None,
                  data_augmentation=False,
-                 batch_size=32,
+                 batch_size=16,
                  loss='categorical_crossentropy',
                  learning_rate=1e-4,
                  optimizer='rmsprop',
                  metrics=['acc'],
-                 epochs=100):
+                 epochs=100,
+                 skip_filters=True):
 
         '''
         Arguments:
             network_name: string, name of the network, default: cnn_simple
-            dataset_name: string, name of the dataset, default: None
-            dateset_count: (int, int, int), number of images in train, validation, test set, default: None
-            classes: list of strings, classes of dataset, default: None
+            dataset_name: string, name of the dataset, default: nct_crc_he_100k
+            dateset_count: (int, int, int), number of images in train, validation, test set, default: (70010, 14995, 14995)
+            classes: list of strings, classes of dataset, default: ['ADI', 'BACK', 'CAS', 'CAE', 'DEB', 'LYM', 'MUC', 'NCM',
+                                                                    'SM']
             image_size: (int, int), size of the input images, default: None
-            data_augmentation: bool, whether to use data augmentation, default: False
-            batch_size: int, batch size during network training, default: 32
+            data_augmentation: bool, whether to use data augmentation or not, default: False
+            batch_size: int, batch size during network training, default: 16
             loss: string, loss function used as feedback signal for learning the weighs, default: 'categorical_crossentropy'
             learning_rate: float, optimizer learning rate (magnitude of the move), default: 1e-4
             optimizer: optimizer for model training (variant of SGD), options: rmsprop, adam, sgd, default: rmsprop
             metrics: list of strings, metrics to monitor during model training, default: ['acc']
-            epochs: int, number of epochs to train
+            epochs: int, number of epochs to train, default: 100
+            skip_filters: bool, whether to skip creation of filter patterns for separate conv layers, default: True
         '''
 
         super().__init__(network_name,
@@ -58,7 +60,8 @@ class CNNSimple(BaseCNN):
                          learning_rate,
                          optimizer,
                          metrics,
-                         epochs)
+                         epochs,
+                         skip_filters)
 
         _logger.info('CNNSimple...')
 
@@ -67,7 +70,7 @@ class CNNSimple(BaseCNN):
         self.compile(self.learning_rate)
         self.train(self.epochs)
         self.predict()
-        save_model(self, skip_filters=False)
+        save_model(self)
 
     def data_generators(self):
         _logger.info('Setting data generators...')

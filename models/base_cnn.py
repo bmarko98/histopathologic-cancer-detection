@@ -13,10 +13,10 @@ _logger = logging.getLogger(__name__)
 class BaseCNN():
 
     def __init__(self,
-                 network_name=None,
-                 dataset_name=None,
-                 dataset_count=None,
-                 classes=None,
+                 network_name,
+                 dataset_name,
+                 dataset_count,
+                 classes,
                  image_size=None,
                  data_augmentation=False,
                  batch_size=32,
@@ -24,7 +24,8 @@ class BaseCNN():
                  learning_rate=1e-4,
                  optimizer='rmsprop',
                  metrics=['acc'],
-                 epochs=100):
+                 epochs=100,
+                 skip_filters=True):
 
         _logger.info('BaseCNN...')
 
@@ -54,6 +55,8 @@ class BaseCNN():
         self.metrics = metrics
 
         self.epochs = epochs
+
+        self.skip_filters = skip_filters
 
     def data_generators(self, image_data_generator):
         _logger.info('Setting data generators...')

@@ -1,13 +1,12 @@
 import os
 import logging
-
-from keras.layers import Input, Flatten, Dropout, Dense
 from keras.models import Model
+from models.base_cnn import BaseCNN
 from keras.applications import VGG19
+from utils.save_model import save_model
+from keras.layers import Input, Flatten, Dropout, Dense
 from keras.preprocessing.image import ImageDataGenerator
 
-from models.base_cnn import BaseCNN
-from utils.save_model import save_model
 
 # disable tensorflow logging
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
@@ -20,12 +19,12 @@ class VGG19Simple(BaseCNN):
 
     def __init__(self,
                  network_name='vgg19_simple',
-                 dataset_name=None,
-                 dataset_count=None,
-                 classes=None,
+                 dataset_name='break_his',
+                 dataset_count=(1463, 309, 309),
+                 classes=['ADE', 'DUC', 'FIB', 'LOB', 'MUC', 'PAP', 'PHY', 'TUB'],
                  image_size=None,
                  data_augmentation=False,
-                 batch_size=32,
+                 batch_size=16,
                  weights='imagenet',
                  include_top=False,
                  loss='categorical_crossentropy',
@@ -33,21 +32,21 @@ class VGG19Simple(BaseCNN):
                  optimizer='rmsprop',
                  metrics=['acc'],
                  epochs=100,
-                 skip_filters=True,
                  fine_tune=False,
                  first_trainable_block=5,
                  fine_tune_learning_rate=1e-5,
-                 fine_tune_epochs=100):
+                 fine_tune_epochs=100,
+                 skip_filters=True):
 
         '''
         Arguments:
             network_name: string, name of the network, default: vgg19_simple
-            dataset_name: string, name of the dataset, default: None
-            dateset_count: (int, int, int), number of images in train, validation, test set, default: None
-            classes: list of strings, classes of dataset, default: None
+            dataset_name: string, name of the dataset, default: break_his
+            dateset_count: (int, int, int), number of images in train, validation, test set, default: (1463, 309, 309)
+            classes: list of strings, classes of dataset, default: ['ADE', 'DUC', 'FIB', 'LOB', 'MUC', 'PAP', 'PHY', 'TUB']
             image_size: (int, int), size of the input images, default: None
             data_augmentation: bool, whether to use data augmentation, default: False
-            batch_size: int, batch size during network training, default: 32
+            batch_size: int, batch size during network training, default: 16
             weights: 'imagenet' (pre-training on ImageNet) or path to weights file to be loaded, defualt: 'imagenet'
             include_top: bool, whether to include the 3 fully-connected layers at the top of the network, default: False
             loss: string, loss function used as feedback signal for learning the weighs, default: 'categorical_crossentropy'
@@ -55,11 +54,11 @@ class VGG19Simple(BaseCNN):
             optimizer: optimizer for model training (variant of SGD), options: rmsprop, adam, sgd, default: rmsprop
             metrics: list of strings, metrics to monitor during model training, default: ['acc']
             epochs: int, number of epochs to train
-            skip_filters: bool, whether to skip creation of filter patterns for separate conv layers, default: True
             fine_tune: bool, whether to fine tune the model, default: False
             first_trainable_block: 1-5, first block to set to trainable if fine tuning, default: 5
             fine_tune_learning_rate: float, optimizer learning rate if fine tuning, default: 1e-5
             fine_tune_epochs: int, number of epochs to train fine tunes model
+            skip_filters: bool, whether to skip creation of filter patterns for separate conv layers, default: True
         '''
 
         super().__init__(network_name,
@@ -73,7 +72,8 @@ class VGG19Simple(BaseCNN):
                          learning_rate,
                          optimizer,
                          metrics,
-                         epochs)
+                         epochs,
+                         skip_filters)
 
         _logger.info('VGG19Simple...')
 
@@ -86,7 +86,7 @@ class VGG19Simple(BaseCNN):
         self.compile(self.learning_rate)
         self.train(self.epochs)
         self.predict()
-        save_model(self, skip_filters)
+        save_model(self)
 
         self.fine_tune = fine_tune
         if self.fine_tune is True:
@@ -106,7 +106,7 @@ class VGG19Simple(BaseCNN):
             self.compile(self.fine_tune_learning_rate)
             self.train(self.fine_tune_epochs)
             self.predict()
-            save_model(self, skip_filters)
+            save_model(self)
 
     def data_generators(self):
         _logger.info('Setting data generators...')

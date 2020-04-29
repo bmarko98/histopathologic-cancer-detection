@@ -123,7 +123,7 @@ def save_plots(directory, network):
     save_confusion_matrix_plot(directory, network.test_generator, network.predictions, network.classes)
 
 
-def save_model(network, skip_filters=True, save_dir=None):
+def save_model(network, save_dir=None):
     _logger.info('Started saving the model...')
     base_directory, plots_directory, filter_directory, file_path = create_directory_and_txt_file(network.network_name,
                                                                                                  network.dataset_name,
@@ -135,7 +135,7 @@ def save_model(network, skip_filters=True, save_dir=None):
     save_train_history(file, network.epochs, network.history)
     save_plots(plots_directory, network)
     save_test_results(file, network.model, network.test_generator, network.dataset_count, network.batch_size)
-    if skip_filters is False:
+    if network.skip_filters is False:
         visualize_filters(network.model, filter_directory)
     save_as_h5(base_directory, network.model, network.network_name)
 
