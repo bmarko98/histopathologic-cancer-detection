@@ -65,7 +65,6 @@ From here, it is possible to:
 \label{inspdata}
 
 In order to find basic information about datasets, which include sample images from dataset, tissue and cancer subtypes, as well as number of images per category, go to \emph{About $\rightarrow$ About\;Datasets} and choose dataset (\textcolor{red}{\autoref{fig:inspectdataset}}). In current implementation there are two datasets available: BreakHis and NCT-CRC-HE-100K.
-\clearpage
 
 \begin{figure}[h]
 	\centering
@@ -78,6 +77,7 @@ In order to find basic information about datasets, which include sample images f
 \label{inspnets}
 
 In order to find basic information about networks, which include network architecture and network performance on training, validation and test datasets (accuracy, loss and confusion matrix), go to \emph{About $\rightarrow$ About\;Models} and choose network (\textcolor{red}{\autoref{fig:inspectmodel}}). In current implementation there are two networks available: CNNSimple and VGG19Simple.
+\clearpage
 
 \begin{figure}[h]
 	\centering
@@ -126,7 +126,6 @@ Different parts of an image have different weights in networks decision on tissu
 \subsection{Visualizing Intermediate Activations}
 
 Visualizing intermediate activations consists of displaying the feature maps that are output by various convolution and pooling layers in a network, given a certain input (the output of a layer is often called its activation, the output of the activation function). This gives a view into how an input is decomposed into the different filters learned by the network \cite{chollet2018deep}. In order to visualize intermediate activations of layers, go to \emph{Further Analysis $\rightarrow$ Class Activations}. Next choose which network layer's intermediate activations should be visualized, along with channel number, or 'all', for visualizing all of layer's channels  (\textcolor{red}{\autoref{fig:interact}}).
-\clearpage
 
 \begin{figure}[h]
 	\centering
@@ -145,8 +144,6 @@ Further analysis is not only dependent on an input image, as we can also inspect
 	\caption{Filter patterns for second convolutional layer of CNNSimple network}
 	\label{fig:filters}
 \end{figure}
-
-\clearpage
 
 \section{Saving Results}
 After all predictions have been made, and all further analysis has been conducted, in order to save the results, i.e. save all the images created during the program's execution, go to \emph{File $\rightarrow$ Save}.

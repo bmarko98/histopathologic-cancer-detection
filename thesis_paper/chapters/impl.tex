@@ -14,20 +14,31 @@ In the remainder of this chapter each part will be thoroughly analyzed, and dire
 
 \section{Program Structure}
 
-Histopathologic Cancer Detection program is divided into four major modules (\textcolor{red}{\autoref{fig:dirdiag}}):
+Histopathologic Cancer Detection program is divided into six major modules (\textcolor{red}{\autoref{fig:dirdiag}}, \textcolor{red}{\autoref{fig:dirdiag2}}):
 \begin{enumerate}
 	\itemsep 0em
-	\item Data - includes dataset creation, analysis and visualization
+	\item Data - includes dataset creation
 	\item Models - includes creation, training and testing of CNNs
-	\item Experiments - includes hyperparameter tuning and network performance assessment and visualization
+	\item Experiments - includes hyperparameter tuning
+	\item Utilities - includes dataset analysis and visualization and network performance assessment and visualization
+	\item Tests - includes unit testing of Data, Models, Experiments and Utilities
 	\item Graphical User Interface - includes creation of all application windows and their interconnection
 \end{enumerate}
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[scale=1.15]{directory_diagram.jpg}
+	\includegraphics[scale=1.3]{code_structure_1.jpg}
 	\caption{Diagram of directories and scripts of Histopathologic Cancer Detection}
 	\label{fig:dirdiag}
+\end{figure}
+
+\clearpage
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=1.3]{code_structure_2.jpg}
+	\caption{Diagram of directories and scripts of Histopathologic Cancer Detection}
+	\label{fig:dirdiag2}
 \end{figure}
 
 \section{Use-Case Diagram}
@@ -38,7 +49,7 @@ First step is loading the image and selecting tissue type (breast or colorectal 
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[scale=1]{use_case.jpg}
+	\includegraphics[scale=1.35]{use_case.jpg}
 	\caption{Use-Case Diagram of Histopathologic Cancer Detection}
 	\label{fig:usecase}
 \end{figure}
@@ -46,17 +57,6 @@ First step is loading the image and selecting tissue type (breast or colorectal 
 \section{Class Diagrams}
 
 Classes of Histopathologic Cancer Detection can be divided into two main components: window classes and neural network classes.
-
-Window class is the base class of all window classes, and it implements common methods, such as setting up window size and central widget. On the other side, MainWindow class is the central point of GUI, as it defines the window which appears when program is run, and every other window is invoked from it (\textcolor{red}{\autoref{fig:class2}}). Window classes, along with their attributed and methods, will be discussed in more detail in \textcolor{red}{\hyperref[gui]{Section 3.7}}.
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[scale=0.33]{main_class_diagram.png}
-	\caption{Class diagram of window classes of Histopathologic Cancer Detection}
-	\label{fig:class2}
-\end{figure}
-
-\clearpage
 
 BaseCNN class is the common class of all neural network classes, and it contains common attributes, such as dataset name, network name, compile parameters, and common methods, such as creation of data generators, compilation and training of the network. Neural network classes will be discussed in more detail in \textcolor{red}{\hyperref[cnn]{Section 3.4}, \hyperref[vgg19]{Section 3.5}}.
 
@@ -66,6 +66,15 @@ BaseCNN class is the common class of all neural network classes, and it contains
 	\caption{Class diagram of neural network classes of Histopathologic Cancer Detection}
 	\label{fig:class1}
 \end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.38]{main_class_diagram.png}
+	\caption{Class diagram of window classes of Histopathologic Cancer Detection}
+	\label{fig:class2}
+\end{figure}
+
+Window class is the base class of all window classes, and it implements common methods, such as setting up window size and central widget. On the other side, MainWindow class is the central point of GUI, as it defines the window which appears when program is run, and every other window is invoked from it (\textcolor{red}{\autoref{fig:class2}}). Window classes, along with their attributed and methods, will be discussed in more detail in \textcolor{red}{\hyperref[gui]{Section 3.7}}.
 
 \section{Creation of Datasets}
 
