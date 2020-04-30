@@ -160,7 +160,7 @@ experiments/nct_crc_he_100k_models/*
 !experiments/nct_crc_he_100k_models/CNNSimple/plots/*
 
 # code length calculator
-thesis_code_length.py
+thesis_code_analyzer.py
 
 # __init__.py
 __init__.py
