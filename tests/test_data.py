@@ -1,5 +1,4 @@
 import os
-import pytest
 import tarfile
 import zipfile
 import data.break_his.break_his_dataset_creation as break_his_dataset_creation

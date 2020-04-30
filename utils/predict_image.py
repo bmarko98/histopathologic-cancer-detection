@@ -6,7 +6,6 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from utils.misc import load_image
 from keras.models import load_model
-from keras.preprocessing import image
 from utils.visualize_intermediate_activations_and_heatmaps import visualize_heatmaps
 
 
