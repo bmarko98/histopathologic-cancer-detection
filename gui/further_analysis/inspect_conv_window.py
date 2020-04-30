@@ -1,10 +1,9 @@
 import os
-import numpy as np
-from keras.preprocessing import image
-from PyQt5 import QtGui, QtWidgets
 import gui.config as CONFIG
-import gui.gui_components as GUI
+from PyQt5 import QtWidgets
 from gui.window import Window
+import gui.gui_components as GUI
+from utils.misc import load_image
 from gui.help.simple_window import SimpleWindow
 from utils.visualize_filters import create_pattern
 from utils.visualize_intermediate_activations_and_heatmaps import visualize_intermediate_activations
@@ -15,44 +14,44 @@ class InspectConvWindow(Window):
     def create_central_widget(self, InspectConvWindow, INSPECT_CONV_CONFIG):
         self.centralwidget = GUI.get_widget(InspectConvWindow, 'centralwidget')
         self.conv_layer_label = GUI.get_label(self.centralwidget,
-                                            *INSPECT_CONV_CONFIG['CONV_LAYER_LABEL_POSITION'],
-                                            CONFIG.FONT,
-                                            False,
-                                            INSPECT_CONV_CONFIG['CONV_LAYER_LABEL_NAME'])
-        self.number_label = GUI.get_label(self.centralwidget,
-                                         *INSPECT_CONV_CONFIG['NUMBER_LABEL_POSITION'],
-                                         CONFIG.FONT,
-                                         False,
-                                         INSPECT_CONV_CONFIG['NUMBER_LABEL_NAME'])
-        self.image_label = GUI.get_image_label(self.centralwidget,
-                                              *INSPECT_CONV_CONFIG['IMAGE_LABEL_POSITION'],
+                                              *INSPECT_CONV_CONFIG['CONV_LAYER_LABEL_POSITION'],
                                               CONFIG.FONT,
-                                              True,
-                                              INSPECT_CONV_CONFIG['IMAGE_LABEL_NAME'],
-                                              None)
-        self.show_button = GUI.get_button(self.centralwidget,
-                                         *INSPECT_CONV_CONFIG['BUTTON_POSITION'],
-                                         CONFIG.FONT,
-                                         INSPECT_CONV_CONFIG['BUTTON_NAME'])
-        self.layer_combo_box = GUI.get_combo_box(self.centralwidget,
-                                               *INSPECT_CONV_CONFIG['COMBO_BOX_POSITION'],
+                                              False,
+                                              INSPECT_CONV_CONFIG['CONV_LAYER_LABEL_NAME'])
+        self.number_label = GUI.get_label(self.centralwidget,
+                                          *INSPECT_CONV_CONFIG['NUMBER_LABEL_POSITION'],
+                                          CONFIG.FONT,
+                                          False,
+                                          INSPECT_CONV_CONFIG['NUMBER_LABEL_NAME'])
+        self.image_label = GUI.get_image_label(self.centralwidget,
+                                               *INSPECT_CONV_CONFIG['IMAGE_LABEL_POSITION'],
                                                CONFIG.FONT,
-                                               INSPECT_CONV_CONFIG['COMBO_BOX_ITEMS'],
-                                               INSPECT_CONV_CONFIG['COMBO_BOX_NAME'])
+                                               True,
+                                               INSPECT_CONV_CONFIG['IMAGE_LABEL_NAME'],
+                                               None)
+        self.show_button = GUI.get_button(self.centralwidget,
+                                          *INSPECT_CONV_CONFIG['BUTTON_POSITION'],
+                                          CONFIG.FONT,
+                                          INSPECT_CONV_CONFIG['BUTTON_NAME'])
+        self.layer_combo_box = GUI.get_combo_box(self.centralwidget,
+                                                 *INSPECT_CONV_CONFIG['COMBO_BOX_POSITION'],
+                                                 CONFIG.FONT,
+                                                 INSPECT_CONV_CONFIG['COMBO_BOX_ITEMS'],
+                                                 INSPECT_CONV_CONFIG['COMBO_BOX_NAME'])
         self.number_edit = GUI.get_line_edit(self.centralwidget,
-                                            *INSPECT_CONV_CONFIG['LINE_EDIT_POSITION'],
-                                            CONFIG.FONT,
-                                            INSPECT_CONV_CONFIG['LINE_EDIT_NAME'])
+                                             *INSPECT_CONV_CONFIG['LINE_EDIT_POSITION'],
+                                             CONFIG.FONT,
+                                             INSPECT_CONV_CONFIG['LINE_EDIT_NAME'])
         InspectConvWindow.setCentralWidget(self.centralwidget)
 
     def retranslate(self, InspectConvWindow, INSPECT_CONV_CONFIG):
         super().retranslate(InspectConvWindow, INSPECT_CONV_CONFIG)
         self.conv_layer_label.setText(self._translate(INSPECT_CONV_CONFIG['WINDOW_NAME'],
-                                                    INSPECT_CONV_CONFIG['CONV_LAYER_LABEL_TEXT']))
+                                                      INSPECT_CONV_CONFIG['CONV_LAYER_LABEL_TEXT']))
         self.number_label.setText(self._translate(INSPECT_CONV_CONFIG['WINDOW_NAME'],
-                                                 INSPECT_CONV_CONFIG['NUMBER_LABEL_TEXT']))
+                                                  INSPECT_CONV_CONFIG['NUMBER_LABEL_TEXT']))
         self.show_button.setText(self._translate(INSPECT_CONV_CONFIG['WINDOW_NAME'],
-                                                INSPECT_CONV_CONFIG['BUTTON_TEXT']))
+                                                 INSPECT_CONV_CONFIG['BUTTON_TEXT']))
         for index, item in enumerate(INSPECT_CONV_CONFIG['COMBO_BOX_ITEMS']):
             self.layer_combo_box.setItemText(index, self._translate(INSPECT_CONV_CONFIG['WINDOW_NAME'], item))
 
@@ -91,16 +90,12 @@ class InspectConvWindow(Window):
         self.SimpleWindow.show()
 
     def label_clicked_event(self):
-        img = image.load_img(self.image_path)
-        np_img = image.img_to_array(img)
-        np_img = np.expand_dims(np_img, axis=0)
-        np_img /= 255.
+        np_img = load_image(self.image_path)
         CONFIG.SIMPLE_CONFIG['IMAGE']['WINDOW_X'] = np_img.shape[2]
         CONFIG.SIMPLE_CONFIG['IMAGE']['WINDOW_Y'] = np_img.shape[1]
         CONFIG.SIMPLE_CONFIG['IMAGE']['SIMPLE_INFO_LABEL_POSITION'] = [0, 0, np_img.shape[2], np_img.shape[1]]
         CONFIG.SIMPLE_CONFIG['IMAGE']['SIMPLE_INFO_LABEL_IMAGE_PATH'] = self.image_path
         self.simple_window_fun(CONFIG.SIMPLE_CONFIG['IMAGE'])
-
 
     def setup(self, InspectConvWindow, INSPECT_CONV_CONFIG):
         super().setup(InspectConvWindow, INSPECT_CONV_CONFIG)

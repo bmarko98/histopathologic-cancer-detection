@@ -7,7 +7,8 @@ FONT_COLOR = 'white'
 CENTRAL_WIDGET = 'central_widget'
 REPO_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 TEMPORARY_PLOTS_DIR = os.path.join(REPO_DIR, 'gui', 'temporary_plots')
-VGG19_SIMPLE_MODEL_PATH = os.path.join(REPO_DIR, 'experiments', 'break_his_models', 'VGG19Test_26-03-2020_20:35:03', 'VGG19Test.h5')
+VGG19_SIMPLE_MODEL_PATH = os.path.join(REPO_DIR, 'experiments', 'break_his_models',
+                                       'VGG19Test_26-03-2020_20:35:03', 'VGG19Test.h5')
 CNN_SIMPLE_MODEL_PATH = os.path.join(REPO_DIR, 'experiments', 'nct_crc_he_100k_models', 'CNNSimple', 'CNNSimple.h5')
 
 ABOUT_AUTHOR_CONFIG = {
@@ -55,7 +56,7 @@ ABOUT_DATASETS_CONFIG = {
         'OVERVIEW_LABEL_NAME': 'datasetOverviewLabel',
         'IMAGES_LABEL_POSITIONS': [550, 200, 950, 600],
         'IMAGES_LABEL_NAME': 'datasetImagesLabel',
-        'IMAGES_URL': os.path.join(REPO_DIR, 'data', 'nct_crc_he_100k', 'nct_crc_he_100k_sample_images.jpg'),
+        'IMAGES_PATH': os.path.join(REPO_DIR, 'data', 'nct_crc_he_100k', 'nct_crc_he_100k_sample_images.jpg'),
         'DATASET_OVERVIEW_PATH': os.path.join(REPO_DIR, 'data', 'nct_crc_he_100k', 'nct_crc_he_100k_dataset_overview.txt')
         }
 }
@@ -89,7 +90,7 @@ ABOUT_MODELS_CONFIG = {
         'WINDOW_Y': 1000,
         'MODEL_NAME': 'CNNSimple',
         'MODEL_NAME_LABEL_POSITION': [110, 35, 300, 25],
-        'MODEL_NAME_LABEL_NAME': 'modelSummaryLabel',
+        'MODEL_NAME_LABEL_NAME': 'modelNameLabel',
         'MODEL_SUMMARY_LABEL_POSITION': [25, 70, 500, 950],
         'MODEL_SUMMARY_LABEL_NAME': 'modelSummaryLabel',
         'ACCURACY_LABEL_POSITION': [550, 50, 400, 400],

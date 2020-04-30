@@ -3,20 +3,19 @@ import sys
 
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 
-import shutil
-import numpy as np
-from datetime import datetime
-from keras.preprocessing import image
-from PyQt5 import QtCore, QtWidgets, QtGui
-import gui.config as CONFIG
-import gui.gui_components as GUI
-from gui.window import Window
-from gui.help.simple_window import SimpleWindow
-from gui.help.about_models_window import AboutModelsWindow
-from gui.help.about_author_window import AboutAuthorWindow
-from gui.help.about_datasets_window import AboutDatasetsWindow
-from gui.further_analysis.inspect_conv_window import InspectConvWindow
-from utils.predict_image import predict_image
+import shutil                                                                 # NOQA E402
+import gui.config as CONFIG                                                   # NOQA E402
+from gui.window import Window                                                 # NOQA E402
+from datetime import datetime                                                 # NOQA E402
+import gui.gui_components as GUI                                              # NOQA E402
+from utils.misc import load_image                                             # NOQA E402
+from PyQt5 import QtCore, QtWidgets, QtGui                                    # NOQA E402
+from utils.predict_image import predict_image                                 # NOQA E402
+from gui.help.simple_window import SimpleWindow                               # NOQA E402
+from gui.help.about_models_window import AboutModelsWindow                    # NOQA E402
+from gui.help.about_author_window import AboutAuthorWindow                    # NOQA E402
+from gui.help.about_datasets_window import AboutDatasetsWindow                # NOQA E402
+from gui.further_analysis.inspect_conv_window import InspectConvWindow        # NOQA E402
 
 
 class MainWindow(Window):
@@ -27,39 +26,39 @@ class MainWindow(Window):
     def create_central_widget(self, MainWindow, MAIN_CONFIG):
         super().create_central_widget(MainWindow, MAIN_CONFIG)
         self.load_image_button = GUI.get_button(self.centralwidget,
-                                              *MAIN_CONFIG['LOAD_IMAGE_BUTTON_POSITION'],
-                                              CONFIG.FONT,
-                                              MAIN_CONFIG['LOAD_IMAGE_BUTTON_NAME'])
+                                                *MAIN_CONFIG['LOAD_IMAGE_BUTTON_POSITION'],
+                                                CONFIG.FONT,
+                                                MAIN_CONFIG['LOAD_IMAGE_BUTTON_NAME'])
         self.input_image_label = GUI.get_image_label(self.centralwidget,
-                                                   *MAIN_CONFIG['INPUT_IMAGE_POSITION'],
-                                                   CONFIG.FONT,
-                                                   True,
-                                                   MAIN_CONFIG['INPUT_IMAGE_NAME'],
-                                                   None)
+                                                     *MAIN_CONFIG['INPUT_IMAGE_POSITION'],
+                                                     CONFIG.FONT,
+                                                     True,
+                                                     MAIN_CONFIG['INPUT_IMAGE_NAME'],
+                                                     None)
         self.image_path = ''
         self.breast_tissue_radio_button = GUI.get_radio_button(self.centralwidget,
-                                                            *MAIN_CONFIG['BREAST_TISSUE_RADIO_BUTTON_POSITION'],
-                                                            CONFIG.FONT,
-                                                            MAIN_CONFIG['BREAST_TISSUE_RADIO_BUTTON_NAME'])
+                                                               *MAIN_CONFIG['BREAST_TISSUE_RADIO_BUTTON_POSITION'],
+                                                               CONFIG.FONT,
+                                                               MAIN_CONFIG['BREAST_TISSUE_RADIO_BUTTON_NAME'])
         self.colorectal_tissue_radio_button = GUI.get_radio_button(self.centralwidget,
-                                                                *MAIN_CONFIG['COLORECTAL_TISSUE_RADIO_BUTTON_POSITION'],
-                                                                CONFIG.FONT,
-                                                                MAIN_CONFIG['COLORECTAL_TISSUE_RADIO_BUTTON_NAME'])
+                                                                   *MAIN_CONFIG['COLORECTAL_TISSUE_RADIO_BUTTON_POSITION'],
+                                                                   CONFIG.FONT,
+                                                                   MAIN_CONFIG['COLORECTAL_TISSUE_RADIO_BUTTON_NAME'])
         self.classify_button = GUI.get_button(self.centralwidget,
-                                             *MAIN_CONFIG['CLASSIFY_BUTTON_POSITION'],
-                                             CONFIG.FONT,
-                                             MAIN_CONFIG['CLASSIFY_BUTTON_NAME'])
+                                              *MAIN_CONFIG['CLASSIFY_BUTTON_POSITION'],
+                                              CONFIG.FONT,
+                                              MAIN_CONFIG['CLASSIFY_BUTTON_NAME'])
         self.predicted_class_label = GUI.get_label(self.centralwidget,
-                                                 *MAIN_CONFIG['PREDICTED_CLASS_LABEL_POSITION'],
-                                                 CONFIG.FONT,
-                                                 False,
-                                                 MAIN_CONFIG['PREDICTED_CLASS_LABEL_NAME'])
+                                                   *MAIN_CONFIG['PREDICTED_CLASS_LABEL_POSITION'],
+                                                   CONFIG.FONT,
+                                                   False,
+                                                   MAIN_CONFIG['PREDICTED_CLASS_LABEL_NAME'])
         self.class_probabilities_plot = GUI.get_image_label(self.centralwidget,
-                                                          *MAIN_CONFIG['CLASS_PROBABILITIES_PLOT_POSITION'],
-                                                          CONFIG.FONT,
-                                                          True,
-                                                          MAIN_CONFIG['CLASS_PROBABILITIES_PLOT_NAME'],
-                                                          None)
+                                                            *MAIN_CONFIG['CLASS_PROBABILITIES_PLOT_POSITION'],
+                                                            CONFIG.FONT,
+                                                            True,
+                                                            MAIN_CONFIG['CLASS_PROBABILITIES_PLOT_NAME'],
+                                                            None)
         self.image = None
         self.model = None
         self.plot_path = None
@@ -89,7 +88,8 @@ class MainWindow(Window):
         self.action_cnnsimple = GUI.get_action(MainWindow, MAIN_CONFIG['ACTION']['CNN_SIMPLE_NAME'])
         self.action_vgg19simple = GUI.get_action(MainWindow, MAIN_CONFIG['ACTION']['VGG19_SIMPLE_NAME'])
         self.action_network_filters = GUI.get_action(MainWindow, MAIN_CONFIG['ACTION']['MODELS_NAME'])
-        self.action_intermediate_activations = GUI.get_action(MainWindow, MAIN_CONFIG['ACTION']['INTERMEDIATE_ACTIVATIONS_NAME'])
+        self.action_intermediate_activations = GUI.get_action(MainWindow,
+                                                              MAIN_CONFIG['ACTION']['INTERMEDIATE_ACTIVATIONS_NAME'])
         self.action_heatmap = GUI.get_action(MainWindow, MAIN_CONFIG['ACTION']['HEATMAP_NAME'])
         self.action_exit = GUI.get_action(MainWindow, MAIN_CONFIG['ACTION']['EXIT_NAME'])
         self.action_save = GUI.get_action(MainWindow, MAIN_CONFIG['ACTION']['SAVE_NAME'])
@@ -123,13 +123,13 @@ class MainWindow(Window):
         super().retranslate(MainWindow, MAIN_CONFIG)
         self.load_image_button.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['LOAD_IMAGE_BUTTON_TEXT']))
         self.breast_tissue_radio_button.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'],
-                                                             MAIN_CONFIG['BREAST_TISSUE_RADIO_BUTTON_TEXT']))
+                                                                MAIN_CONFIG['BREAST_TISSUE_RADIO_BUTTON_TEXT']))
         self.colorectal_tissue_radio_button.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'],
-                                                                 MAIN_CONFIG['COLORECTAL_TISSUE_RADIO_BUTTON_TEXT']))
+                                                                    MAIN_CONFIG['COLORECTAL_TISSUE_RADIO_BUTTON_TEXT']))
         self.classify_button.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['CLASSIFY_BUTTON_TEXT']))
         self.menu_file.setTitle(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['MENU']['FILE_TEXT']))
         self.menu_further_analysis.setTitle(self._translate(MAIN_CONFIG['WINDOW_NAME'],
-                                                          MAIN_CONFIG['MENU']['FURTHER_ANALYSIS_TEXT']))
+                                                            MAIN_CONFIG['MENU']['FURTHER_ANALYSIS_TEXT']))
         self.menu_about.setTitle(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['MENU']['ABOUT_TEXT']))
         self.menu_application.setTitle(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['MENU']['APPLICATION_TEXT']))
         self.menu_datasets.setTitle(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['MENU']['DATASETS_TEXT']))
@@ -138,13 +138,14 @@ class MainWindow(Window):
         self.action_author.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['ACTION']['AUTHOR_TEXT']))
         self.action_breakhis.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['ACTION']['BREAK_HIS_TEXT']))
         self.action_nctcrche100k.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'],
-                                                           MAIN_CONFIG['ACTION']['NCT_CRC_HE_100K_TEXT']))
+                                                         MAIN_CONFIG['ACTION']['NCT_CRC_HE_100K_TEXT']))
         self.action_cnnsimple.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['ACTION']['CNN_SIMPLE_TEXT']))
-        self.action_vgg19simple.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['ACTION']['VGG19_SIMPLE_TEXT']))
+        self.action_vgg19simple.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'],
+                                                        MAIN_CONFIG['ACTION']['VGG19_SIMPLE_TEXT']))
         self.action_network_filters.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'],
-                                                          MAIN_CONFIG['ACTION']['NETWORK_FILTERS_TEXT']))
+                                                            MAIN_CONFIG['ACTION']['NETWORK_FILTERS_TEXT']))
         self.action_intermediate_activations.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'],
-                                                                   MAIN_CONFIG['ACTION']['INTERMEDIATE_ACTIVATIONS_TEXT']))
+                                                                     MAIN_CONFIG['ACTION']['INTERMEDIATE_ACTIVATIONS_TEXT']))
         self.action_heatmap.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['ACTION']['HEATMAP_TEXT']))
         self.action_exit.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['ACTION']['EXIT_TEXT']))
         self.action_save.setText(self._translate(MAIN_CONFIG['WINDOW_NAME'], MAIN_CONFIG['ACTION']['SAVE_TEXT']))
@@ -168,10 +169,7 @@ class MainWindow(Window):
 
     def heatmap_window_fun(self):
         if self.heatmap_path:
-            img = image.load_img(self.heatmap_path)
-            np_img = image.img_to_array(img)
-            np_img = np.expand_dims(np_img, axis=0)
-            np_img /= 255.
+            np_img = load_image(self.heatmap_path)
             CONFIG.SIMPLE_CONFIG['HEATMAP']['WINDOW_X'] = np_img.shape[2]
             CONFIG.SIMPLE_CONFIG['HEATMAP']['WINDOW_Y'] = np_img.shape[1]
             CONFIG.SIMPLE_CONFIG['HEATMAP']['SIMPLE_INFO_LABEL_POSITION'] = [0, 0, np_img.shape[2], np_img.shape[1]]
@@ -267,8 +265,7 @@ class MainWindow(Window):
                                                                                                   model_path)
             self.predicted_class_label.setText(self._translate(CONFIG.MAIN_CONFIG['WINDOW_NAME'], self.image_class))
             self.class_probabilities_plot.setPixmap(QtGui.QPixmap(self.plot_path))
-            self.heatmap_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                                                             'temporary_plots', 'heatmap.jpg')
+            self.heatmap_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'temporary_plots', 'heatmap.jpg')
             self.layer_activations = True
             self.filter_patterns = True
             CONFIG.INSPECT_CONV_CONFIG['LAYER_ACTIVATIONS']['COMBO_BOX_ITEMS'] = []
@@ -288,10 +285,7 @@ class MainWindow(Window):
             self.image_clicked_event(self.plot_path)
 
     def image_clicked_event(self, image_path):
-        img = image.load_img(image_path)
-        np_img = image.img_to_array(img)
-        np_img = np.expand_dims(np_img, axis=0)
-        np_img /= 255.
+        np_img = load_image(image_path)
         CONFIG.SIMPLE_CONFIG['IMAGE']['WINDOW_X'] = np_img.shape[2]
         CONFIG.SIMPLE_CONFIG['IMAGE']['WINDOW_Y'] = np_img.shape[1]
         CONFIG.SIMPLE_CONFIG['IMAGE']['SIMPLE_INFO_LABEL_POSITION'] = [0, 0, np_img.shape[2], np_img.shape[1]]

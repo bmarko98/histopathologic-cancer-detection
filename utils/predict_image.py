@@ -4,6 +4,7 @@ import logging
 import shutil
 import seaborn as sns
 import matplotlib.pyplot as plt
+from utils.misc import load_image
 from keras.models import load_model
 from keras.preprocessing import image
 from utils.visualize_intermediate_activations_and_heatmaps import visualize_heatmaps
@@ -40,10 +41,7 @@ def plot_class_probabilities(classes, class_probabilities, dir):
 def predict_image_class(image_path, dataset, model, dir):
     _logger.info('Predicting image class...')
 
-    img = image.load_img(image_path, target_size=datasets[dataset]['image_size'])
-    np_img = image.img_to_array(img)
-    np_img = np.expand_dims(np_img, axis=0)
-    np_img /= 255.
+    np_img = load_image(image_path, datasets[dataset]['image_size'])
     class_probabilities = model.predict(np_img)
     classes = datasets[dataset]['categories']
     classes.sort()

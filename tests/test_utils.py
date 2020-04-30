@@ -1,9 +1,8 @@
 import os
 import pytest
 import random
-import numpy as np
 from PIL import Image
-from keras.preprocessing import image
+from utils.misc import load_image
 import utils.save_model as save_model
 from models.cnn_simple import CNNSimple
 from models.vgg19_simple import VGG19Simple
@@ -83,17 +82,9 @@ def test_visualize_filters(tmpdir):
         assert visualize_filters.visualize_filters(model, tmpdir) == 0
 
 
-def open_image(image_path):
-    img = image.load_img(image_path, target_size=(150, 150, 3))
-    np_img = image.img_to_array(img)
-    np_img = np.expand_dims(np_img, axis=0)
-    np_img /= 255.
-    return np_img
-
-
 def test_visualize_intermediate_activations(tmpdir):
-    dummy_image = open_image(generate_dummy_image(tmpdir))
     for dataset in datasets:
+        dummy_image = load_image(get_random_image(dataset), image_size=(150, 150, 3))
         model = predict_image.load_keras_model(dataset)
         path = visualize_intermediate_activations_and_heatmaps.visualize_intermediate_activations(dummy_image,
                                                                                                   model,
@@ -104,9 +95,9 @@ def test_visualize_intermediate_activations(tmpdir):
 
 
 def test_visualize_heatmaps(tmpdir):
-    dummy_image_path = generate_dummy_image(tmpdir)
-    dummy_image = open_image(dummy_image_path)
     for dataset in datasets:
+        dummy_image_path = get_random_image(dataset)
+        dummy_image = load_image(dummy_image_path, image_size=(150, 150, 3))
         model = predict_image.load_keras_model(dataset)
         assert visualize_intermediate_activations_and_heatmaps.visualize_heatmaps(dummy_image_path,
                                                                                   dummy_image,

@@ -1,6 +1,6 @@
+from PyQt5 import QtCore
 import gui.config as CONFIG
 import gui.gui_components as GUI
-from PyQt5 import QtCore
 
 
 class Window():
