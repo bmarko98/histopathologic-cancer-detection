@@ -44,7 +44,8 @@ def visualize_intermediate_activations(image, model, requested_layer_name, chann
                     plt.grid(False)
                     plt.axis('off')
                     plt.imshow(requested_layer_activations[0, :, :, channel_number], aspect='auto', cmap='viridis')
-                    requested_layer_channel_path = os.path.join(activation_plots_dir, layer_name + '_' + str(channel_number) + '.png')
+                    requested_layer_channel_path = os.path.join(activation_plots_dir, layer_name + '_' +
+                                                                str(channel_number) + '.png')
                     plt.savefig(fname=requested_layer_channel_path, bbox_inches='tight')
                     plt.close('all')
                     return requested_layer_channel_path
@@ -84,6 +85,7 @@ def visualize_intermediate_activations(image, model, requested_layer_name, chann
 
 def get_heatmap(image, model):
     _logger.info('Producing heatmap of class activation over input image...')
+
     class_probabilities = model.predict(image)
     class_output = model.output[:, np.argmax(class_probabilities[0])]
 
@@ -115,4 +117,5 @@ def visualize_heatmaps(image_path, image, model, dir):
     superimposed_img = heatmap * 0.4 + img
     heatmap_path = os.path.join(dir, 'heatmap.jpg')
     cv2.imwrite(heatmap_path, superimposed_img)
+
     return 0

@@ -5,7 +5,6 @@ import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
 from keras import backend as K
-from utils.predict_image import load_keras_model
 
 
 logging.basicConfig(level=logging.INFO)
@@ -23,7 +22,7 @@ def deprocess_image(x):
     return x
 
 
-def create_pattern(model, layer_name, filter_index, size=150, save=False):
+def create_pattern(model, layer_name, filter_index, size, save=False):
     _logger.info('Creating filter patterns for ' + str(layer_name) + ', filter number ' + str(filter_index))
     layer_output = model.get_layer(layer_name).output
     if layer_output.shape[-1] < filter_index:
@@ -70,7 +69,7 @@ def create_layer_patterns(model, layer_name, N, size, margin, directory):
 
 def visualize_filters(model, directory):
     _logger.info('Creating model patterns...')
-    image_height_width = 150
+    image_size = 150
     margin_size = 5
 
     for layer in model.layers:
@@ -78,7 +77,7 @@ def visualize_filters(model, directory):
             create_layer_patterns(model=model,
                                   layer_name=layer.name,
                                   N=int(math.sqrt(32*2**(int(layer.name[5])-1))),
-                                  size=image_height_width,
+                                  size=image_size,
                                   margin=margin_size,
                                   directory=directory)
 

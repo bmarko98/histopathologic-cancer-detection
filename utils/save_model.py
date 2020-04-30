@@ -16,13 +16,12 @@ sns.set_style('darkgrid')
 
 def create_directory_and_txt_file(network_name, dataset_name, save_dir=None):
     _logger.info('Creating output directories and .txt file...')
+
     current_time = datetime.now()
     current_time = current_time.strftime("_%d-%m-%Y_%H:%M:%S")
-    if save_dir == None:
-        base_directory = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                                      '..', 'experiments', dataset_name + '_models', network_name + current_time)
-    else:
-        base_directory = save_dir
+    base_directory = save_dir if save_dir is not None else os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                                                        '..', 'experiments', dataset_name + '_models',
+                                                                        network_name + current_time)
     plots_directory = os.path.join(base_directory, 'plots')
     filter_directory = os.path.join(base_directory, 'conv_filters')
     os.mkdir(base_directory)
@@ -31,6 +30,7 @@ def create_directory_and_txt_file(network_name, dataset_name, save_dir=None):
     file_path = os.path.join(base_directory, network_name + '.txt')
     file = open(file_path, 'w+')
     file.close()
+
     return base_directory, plots_directory, filter_directory, file_path
 
 
@@ -125,11 +125,11 @@ def save_plots(directory, network):
 
 def save_model(network, save_dir=None):
     _logger.info('Started saving the model...')
+
     base_directory, plots_directory, filter_directory, file_path = create_directory_and_txt_file(network.network_name,
                                                                                                  network.dataset_name,
                                                                                                  save_dir)
     file = open(file_path, 'a+')
-
     save_arguments(file, network)
     save_model_architecture(file, network.model)
     save_train_history(file, network.epochs, network.history)
@@ -138,7 +138,6 @@ def save_model(network, save_dir=None):
     if network.skip_filters is False:
         visualize_filters(network.model, filter_directory)
     save_as_h5(base_directory, network.model, network.network_name)
-
     file.close()
 
     return 0

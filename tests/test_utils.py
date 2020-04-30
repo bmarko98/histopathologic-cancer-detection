@@ -1,5 +1,6 @@
 import os
 import pytest
+import random
 import numpy as np
 from PIL import Image
 from keras.preprocessing import image
@@ -37,31 +38,33 @@ def test_sample_images(tmpdir):
         image_path = [im.path for im in os.scandir(os.path.join(train_dir, categories[0])) if im.is_file()][0]
         image = Image.open(image_path)
         save_path = os.path.join(tmpdir, 'sample_images.jpg')
-        assert dataset_overview.sample_images(dataset, categories, 10, image.size[0], image.size[1], data_dir, save_path) == 0
+        number_of_images = 10
+        assert dataset_overview.sample_images(data_dir, dataset, categories, number_of_images, image.size[0], image.size[1],
+                                              save_path=save_path) == 0
 
 
-def generate_dummy_image(tmpdir):
-    width, height, channel = 250, 250, 3
-    rgb = np.random.rand(width, height, channel) * 255
-    dummy_image = Image.fromarray(rgb.astype('uint8')).convert('RGB')
-    dummy_image_path = os.path.join(tmpdir, 'dummy_image.png')
-    dummy_image.save(dummy_image_path)
+def get_random_image(dataset):
+    dataset_dir = os.path.join(data_dir, dataset, dataset + '_train')
+    categories = [f.name for f in os.scandir(dataset_dir) if f.is_dir()]
+    random_category = random.sample(range(0, len(categories) - 1), 1)
+    random_images = os.listdir(os.path.join(dataset_dir, categories[random_category[0]]))
+    random_image = random.sample(range(0, len(random_images) - 1), 1)
 
-    return dummy_image_path
+    return os.path.join(dataset_dir, categories[random_category[0]], random_images[random_image[0]])
 
 
-@pytest.mark.xfail
 def test_predict_image(tmpdir):
-    dummy_image_path = generate_dummy_image(tmpdir)
     for dataset in datasets:
-        model, image, image_class, plot_path, layers = predict_image.predict_image(dummy_image_path,
-                                                                                   dataset,
-                                                                                   temporary_plots_dir=tmpdir)
-        assert model is not None
-        assert image is not None
-        assert image_class in [*benign, *malignant, *tissue_types]
-        assert os.path.exists(plot_path)
-        assert layers
+        random_image_path = get_random_image(dataset)
+        for dataset in datasets:
+            model, image, image_class, plot_path, layers = predict_image.predict_image(random_image_path,
+                                                                                       dataset,
+                                                                                       temporary_plots_dir=tmpdir)
+            assert model is not None
+            assert image is not None
+            assert image_class in [*benign, *malignant, *tissue_types]
+            assert os.path.exists(plot_path)
+            assert layers
 
 
 @pytest.mark.slow
