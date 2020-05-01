@@ -80,7 +80,7 @@ Window class is the base class of all window classes, and it implements common m
 \section{Creation of Datasets}
 \label{createdata}
 
-Performance and accuracy of convolutional neural networks relies largely on datasets, i.e. on quality of available data, dataset size, class balance, etc. But before feeding data to the network, if using Keras API, certain dataset structure must be satisfied. More precisely, datasets must have the following structure: train, validation and test directories, each with subdirectory for each class. Scripts responsible for creation of required directory structure are:
+Performance and accuracy of convolutional neural networks relies largely on datasets, i.e. on quality of available data, dataset size, class balance, etc. But before feeding data to the network, if using \texttt{Keras} API, certain dataset structure must be satisfied. More precisely, datasets must have the following structure: train, validation and test directories, each with subdirectory for each class. Scripts responsible for creation of required directory structure are:
 \begin{itemize}
 	\itemsep 0em
 	\item \texttt{break\_his\_dataset\_creation.py},
@@ -92,7 +92,7 @@ They work by extracting datasets downloaded from \cite{breakhis_bib}, \cite{nctc
 \section{CNNSimple Implementation}
 \label{cnn}
 
-CNNSimple convolutional neural network (\textcolor{red}{\hyperref[src:py1]{Code 3.1}}) was created using Keras Sequential model in order to classify images from NCT-CRC-HE-100K dataset, which contains 100.000 images divided into 9 tissue/cancer categories. 
+CNNSimple convolutional neural network (\textcolor{red}{\hyperref[src:py1]{Code 3.1}}) was created using \texttt{Keras} Sequential model in order to classify images from NCT-CRC-HE-100K dataset, which contains 100.000 images divided into 9 tissue/cancer categories. 
 
 Convolutional base of CNNSimple is composed of four blocks of convolutional and max-pooling layers, where first two blocks have two convolutional and one max-pooling layer, and last two blocks have three convolutional and one max-pooling layer. Each convolutional layer has 3$\times$3 convolution window, uses ReLU activation function, and number of feature maps (filters) increases exponentially from 32 to 256. Each max-pooling layer has pool size of 2$\times$2. 
 
@@ -131,7 +131,7 @@ Although CNNs are a powerful tool for image classification, in order to achieve 
 
 \subsection{VGG19Simple Implementation}
 
-VGG19Simple convolutional neural network (\textcolor{red}{\hyperref[src:py2]{Code 3.2}}) was created using Keras Graphical API in order to classify images from BreakHis dataset, which contains 2.081 images divided into 8 tissue/cancer categories. 
+VGG19Simple convolutional neural network (\textcolor{red}{\hyperref[src:py2]{Code 3.2}}) was created using \texttt{Keras} Graphical API in order to classify images from BreakHis dataset, which contains 2.081 images divided into 8 tissue/cancer categories. 
 
 Convolutional base of VGG19Simple is VGG19 pre-built network pre-trained on ImageNet dataset (without top classification part), using imagenet weights.
 
@@ -171,7 +171,7 @@ CNNSimple network trained on NCT-CRC-HE-100K dataset was trained for 50 epochs, 
 \end{figure}
 \clearpage
 
-VGG19Simple network trained on BreakHis dataset was trained for 150 epochs, using Adam optimizer with learning rate of 0.0001, using categorical crossentropy loss function. Before feeding data to the network, data augmentation (applying random transformations in order to produce more images, such as translation, rotation, sheer) has been used. In order to assess performance of the network, accuracy metrics function was employed. After training network with frozen convolutional base, last convolutional block was unfreezed, and network was trained again using Adam optimizer with learning rate of 0.00005. VGG19Simple achieved 61.7\% validation and 62.1\% test accuracy, and 1.18 validation and 0.62 test loss (\textcolor{red}{\autoref{fig:vgg19perf}}).
+VGG19Simple network trained on BreakHis dataset was trained for 150 epochs, using Adam optimizer with learning rate of 0.0001, using categorical crossentropy loss function. Before feeding data to the network, data augmentation (applying random transformations in order to produce more images, such as translation, rotation, sheer) has been used. In order to assess performance of the network, accuracy metrics function was employed. After training network with frozen convolutional base, last convolutional block was unfrozen, and network was trained again using Adam optimizer with learning rate of 0.00005. VGG19Simple achieved 61.7\% validation and 62.1\% test accuracy, and 1.18 validation and 0.62 test loss (\textcolor{red}{\autoref{fig:vgg19perf}}).
 
 \begin{figure}[h]
 	\centering
@@ -240,7 +240,7 @@ In addition to the ease of use of Histopathologic Cancer Detection program, sour
 \begin{enumerate}
 	\itemsep 0em
 	\item \textbf{Creating dataset} \\
-	Obtaining dataset of new tissue type, and preparing dataset to be fed to Keras-built CNN, which includes creating appropriate directory structure
+	Obtaining dataset of new tissue type, and preparing dataset to be fed to \texttt{Keras}-built CNN, which includes creating appropriate directory structure
 	\item \textbf{Building CNN} \\
 	Crating new convolutional neural network class inherited from BaseCNN by defining data generator transformations, network architecture, etc.
 	\item \textbf{Fine-tuning CNN} \\
@@ -254,7 +254,7 @@ In addition to the ease of use of Histopathologic Cancer Detection program, sour
 
 Source code for Histopatologic Cancer Detection can be divided into two equal chunks: code responsible for CNN-related functionality and code responsible for GUI-related functionality.
 
-Code for CNN-related functionality has been unit-tested using \texttt{PyTest} testing framework, and has a code coverage of 97\%. Unit tests for data module can be found in \texttt{test\_data.py}, unit tests for models and experiments modules can be found in \texttt{test\_models\_experiments.py}, and unit tests for utils can be found in \texttt{test\_utils.py}.
+Code for CNN-related functionality has been unit-tested using \texttt{PyTest} testing framework, and has a code coverage of 97\%. Unit tests for data module can be found in \texttt{test\_data.py}, unit tests for models and experiments modules can be found in \texttt{test\_models\_experiments.py}, and unit tests for utilities can be found in \texttt{test\_utils.py}.
 
 Code for GUI-related functionality has been tested manually, where numerous histopathologic slides have been loaded and classified, as well as further analyzed, in order to inspect program functionality. 
 

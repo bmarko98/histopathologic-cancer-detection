@@ -48,7 +48,7 @@ After running the program, new window appears (\textcolor{red}{\autoref{fig:star
 \begin{figure}[h]
 	\centering
 	\includegraphics[scale=0.3]{startup_window.png}
-	\caption{Main window of Histopathologic Cancer Detction program}
+	\caption{Main window of Histopathologic Cancer Detection program}
 	\label{fig:startup}
 \end{figure}
 
@@ -57,7 +57,7 @@ From here, it is possible to:
 	\itemsep 0em
 	\item Inspect datasets (\textcolor{red}{\hyperref[inspdata]{Section 2.3}}) and networks (\textcolor{red}{\hyperref[inspnets]{Section 2.4}})
 	\item Load histopathologic slide of breast or colorectal tissue and predict the tissue and cancer subtype (\textcolor{red}{\hyperref[basicuse]{Section 2.5}})
-	\item Further visualize network representations by analyzing heatmaps of class activations, filters of convolutional layers and intermediate \\ activations (\textcolor{red}{\hyperref[advuse]{Section 2.6}})
+	\item Further visualize network representations by analyzing heatmaps of class activations, filters of convolutional layers and intermediate activations\\ (\textcolor{red}{\hyperref[advuse]{Section 2.6}})
 \end{enumerate}
 \clearpage
 
@@ -69,7 +69,7 @@ In order to find basic information about datasets, which include sample images f
 \begin{figure}[h]
 	\centering
 	\includegraphics[scale=0.25]{inspect_dataset.png}
-	\caption{BreakHis Dataset basic information}
+	\caption{BreakHis dataset basic information}
 	\label{fig:inspectdataset}
 \end{figure}
 
@@ -82,7 +82,7 @@ In order to find basic information about networks, which include network archite
 \begin{figure}[h]
 	\centering
 	\includegraphics[scale=0.2]{inspect_network.png}
-	\caption{CNNSimple Network basic information}
+	\caption{CNNSimple network basic information}
 	\label{fig:inspectmodel}
 \end{figure}
 
@@ -136,7 +136,7 @@ Visualizing intermediate activations consists of displaying the feature maps tha
 
 \subsection{Visualizing Filters of Convolutional Layers}
 
-Further analysis is not only dependent on an input image, as we can also inspect feature exractors (filters) of convolutional layers by displaying patterns on which each filter is supposed to respond to. This can be done with gradient ascent in input space: applying gradient descent to the value of the input image of a convnet so as to maximize the response of a specific filter, starting from a blank input image. The resulting input image will be one that the chosen filter is maximally responsive to \cite{chollet2018deep}. In order to visualize filters of convolutional layers, go to \emph{Further Analysis $\rightarrow$ Network Filters}.  Next choose which network convolutional layer's filters should be visualized, along with filter number, or 'all', for visualizing all of layer's filters  (\textcolor{red}{\autoref{fig:filters}}).
+Further analysis is not only dependent on an input image, as we can also inspect feature extractors (filters) of convolutional layers by displaying patterns on which each filter is supposed to respond to. This can be done with gradient ascent in input space: applying gradient descent to the value of the input image of a CNN so as to maximize the response of a specific filter, starting from a blank input image. The resulting input image will be one that the chosen filter is maximally responsive to \cite{chollet2018deep}. In order to visualize filters of convolutional layers, go to \emph{Further Analysis $\rightarrow$ Network Filters}.  Next choose which network convolutional layer's filters should be visualized, along with filter number, or 'all', for visualizing all of layer's filters  (\textcolor{red}{\autoref{fig:filters}}).
 
 \begin{figure}[h]
 	\centering
