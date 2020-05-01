@@ -1,4 +1,4 @@
-\chapter{Developer Documentation} % Developer guide
+\chapter{Developer Documentation}
 \label{ch:impl}
 
 Creation of the program for histopathologic cancer detection is divided in four major parts:
@@ -9,7 +9,9 @@ Creation of the program for histopathologic cancer detection is divided in four 
 	\item Improving prediction accuracy of networks (solving underfitting and overfitting problems) with hyperparameter tuning (choosing optimal parameters for learning algorithm) and changes to network architecture
 	\item Creating graphical user interface for the program, which allows user to load histopathologic slide and select network which has be applied on it, and to get as output category to which that slide belongs, with additional possibility to visualize network representations (heatmaps of class activations, filters of convolutional layers and intermediate activations)
 \end{enumerate}
-In the remainder of this chapter each part will be thoroughly analyzed, and directory/file structure of source the code will be illustrated, as well as use-case and class diagrams. System requirements discussed in user documentation (\textcolor{red}{\hyperref[sysreq]{Section 2.1}}) apply to developer documentation as well. 
+In the remainder of this chapter each part will be thoroughly analyzed, and directory/file structure of source the code will be illustrated, as well as use-case and class diagrams. 
+
+System requirements discussed in user documentation (\textcolor{red}{\hyperref[sysreq]{Section 2.1}}) apply to developer documentation as well. 
 \clearpage
 
 \section{Program Structure}
@@ -17,18 +19,18 @@ In the remainder of this chapter each part will be thoroughly analyzed, and dire
 Histopathologic Cancer Detection program is divided into six major modules (\textcolor{red}{\autoref{fig:dirdiag}}, \textcolor{red}{\autoref{fig:dirdiag2}}):
 \begin{enumerate}
 	\itemsep 0em
-	\item Data - includes dataset creation
-	\item Models - includes creation, training and testing of CNNs
-	\item Experiments - includes hyperparameter tuning
-	\item Utilities - includes dataset analysis and visualization and network performance assessment and visualization
-	\item Tests - includes unit testing of Data, Models, Experiments and Utilities
-	\item Graphical User Interface - includes creation of all application windows and their interconnection
+	\item Data - includes dataset creation (\textcolor{red}{\hyperref[createdata]{Section 3.4}})
+	\item Models - includes creation, training and testing of CNNs (\textcolor{red}{\hyperref[cnn]{Section 3.5}\textcolor{black}{,} \\ \hyperref[vgg19]{Section 3.6}})
+	\item Experiments - includes hyperparameter tuning (\textcolor{red}{\hyperref[exp]{Section 3.7}})
+	\item Graphical User Interface - includes creation of all application windows and their interconnection (\textcolor{red}{\hyperref[gui]{Section 3.8}})
+	\item Utilities - includes dataset analysis and visualization and network performance assessment and visualization (\textcolor{red}{\hyperref[utils]{Section 3.9}})
+	\item Tests - includes unit testing of Data, Models, Experiments and Utilities (\textcolor{red}{\hyperref[tests]{Section 3.11}})
 \end{enumerate}
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[scale=1.3]{code_structure_1.jpg}
-	\caption{Diagram of directories and scripts of Histopathologic Cancer Detection}
+	\caption{Diagram of directories and scripts of Data, Models, Experiments and Tests modules of Histopathologic Cancer Detection}
 	\label{fig:dirdiag}
 \end{figure}
 
@@ -37,14 +39,13 @@ Histopathologic Cancer Detection program is divided into six major modules (\tex
 \begin{figure}[h]
 	\centering
 	\includegraphics[scale=1.3]{code_structure_2.jpg}
-	\caption{Diagram of directories and scripts of Histopathologic Cancer Detection}
+	\caption{Diagram of directories and scripts of Tests, Graphical User Interface and Utilities modules of Histopathologic Cancer Detection}
 	\label{fig:dirdiag2}
 \end{figure}
 
 \section{Use-Case Diagram}
 
 One of the main goals of the Histopahtologic Cancer Detection program was the ease of use, i.e. straightforward graphical user interface which makes complex operations look quite simple and effortless. Even though there are extremely advanced algorithms with millions of parameters behind the program, GUI was made in such a way that everyone can use it. 
-
 First step is loading the image and selecting tissue type (breast or colorectal tissue), after which classification is being done. At every step of the way, current work can be saved, and new image can be loaded to start the process from scratch. After the classification, it is possible to visualize network representations and perform further analysis of the results by visualizing layer activations, network filters and heatmap (\textcolor{red}{\autoref{fig:usecase}}).
 
 \begin{figure}[h]
@@ -56,9 +57,9 @@ First step is loading the image and selecting tissue type (breast or colorectal 
 
 \section{Class Diagrams}
 
-Classes of Histopathologic Cancer Detection can be divided into two main components: window classes and neural network classes.
+Classes of Histopathologic Cancer Detection can be divided into two main segments: window classes and neural network classes.
 
-BaseCNN class is the common class of all neural network classes, and it contains common attributes, such as dataset name, network name, compile parameters, and common methods, such as creation of data generators, compilation and training of the network. Neural network classes will be discussed in more detail in \textcolor{red}{\hyperref[cnn]{Section 3.4}, \hyperref[vgg19]{Section 3.5}}.
+BaseCNN class is the common class of all neural network classes, and it contains common attributes, such as dataset name, network name, compile parameters, and common methods, such as creation of data generators, compilation and training of the network. Neural network classes will be discussed in more detail in \textcolor{red}{\hyperref[cnn]{Section 3.5}, \hyperref[vgg19]{Section 3.6}}.
 
 \begin{figure}[h]
 	\centering
@@ -74,9 +75,10 @@ BaseCNN class is the common class of all neural network classes, and it contains
 	\label{fig:class2}
 \end{figure}
 
-Window class is the base class of all window classes, and it implements common methods, such as setting up window size and central widget. On the other side, MainWindow class is the central point of GUI, as it defines the window which appears when program is run, and every other window is invoked from it (\textcolor{red}{\autoref{fig:class2}}). Window classes, along with their attributed and methods, will be discussed in more detail in \textcolor{red}{\hyperref[gui]{Section 3.7}}.
+Window class is the base class of all window classes, and it implements common methods, such as setting up window size and central widget. On the other side, MainWindow class is the central point of GUI, as it defines the window which appears when program is run, and every other window is invoked from it (\textcolor{red}{\autoref{fig:class2}}). Window classes, along with their attributed and methods, will be discussed in more detail in \textcolor{red}{\hyperref[gui]{Section 3.8}}.
 
 \section{Creation of Datasets}
+\label{createdata}
 
 Performance and accuracy of convolutional neural networks relies largely on datasets, i.e. on quality of available data, dataset size, class balance, etc. But before feeding data to the network, if using Keras API, certain dataset structure must be satisfied. More precisely, datasets must have the following structure: train, validation and test directories, each with subdirectory for each class. Scripts responsible for creation of required directory structure are:
 \begin{itemize}
@@ -92,7 +94,7 @@ They work by extracting datasets downloaded from \cite{breakhis_bib}, \cite{nctc
 
 CNNSimple convolutional neural network (\textcolor{red}{\hyperref[src:py1]{Code 3.1}}) was created using Keras Sequential model in order to classify images from NCT-CRC-HE-100K dataset, which contains 100.000 images divided into 9 tissue/cancer categories. 
 
-Convolutional base of CNNSimple is composed of four blocks of convolution and max-pooling layers, where first two blocks have two convolution and one max-pooling layer, and last two blocks have three convolution and one max-pooling layer. Each convolution layer has 3$\times$3 convolution window, uses ReLU activation function, and number of feature maps (filters) increases exponentially from 32 to 256. Each max-pooling layer has pool size of 2$\times$2. 
+Convolutional base of CNNSimple is composed of four blocks of convolutional and max-pooling layers, where first two blocks have two convolutional and one max-pooling layer, and last two blocks have three convolutional and one max-pooling layer. Each convolutional layer has 3$\times$3 convolution window, uses ReLU activation function, and number of feature maps (filters) increases exponentially from 32 to 256. Each max-pooling layer has pool size of 2$\times$2. 
 
 Classification top of CNNSimple is composed of two fully-connected layers, each followed by a dropout layer, and an output (also fully-connected) layer. Fully-connected layers use ReLU activation function, and number of neurons grows from 512 to 1024. Dropout layers use 50\% dropout rate (fraction of neurons which will be ignored in each passing). Output layer uses softmax activation function, and has nine neurons (one neuron per tissue/cancer subtype output). 
 \vspace{1mm}
@@ -125,7 +127,7 @@ Classification top of CNNSimple is composed of two fully-connected layers, each 
 \section{Transfer Learning}
 \label{vgg19}
 
-Although CNNs are a powerful tool for image classification, in order to achieve high accuracy, large amount of data is needed. Problem occurs when only small dataset is available (as is often in healthcare, ex. BreakHis dataset). In such cases transfer learning can be used: take model trained on large dataset and transfer knowledge to small dataset, i.e. freeze convolutional base, and only train classification top of the network. Main idea is that early layers of convolutional base learns low-level features applicable across all images, such as edges and patterns.
+Although CNNs are a powerful tool for image classification, in order to achieve high accuracy, large amount of data is needed. Problem occurs when only small dataset is available (as is often in healthcare, ex. BreakHis dataset). In such cases transfer learning can be used: take model trained on large dataset and transfer knowledge to small dataset, i.e. freeze convolutional base, and only train classification top of the network. Main idea is that early layers of convolutional base learn low-level features applicable across all images, such as edges and patterns.
 
 \subsection{VGG19Simple Implementation}
 
@@ -154,6 +156,7 @@ Classification top of CNNSimple is composed of two fully-connected layers, each 
 \end{lstlisting} 
 
 \section{Experiments and Results}
+\label{exp}
 
 Performance of neural networks is determined by how well will it generalize, i.e. how high accuracy will it achieve on previously unseen data (if it performs well on training data, but underachieves on test data, it is said that CNN overfits). In order to prevent overfitting, number of techniques can be used: increase size of dataset, change network architecture or apply hyperparameter tuning techniques, which consist of selecting a set optimal hyperparameters for learning algorithm. Selection of such parameters for networks is done in \texttt{hyperparameter\_tuning.py}. First step consists of defining hyperparameter dictionary with parameters and values to be tested, such as number of epochs for which network is to be trained, optimization techniques, etc. Next step consists of training network with all combination of parameters and values defined, after which network performances are compared in order to determine the optimal hyperparameter set.
 
@@ -196,17 +199,18 @@ Another way of interpreting network performance is by plotting confusion matrix,
 	\end{minipage}
 \end{figure}
 
-\section{Graphical User Interface} \label{gui}
+\section{Graphical User Interface} 
+\label{gui}
 
 In order to make using program simple and straightforward, graphical user interface using PyQt5 has been created. Following window classes have been constructed:
 \begin{itemize}
 	\itemsep 0em
-	\item Window class in \texttt{window.py}, used as base class for every other window, which contains primitive functions for setting up window, creating central widget, etc.
+	\item Window class in \texttt{window.py}, used as base class for every other window, which contains primitive functions for setting up window, creating central widget, retranslating text, etc.
 	\item AboutAuthorWindow class in \texttt{about\_author\_window.py}, which contains two labels (containing image and CV respectively)
 	\item AboutDatasetsWindow class in \texttt{about\_datasets\_window.py}, which contains two labels (containing dataset sample images and dataset overview numbers respectively)
 	\item AboutModelsWindow class in \texttt{about\_models\_window.py}, which contains five labels (containing network name, network architecture, accuracy, loss and confusion matrix plots respectively)
 	\item SimpleWindow class in \texttt{simple\_window.py}, which contains one image label
-	\item InspectConvWindow class in \texttt{inspect\_conv\_window.py}, which contains three labels (containing convolution layer text, number text and image respectively), button (with associated action), combo box (containing network layer names)  and line edit (for input of numbers)
+	\item InspectConvWindow class in \texttt{inspect\_conv\_window.py}, which contains three labels (containing convolutional layer text, number text and image respectively), button (with associated action), combo box (containing network layer names)  and line edit (for input of numbers)
 	\item MainWindow class in \texttt{main\_window.py}, which connects every other window and provides high-level program functionality 
 \end{itemize}
 In addition, every window-specific information is located in \texttt{config.py}, such as window sizes, positions and names of labels, paths to images, etc. GUI component definitions are located in \texttt{gui\_components.py}.
@@ -217,12 +221,13 @@ MainWindow class is the central part of the GUI, as it defines the window which 
 
 
 \section{Utilities}
+\label{utils}
 
 For program to work seamlessly, certain utilities needed to be implemented:
 \begin{itemize}
 	\itemsep 0em
 	\item \texttt{dataset\_overview.py}, used for obtaining basic information about dataset, such as sample images and image distribution per class
-	\item \texttt{misc.py}, containing function for reading file contents 
+	\item \texttt{misc.py}, containing functions for reading file contents, loading images, etc. 
 	\item \texttt{predict\_image.py}, used for predicting class to which an image belongs
 	\item \texttt{save\_model.py}, used for saving neural network information and performance after being trained, such as arguments, architecture, accuracy, loss and confusion matrix plots, filters, etc.  
 	\item \texttt{visualize\_filters.py}, used for visualizing network filter patterns
@@ -245,6 +250,7 @@ In addition to the ease of use of Histopathologic Cancer Detection program, sour
 \end{enumerate}
 
 \section{Testing}
+\label{tests}
 
 Source code for Histopatologic Cancer Detection can be divided into two equal chunks: code responsible for CNN-related functionality and code responsible for GUI-related functionality.
 

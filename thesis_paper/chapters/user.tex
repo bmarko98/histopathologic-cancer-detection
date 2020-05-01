@@ -1,11 +1,11 @@
-\chapter{User Documentation} % User guide
+\chapter{User Documentation}
 \label{ch:user}
 
 There are three main ways of using Histopathologic Cancer Detection program:
 \begin{enumerate}
 	\itemsep 0em
 	\item Predicting tissue and cancer subtype of breast and colorectal tissue, i.e. predicting whether patient has breast or colorectal cancer or not
-	\item Visualizing what Convolutional Neural Network learns, i.e. visualizing how network transforms input image, and which parts of input image lead to predicting tissue and cancer subtype
+	\item Visualizing what Convolutional Neural Network (CNN) learns, i.e. visualizing how network transforms input image, and which parts of input image lead to predicting tissue and cancer subtype
 	\item Adding new datasets and networks in order to increase the scope of the program, and predict even more tissue and cancer subtypes
 \end{enumerate}
 Before using the program, certain system requirements need to be satisfied.
@@ -13,36 +13,35 @@ Before using the program, certain system requirements need to be satisfied.
 \section{System Requirements}
 \label{sysreq}
 
-In order to run Histopathologic Cancer Detection, Python 3.5+ is required on one of the following operating systems: Windows 7 or later (64bit), macOS 10.12.6 (Sierra) or later (64bit), Ubuntu 16.04 or later (64bit) or Raspbian 9.0 or later. Moreover, considering computer needs to be powerful enough to perform large number of tensor operations and handle the computing power necessary, CPU Intel Core i5 6th generation processor or higher (or an MAD equivalent processor) and 8+GB of RAM are required.
+In order to run Histopathologic Cancer Detection, Python 3.5+ is required on one of the following operating systems: Windows 7 or later (64bit), macOS 10.12.6 (Sierra) or later (64bit), Ubuntu 16.04 or later (64bit) or Raspbian 9.0 or later. Moreover, considering computer needs to be powerful enough to perform large number of tensor operations and handle the computing power necessary, CPU Intel Core i5 6th generation processor or higher (or an AMD equivalent processor) and 8+GB of RAM are required.
 
 \subsection{General Software Requirements}
 
-In order to use the program to predict tissue and cancer subtype, and to visualize what CNNs learn, following Python3 dependencies are required: 
+In order to use the program to predict tissue and cancer subtype, and to visualize what CNNs learn, following Python dependencies are required: 
 \begin{itemize}
 	\itemsep 0em
-	\item \texttt{h5py} - interface to the HDF5 binary data format, which can store huge amounts of numerical data, and easily manipulate that data from \texttt{NumPy} (used to save and load network weights)
-	\item \texttt{Keras}, \texttt{Keras-Applications}, \texttt{Keras-Preprocessing}, \texttt{tensorflow} - neural networks APIs, which can build and deploy machine learning applications (used to build and train neural networks)
-	\item \texttt{matplotlib}, \texttt{seaborn} - data visualization libraries (used for visualization of datasets, neural networks and tissue and cancer subtype predictions)
+	\item \texttt{H5py} - interface to the HDF5 binary data format, which can store huge amounts of numerical data, and easily manipulate that data from \texttt{NumPy} (used to save and load network weights)
+	\item \texttt{Keras}, \texttt{Keras-Applications}, \texttt{Keras-Preprocessing}, \texttt{TensorFlow} - neural networks APIs, which can build and deploy machine learning applications (used to build and train neural networks)
+	\item \texttt{Matplotlib}, \texttt{seaborn} - data visualization libraries (used for visualization of datasets, neural networks and tissue and cancer subtype predictions)
 	\item \texttt{NumPy} - library which provides support for large, multi-dimensional arrays
-	\item \texttt{opencv-python}, \texttt{Pillow}, \texttt{scikit-image} - image processing libraries (used to load, process and save images)
+	\item \texttt{OpenCV-Python}, \texttt{Pillow}, \texttt{scikit-image} - image processing libraries (used to load, process and save images)
 	\item \texttt{pandas} - data analysis and manipulation library (used for loading datasets)
 	\item \texttt{PyQt5} - python binding of cross-platform GUI toolkit Qt, which contains substantial set of GUI widgets (used for implementing GUI part of the program)
 	\item \texttt{scikit-learn} - machine learning library for predictive data analysis (used for its metrics in order to assess network performance)
 \end{itemize}
-If general software requirements are satisfied, program can be used to predict tissue and cancer subtypes, as well as to visualize network representations.
 
 \subsection{Additional Software Requirements}
 
-	In order to replicate results of already existing networks, or to expand scope of the program by adding new datasets and training new networks, NVIDIA GPU card with CUDA Compute Capability 3.5 or higher is required, along with the following:
+In order to replicate results of already existing networks, or to expand scope of the program by adding new datasets and training new networks, NVIDIA GPU card with CUDA Compute Capability 3.5 or higher is required, along with the following:
 \begin{itemize}
 	\itemsep 0em
 	\item NVIDIA CUDA toolkit - provides a development environment for creating high performance GPU-accelerated applications
 	\item NVIDIA CUDA Deep Neural Network Library (cuDNN) - GPU-accelerated library of primitives for deep neural networks, which provides highly tuned implementations for standard routines
-	\item \texttt{tensorflow-gpu} - GPU-enabled version of \texttt{tensorflow} library
+	\item \texttt{TensorFlow-GPU} - GPU-enabled version of \texttt{TensorFlow} library
 \end{itemize}
 Training convolutional neural networks requires large amount of computations, and in order to decrease training time, networks are trained on GPU (it is not feasible on CPU, as GPU training is multiple times faster).
 
-\section{Runnig the Program}
+\section{Running the Program}
 
 After running the program, new window appears (\textcolor{red}{\autoref{fig:startup}}).
 
@@ -56,10 +55,11 @@ After running the program, new window appears (\textcolor{red}{\autoref{fig:star
 From here, it is possible to:
 \begin{enumerate}
 	\itemsep 0em
-	\item Inspect datasets (\textcolor{red}{\hyperref[inspdata]{Section 2.4}}) and networks (\textcolor{red}{\hyperref[inspnets]{Section 2.5}})
-	\item Load histopathologic slide of breast or colorectal tissue and predict the tissue and cancer subtype (\textcolor{red}{\hyperref[basicuse]{Section 2.6}})
-	\item Further visualize network representations by analyzing heatmaps of class activations, filters of convolutional layers and intermediate \\ activations (\textcolor{red}{\hyperref[advuse]{Section 2.7}})
+	\item Inspect datasets (\textcolor{red}{\hyperref[inspdata]{Section 2.3}}) and networks (\textcolor{red}{\hyperref[inspnets]{Section 2.4}})
+	\item Load histopathologic slide of breast or colorectal tissue and predict the tissue and cancer subtype (\textcolor{red}{\hyperref[basicuse]{Section 2.5}})
+	\item Further visualize network representations by analyzing heatmaps of class activations, filters of convolutional layers and intermediate \\ activations (\textcolor{red}{\hyperref[advuse]{Section 2.6}})
 \end{enumerate}
+\clearpage
 
 \section{Inspecting Datasets}
 \label{inspdata}
@@ -89,11 +89,11 @@ In order to find basic information about networks, which include network archite
 \section{Basic Use: Predicting Tissue Type}
 \label{basicuse}
 
-Main use of the Histopathologic Cancer Detection program is to make it easy and fast to load histopathologic slide and get a prediction on tissue and cancer subtype. In order to load a histopathologic slide, click on \emph{Load\; Image}, and select histopathologic slide for which the prediction is required. Next, select a tissue type of the slide by clicking on \emph{Breast\;Tissue} or \emph{Colorectal\;Tissue}. Afterwards, in order to get tissue and cancer subtype, along with probabilities graph, press \emph{Classify} button (\textcolor{red}{\autoref{fig:predict}}).
+Main use of the Histopathologic Cancer Detection program is to make it easy and fast to load histopathologic slide and get a prediction on tissue and cancer subtype. In order to load a histopathologic slide, click on \emph{Load\; Image}, and select histopathologic slide for which the prediction is required. Next, select a tissue type of the slide by clicking on \emph{Breast\;Tissue} or \emph{Colorectal\;Tissue} radio button. Afterwards, in order to get tissue and cancer subtype, along with probabilities plot, press \emph{Classify} button (\textcolor{red}{\autoref{fig:predict}}).
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[scale=0.33]{predict.png}
+	\includegraphics[scale=0.31]{predict.png}
 	\caption{Prediction of input histopathologic slide of breast tissue to be ductal carcinoma}
 	\label{fig:predict}
 \end{figure}
@@ -111,13 +111,13 @@ Different parts of an image have different weights in networks decision on tissu
 	\centering
 	\begin{minipage}{.5\textwidth}
 		\centering
-		\includegraphics[scale=0.25]{input.png}
+		\includegraphics[scale=0.3]{input.png}
 		\captionof{figure}{Input image of breast tissue}
 		\label{fig:input}
 	\end{minipage}%
 	\begin{minipage}{.5\textwidth}
 		\centering
-		\includegraphics[scale=0.25]{heatmap.png}
+		\includegraphics[scale=0.3]{heatmap.png}
 		\captionof{figure}{Heatmap of class activations on input image}
 		\label{fig:heatmap}
 	\end{minipage}
@@ -125,7 +125,7 @@ Different parts of an image have different weights in networks decision on tissu
 
 \subsection{Visualizing Intermediate Activations}
 
-Visualizing intermediate activations consists of displaying the feature maps that are output by various convolution and pooling layers in a network, given a certain input (the output of a layer is often called its activation, the output of the activation function). This gives a view into how an input is decomposed into the different filters learned by the network \cite{chollet2018deep}. In order to visualize intermediate activations of layers, go to \emph{Further Analysis $\rightarrow$ Class Activations}. Next choose which network layer's intermediate activations should be visualized, along with channel number, or 'all', for visualizing all of layer's channels  (\textcolor{red}{\autoref{fig:interact}}).
+Visualizing intermediate activations consists of displaying the feature maps that are output by various convolutional and pooling layers in a network, given a certain input (the output of a layer is often called its activation, the output of the activation function). This gives a view into how an input is decomposed into the different filters learned by the network \cite{chollet2018deep}. In order to visualize intermediate activations of layers, go to \emph{Further Analysis $\rightarrow$ Class Activations}. Next choose which network layer's intermediate activations should be visualized, along with channel number, or 'all', for visualizing all of layer's channels  (\textcolor{red}{\autoref{fig:interact}}).
 
 \begin{figure}[h]
 	\centering
