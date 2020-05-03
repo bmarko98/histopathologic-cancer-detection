@@ -36,8 +36,8 @@ class BaseCNN():
 
         if image_size is None:
             try:
-                dataset_path = os.path.join(os.path.abspath(__file__), '..', 'data', dataset_name)
-                category_path = [f.path for f in os.scandir(os.path.join(dataset_path, 'train')) if f.is_dir()][0]
+                dataset_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data', dataset_name)
+                category_path = [f.path for f in os.scandir(os.path.join(dataset_path, dataset_name + '_train')) if f.is_dir()][0]
                 image_path = [im.path for im in os.scandir(category_path) if im.is_file()][0]
                 image = Image.open(image_path)
                 self.image_size = image.size
