@@ -256,6 +256,7 @@ class MainWindow(Window):
 
     def classify_button_event(self):
         if self.image_path != '':
+            dataset=''
             if self.breast_tissue_radio_button.isChecked():
                 dataset, model_path = 'break_his', CONFIG.MAIN_CONFIG['VGG19_SIMPLE_MODEL_PATH']
             elif self.colorectal_tissue_radio_button.isChecked():
@@ -263,7 +264,8 @@ class MainWindow(Window):
             self.model, self.image, self.image_class, self.plot_path, self.layers = predict_image(self.image_path,
                                                                                                   dataset,
                                                                                                   model_path)
-            self.predicted_class_label.setText(self._translate(CONFIG.MAIN_CONFIG['WINDOW_NAME'], self.image_class))
+            self.predicted_class_label.setText(self._translate(CONFIG.MAIN_CONFIG['WINDOW_NAME'],
+                                               self.image_class.replace('_', ' ').title()))
             self.class_probabilities_plot.setPixmap(QtGui.QPixmap(self.plot_path))
             self.heatmap_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'temporary_plots', 'heatmap.jpg')
             self.layer_activations = True
