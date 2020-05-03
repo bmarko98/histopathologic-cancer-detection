@@ -24,7 +24,7 @@ class AboutDatasetsWindow(Window):
                                                         CONFIG.FONT,
                                                         True,
                                                         ABOUT_DATASETS_CONFIG['IMAGES_LABEL_NAME'],
-                                                        ABOUT_DATASETS_CONFIG['IMAGES_URL'])
+                                                        ABOUT_DATASETS_CONFIG['IMAGES_PATH'])
         self.image_path = ABOUT_DATASETS_CONFIG['IMAGES_PATH']
         AboutDatasetsWindow.setCentralWidget(self.centralwidget)
 

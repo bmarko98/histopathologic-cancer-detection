@@ -32,12 +32,12 @@ def get_label(widget, x, y, width, height, label_font, scale, label_name, allign
     return label
 
 
-def get_image_label(widget, x, y, width, height, image_label_font, scale, image_label_name, image_URL):
+def get_image_label(widget, x, y, width, height, image_label_font, scale, image_label_name, image_path):
     if not check_screen_size(width, height):
         width, height = resize(width, height)
     image_label = get_label(widget, x, y, width, height, image_label_font, scale, image_label_name)
-    if image_URL is not None:
-        image_label.setPixmap(QtGui.QPixmap(image_URL))
+    if image_path is not None:
+        image_label.setPixmap(QtGui.QPixmap(image_path))
     return image_label
 
 
