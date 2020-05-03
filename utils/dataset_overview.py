@@ -50,6 +50,7 @@ def sample_images(data_dir, dataset, categories, number_of_images, image_width, 
 def category_numbers(dataset, categories, dir):
     category_dictionary = {}
     total = 0
+    categories.sort()
     for category in categories:
         category_path = os.path.join(dir, category)
         number_of_images_in_directory = len([im.path for im in os.scandir(category_path) if im.is_file()])
@@ -62,40 +63,37 @@ def write_dataset_numbers(txt_file, total, dictionary):
     txt_file.write('Total number of images: ' + str(total) + '\n')
     txt_file.write('Number of images per class: \n')
     for category, number in dictionary.items():
-        txt_file.write('\t' + category + ': ' + str(number) + '\n')
+        txt_file.write('\t' + category.replace('_', ' ').title() + ': ' + str(number) + '\n')
     txt_file.write('\n')
 
 
 def dataset_numbers(dataset, categories, data_dir, txt_file_path):
     _logger.info(dataset + ' dataset numbers...')
+    dataset_dict = {'break_his': 'BreakHis', 'nct_crc_he_100k': 'NCT-CRC-HE-100K'}
     train_dictionary, train_total = category_numbers(dataset,
                                                      categories,
                                                      os.path.join(data_dir, dataset, dataset + '_train'))
-    validation_dictionary, validation_total = category_numbers(dataset,
-                                                               categories,
-                                                               os.path.join(data_dir, dataset, dataset + '_validation'))
-    test_dictionary, test_total = category_numbers(dataset,
-                                                   categories,
-                                                   os.path.join(data_dir, dataset, dataset + '_test'))
+    validation_test_dictionary, validation_test_total = category_numbers(dataset,
+                                                                         categories,
+                                                                         os.path.join(data_dir, dataset,
+                                                                                      dataset + '_validation'))
 
     total_dictionary = {}
     for category in categories:
-        total_dictionary[category] = train_dictionary[category] + validation_dictionary[category] + test_dictionary[category]
+        total_dictionary[category] = train_dictionary[category] + 2 * validation_test_dictionary[category]
 
     txt_file = open(txt_file_path, "w+")
     txt_file.write('\n')
-    txt_file.write('Dataset: ' + dataset + '\n')
+    txt_file.write('Dataset: ' + dataset_dict[dataset] + '\n')
     txt_file.write('Categories: \n')
     for category in categories:
-        txt_file.write('\t ' + category + '\n')
+        txt_file.write('\t ' + category.replace('_', ' ').title() + '\n')
     txt_file.write('\n')
-    write_dataset_numbers(txt_file, train_total + validation_total + test_total, total_dictionary)
+    write_dataset_numbers(txt_file, train_total + 2*validation_test_total, total_dictionary)
     txt_file.write('Training set: \n')
     write_dataset_numbers(txt_file, train_total, train_dictionary)
-    txt_file.write('Validation set: \n')
-    write_dataset_numbers(txt_file, validation_total, validation_dictionary)
-    txt_file.write('Test set: \n')
-    write_dataset_numbers(txt_file, test_total, test_dictionary)
+    txt_file.write('Validation and Test set (each): \n')
+    write_dataset_numbers(txt_file, validation_test_total, validation_test_dictionary)
     txt_file.close()
 
     return 0
