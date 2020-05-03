@@ -22,7 +22,7 @@ def deprocess_image(x):
     return x
 
 
-def create_pattern(model, layer_name, filter_index, size, save=False):
+def create_pattern(model, layer_name, filter_index, size=300, save=False):
     _logger.info('Creating filter patterns for ' + str(layer_name) + ', filter number ' + str(filter_index))
     layer_output = model.get_layer(layer_name).output
     if layer_output.shape[-1] < filter_index:
