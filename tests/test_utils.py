@@ -16,7 +16,6 @@ import utils.visualize_intermediate_activations_and_heatmaps as visualize_interm
 
 datasets = ['break_his', 'nct_crc_he_100k']
 
-nct_crc_he_100k_tissue = []
 data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data')
 
 
@@ -68,10 +67,10 @@ def test_predict_image(tmpdir):
 
 @pytest.mark.slow
 def test_save_model(tmpdir):
-    cnn_simple = CNNSimple(image_size=(100, 100), epochs=1)
+    cnn_simple = CNNSimple(epochs=1)
     assert save_model.save_model(cnn_simple, save_dir=os.path.join(tmpdir, 'cnn_simple')) == 0
 
-    vgg19_simple = VGG19Simple(image_size=(100, 100), epochs=1)
+    vgg19_simple = VGG19Simple(epochs=1)
     assert save_model.save_model(vgg19_simple, save_dir=os.path.join(tmpdir, 'vgg19_simple')) == 0
 
 
@@ -86,12 +85,20 @@ def test_visualize_intermediate_activations(tmpdir):
     for dataset in datasets:
         dummy_image = load_image(get_random_image(dataset), image_size=(150, 150, 3))
         model = predict_image.load_keras_model(dataset)
+
         path = visualize_intermediate_activations_and_heatmaps.visualize_intermediate_activations(dummy_image,
                                                                                                   model,
                                                                                                   'block1_conv1',
                                                                                                   5,
                                                                                                   tmpdir) == 0
         assert os.path.exists(path)
+
+        path_2 = visualize_intermediate_activations_and_heatmaps.visualize_intermediate_activations(dummy_image,
+                                                                                                    model,
+                                                                                                    'block1_conv1',
+                                                                                                    None,
+                                                                                                    tmpdir) == 0
+        assert os.path.exists(path_2)
 
 
 def test_visualize_heatmaps(tmpdir):
