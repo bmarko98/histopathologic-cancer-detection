@@ -24,10 +24,14 @@ datasets = {'break_his': {'categories': ['mucinous_carcinoma', 'adenosis', 'duct
 
 def plot_class_probabilities(classes, class_probabilities, dir):
     _logger.info('Plotting bar of classes and class probabilities...')
-    index = np.arange(len(classes))
     sns.set_style('darkgrid')
+    transformed_classes = []
+    for subclass in classes:
+        transformed_classes.append(subclass.replace('_', ' ').title())
+    index = np.arange(len(classes))
+    plt.gcf().subplots_adjust(bottom=0.47 if len(classes) == 9 else 0.3)
     plt.bar(classes, class_probabilities)
-    plt.xticks(index, classes, fontsize=12, rotation=45)
+    plt.xticks(index, transformed_classes, fontsize=12, rotation=45, ha='right')
     class_probabilities_plot_path = os.path.join(dir, 'class_probabilities.png')
     plt.savefig(fname=class_probabilities_plot_path)
     plt.cla()
