@@ -43,7 +43,7 @@ def visualize_intermediate_activations(image, model, requested_layer_name, chann
                     plt.title(requested_layer_name + ' ' + str(channel_number))
                     plt.grid(False)
                     plt.axis('off')
-                    plt.imshow(requested_layer_activations[0, :, :, channel_number], aspect='auto', cmap='viridis')
+                    plt.imshow(requested_layer_activations[0, :, :, channel_number], aspect='auto', cmap='jet')
                     requested_layer_channel_path = os.path.join(activation_plots_dir, layer_name + '_' +
                                                                 str(channel_number) + '.png')
                     plt.savefig(fname=requested_layer_channel_path, bbox_inches='tight')
