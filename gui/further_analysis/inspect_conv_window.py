@@ -23,12 +23,6 @@ class InspectConvWindow(Window):
                                           CONFIG.FONT,
                                           False,
                                           INSPECT_CONV_CONFIG['NUMBER_LABEL_NAME'])
-        self.image_label = GUI.get_image_label(self.centralwidget,
-                                               *INSPECT_CONV_CONFIG['IMAGE_LABEL_POSITION'],
-                                               CONFIG.FONT,
-                                               True,
-                                               INSPECT_CONV_CONFIG['IMAGE_LABEL_NAME'],
-                                               None)
         self.show_button = GUI.get_button(self.centralwidget,
                                           *INSPECT_CONV_CONFIG['BUTTON_POSITION'],
                                           CONFIG.FONT,
