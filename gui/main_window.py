@@ -254,7 +254,7 @@ class MainWindow(Window):
 
     def classify_button_event(self):
         if self.image_path != '':
-            dataset=''
+            dataset = ''
             if self.breast_tissue_radio_button.isChecked():
                 dataset, model_path = 'break_his', CONFIG.MAIN_CONFIG['VGG19_SIMPLE_MODEL_PATH']
             elif self.colorectal_tissue_radio_button.isChecked():
