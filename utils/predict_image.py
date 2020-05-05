@@ -88,10 +88,10 @@ def copy_filters(dataset, model_path, temporary_plots_dir):
 def predict_image(image_path, dataset, model_path=None, temporary_plots_dir=None):
     if temporary_plots_dir is None:
         temporary_plots_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'gui', 'temporary_plots')
-    if os.path.exists(temporary_plots_dir):
-        shutil.rmtree(temporary_plots_dir)
-    os.mkdir(temporary_plots_dir)
-    os.mkdir(os.path.join(temporary_plots_dir, 'filters'))
+    if not os.path.exists(temporary_plots_dir):
+        os.mkdir(temporary_plots_dir)
+        os.mkdir(os.path.join(temporary_plots_dir, 'filters'))
+        os.mkdir(os.path.join(temporary_plots_dir, 'activations'))
     copy_filters(dataset, model_path, temporary_plots_dir)
     model = load_keras_model(dataset, model_path)
     layers = []
