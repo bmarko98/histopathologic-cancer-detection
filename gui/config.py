@@ -7,8 +7,7 @@ FONT_COLOR = 'white'
 CENTRAL_WIDGET = 'central_widget'
 REPO_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 TEMPORARY_PLOTS_DIR = os.path.join(REPO_DIR, 'gui', 'temporary_plots')
-VGG19_SIMPLE_MODEL_PATH = os.path.join(REPO_DIR, 'experiments', 'break_his_models',
-                                       'VGG19Simple', 'VGG19Simple.h5')
+VGG19_SIMPLE_MODEL_PATH = os.path.join(REPO_DIR, 'experiments', 'break_his_models', 'VGG19Simple', 'VGG19Simple.h5')
 CNN_SIMPLE_MODEL_PATH = os.path.join(REPO_DIR, 'experiments', 'nct_crc_he_100k_models', 'CNNSimple', 'CNNSimple.h5')
 
 ABOUT_AUTHOR_CONFIG = {

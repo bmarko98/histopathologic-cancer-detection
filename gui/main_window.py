@@ -219,15 +219,13 @@ class MainWindow(Window):
         self.simple_window_fun(CONFIG.SIMPLE_CONFIG['HOWTO'])
 
     def exit(self):
-        if os.path.exists(CONFIG.TEMPORARY_PLOTS_DIR):
-            shutil.rmtree(CONFIG.TEMPORARY_PLOTS_DIR)
         sys.exit()
 
     def save(self):
         dir_name = QtWidgets.QFileDialog.getExistingDirectory(None, 'Save Images')
         current_time = datetime.now()
         current_time = current_time.strftime("_%d-%m-%Y_%H:%M:%S")
-        shutil.copytree(CONFIG.TEMPORARY_PLOTS_DIR, os.path.join(dir_name, 'hpd' + current_time))
+        shutil.copytree(CONFIG.TEMPORARY_PLOTS_DIR, os.path.join(dir_name, 'Histopathologic_Cancer_Detection_' + current_time))
 
     def triggers(self):
         self.action_network_filters.triggered.connect(self.filter_patterns_window_fun)
@@ -314,4 +312,6 @@ def main():
 
 
 if __name__ == "__main__":
+    if os.path.exists(CONFIG.TEMPORARY_PLOTS_DIR):
+        shutil.rmtree(CONFIG.TEMPORARY_PLOTS_DIR)
     main()
