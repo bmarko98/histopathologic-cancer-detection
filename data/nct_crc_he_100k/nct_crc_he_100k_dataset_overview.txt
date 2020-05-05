@@ -1,64 +1,51 @@
 
-Dataset: nct_crc_he_100k
+Dataset: NCT-CRC-HE-100K
 Categories: 
-	 cancer_associated_stroma
-	 adipose
-	 debris
-	 mucus
-	 background
-	 smooth_muscle
-	 lymphocytes
-	 colorectal_adenocarcinoma_epithelium
-	 normal_colon_mucosa
+	 Adipose
+	 Background
+	 Cancer Associated Stroma
+	 Colorectal Adenocarcinoma Epithelium
+	 Debris
+	 Lymphocytes
+	 Mucus
+	 Normal Colon Mucosa
+	 Smooth Muscle
 
 Total number of images: 100000
 Number of images per class: 
-	cancer_associated_stroma: 10446
-	adipose: 10407
-	debris: 11512
-	mucus: 8896
-	background: 10566
-	smooth_muscle: 13536
-	lymphocytes: 11557
-	colorectal_adenocarcinoma_epithelium: 14317
-	normal_colon_mucosa: 8763
+	Adipose: 10407
+	Background: 10566
+	Cancer Associated Stroma: 10446
+	Colorectal Adenocarcinoma Epithelium: 14317
+	Debris: 11512
+	Lymphocytes: 11557
+	Mucus: 8896
+	Normal Colon Mucosa: 8763
+	Smooth Muscle: 13536
 
 Training set: 
 Total number of images: 70010
 Number of images per class: 
-	cancer_associated_stroma: 7314
-	adipose: 7285
-	debris: 8060
-	mucus: 6228
-	background: 7398
-	smooth_muscle: 9476
-	lymphocytes: 8091
-	colorectal_adenocarcinoma_epithelium: 10023
-	normal_colon_mucosa: 6135
+	Adipose: 7285
+	Background: 7398
+	Cancer Associated Stroma: 7314
+	Colorectal Adenocarcinoma Epithelium: 10023
+	Debris: 8060
+	Lymphocytes: 8091
+	Mucus: 6228
+	Normal Colon Mucosa: 6135
+	Smooth Muscle: 9476
 
-Validation set: 
+Validation and Test set (each): 
 Total number of images: 14995
 Number of images per class: 
-	cancer_associated_stroma: 1566
-	adipose: 1561
-	debris: 1726
-	mucus: 1334
-	background: 1584
-	smooth_muscle: 2030
-	lymphocytes: 1733
-	colorectal_adenocarcinoma_epithelium: 2147
-	normal_colon_mucosa: 1314
-
-Test set: 
-Total number of images: 14995
-Number of images per class: 
-	cancer_associated_stroma: 1566
-	adipose: 1561
-	debris: 1726
-	mucus: 1334
-	background: 1584
-	smooth_muscle: 2030
-	lymphocytes: 1733
-	colorectal_adenocarcinoma_epithelium: 2147
-	normal_colon_mucosa: 1314
+	Adipose: 1561
+	Background: 1584
+	Cancer Associated Stroma: 1566
+	Colorectal Adenocarcinoma Epithelium: 2147
+	Debris: 1726
+	Lymphocytes: 1733
+	Mucus: 1334
+	Normal Colon Mucosa: 1314
+	Smooth Muscle: 2030
 

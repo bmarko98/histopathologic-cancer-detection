@@ -1,59 +1,47 @@
 
-Dataset: break_his
+Dataset: BreakHis
 Categories: 
-	 mucinous_carcinoma
-	 adenosis
-	 ductal_carcinoma
-	 fibroadenoma
-	 tubular_adenoma
-	 phyllodes_tumor
-	 papillary_carcinoma
-	 lobular_carcinoma
+	 Adenosis
+	 Ductal Carcinoma
+	 Fibroadenoma
+	 Lobular Carcinoma
+	 Mucinous Carcinoma
+	 Papillary Carcinoma
+	 Phyllodes Tumor
+	 Tubular Adenoma
 
 Total number of images: 2081
 Number of images per class: 
-	mucinous_carcinoma: 222
-	adenosis: 113
-	ductal_carcinoma: 903
-	fibroadenoma: 260
-	tubular_adenoma: 150
-	phyllodes_tumor: 121
-	papillary_carcinoma: 142
-	lobular_carcinoma: 170
+	Adenosis: 113
+	Ductal Carcinoma: 903
+	Fibroadenoma: 260
+	Lobular Carcinoma: 170
+	Mucinous Carcinoma: 222
+	Papillary Carcinoma: 142
+	Phyllodes Tumor: 121
+	Tubular Adenoma: 150
 
 Training set: 
 Total number of images: 1463
 Number of images per class: 
-	mucinous_carcinoma: 156
-	adenosis: 81
-	ductal_carcinoma: 633
-	fibroadenoma: 182
-	tubular_adenoma: 106
-	phyllodes_tumor: 85
-	papillary_carcinoma: 100
-	lobular_carcinoma: 120
+	Adenosis: 81
+	Ductal Carcinoma: 633
+	Fibroadenoma: 182
+	Lobular Carcinoma: 120
+	Mucinous Carcinoma: 156
+	Papillary Carcinoma: 100
+	Phyllodes Tumor: 85
+	Tubular Adenoma: 106
 
-Validation set: 
+Validation and Test set (each): 
 Total number of images: 309
 Number of images per class: 
-	mucinous_carcinoma: 33
-	adenosis: 16
-	ductal_carcinoma: 135
-	fibroadenoma: 39
-	tubular_adenoma: 22
-	phyllodes_tumor: 18
-	papillary_carcinoma: 21
-	lobular_carcinoma: 25
-
-Test set: 
-Total number of images: 309
-Number of images per class: 
-	mucinous_carcinoma: 33
-	adenosis: 16
-	ductal_carcinoma: 135
-	fibroadenoma: 39
-	tubular_adenoma: 22
-	phyllodes_tumor: 18
-	papillary_carcinoma: 21
-	lobular_carcinoma: 25
+	Adenosis: 16
+	Ductal Carcinoma: 135
+	Fibroadenoma: 39
+	Lobular Carcinoma: 25
+	Mucinous Carcinoma: 33
+	Papillary Carcinoma: 21
+	Phyllodes Tumor: 18
+	Tubular Adenoma: 22
 
