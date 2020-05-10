@@ -1,4 +1,5 @@
 import os
+import shutil
 import gui.config as CONFIG
 from PyQt5 import QtWidgets
 from gui.window import Window
@@ -67,8 +68,9 @@ class InspectConvWindow(Window):
                         self.label_clicked_event()
             elif self.show_button.objectName() == 'showFilterButton':
                 if line_edit_text == 'all':
-                    self.image_path = os.path.join(CONFIG.TEMPORARY_PLOTS_DIR, 'filters',
+                    self.image_path = os.path.join(os.path.dirname(CONFIG.VGG19_SIMPLE_MODEL_PATH), 'conv_filters',
                                                    combo_box_text + '_filter_patterns.png')
+                    shutil.copy2(self.image_path, os.path.join(CONFIG.TEMPORARY_PLOTS_DIR, 'filters'))
                     if self.image_path:
                         self.label_clicked_event()
                 elif line_edit_text.isdigit():

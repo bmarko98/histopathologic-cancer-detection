@@ -73,26 +73,12 @@ def load_keras_model(dataset, model_path=None):
     return model
 
 
-def copy_filters(dataset, model_path, temporary_plots_dir):
-    if model_path is None:
-        model_path = get_model_path(dataset)
-    filters_dir = os.path.join(os.path.dirname(model_path), 'conv_filters')
-    dest_dir = os.path.join(temporary_plots_dir, 'filters')
-    filter_images = [im.path for im in os.scandir(filters_dir) if im.is_file()]
-    for filter_image in filter_images:
-        filter_image_name = filter_image.split('/')[-1]
-        copied_filter_image = os.path.join(dest_dir, filter_image_name)
-        shutil.copy2(filter_image, copied_filter_image)
-
-
 def predict_image(image_path, dataset, model_path=None, temporary_plots_dir=None):
     if temporary_plots_dir is None:
         temporary_plots_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'gui', 'temporary_plots')
     if not os.path.exists(temporary_plots_dir):
         os.mkdir(temporary_plots_dir)
         os.mkdir(os.path.join(temporary_plots_dir, 'filters'))
-        os.mkdir(os.path.join(temporary_plots_dir, 'activations'))
-    copy_filters(dataset, model_path, temporary_plots_dir)
     model = load_keras_model(dataset, model_path)
     layers = []
     for layer in model.layers:
