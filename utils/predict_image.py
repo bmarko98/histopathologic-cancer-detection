@@ -1,7 +1,6 @@
 import os
 import numpy as np
 import logging
-import shutil
 import seaborn as sns
 import matplotlib.pyplot as plt
 from utils.misc import load_image
