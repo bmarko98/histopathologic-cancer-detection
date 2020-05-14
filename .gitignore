@@ -150,15 +150,6 @@ dmypy.json
 # TO_DO file
 TO_DO.txt
 
-# experiments folder (temporarily)
-!experiments/hyperparameter_tuning.py
-experiments/break_his_models/*
-!experiments/break_his_models/VGG19Simple/
-!experiments/break_his_models/VGG19Simple/plots/*
-experiments/nct_crc_he_100k_models/*
-!experiments/nct_crc_he_100k_models/CNNSimple/
-!experiments/nct_crc_he_100k_models/CNNSimple/plots/*
-
 # code length calculator
 thesis_code_analyzer.py
 
@@ -456,3 +447,6 @@ thesis_paper/topic_declaration_2.pdf
 
 gui/tensorflow/*
 gui/temporary_plots/*
+
+!experiments/break_his_models/VGG19Simple/conv_filters/*.png
+!experiments/nct_crc_he_100k_models/CNNSimple/conv_filters/*.png
