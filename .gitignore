@@ -441,7 +441,7 @@ TSWLatexianTemp*
 # Uncomment the next line to have this generated file ignored.
 #*Notes.bib
 
-thesis_paper/thesis.pdf
+!thesis_paper/images/*
 thesis_paper/topic_declaration.pdf
 thesis_paper/topic_declaration_2.pdf
 
