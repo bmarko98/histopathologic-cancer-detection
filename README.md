@@ -37,7 +37,7 @@ BreakHis is composed of 9,109 microscopic images of breast tumor tissue collecte
 
 NCT-CRC-HE-100K Dataset is composed of 100,000 non-overlapping image patches (224x224 pixels) from hematoxylin & eosin (H&E) stained histological images of human colorectal cancer and normal tissue. Tissue classes are: adipose, background, debris, lymphocytes, mucus, smooth muscle, normal colon mucosa, cancer-associated stroma, colorectal adenocarcinoma epithelium.
 
- - [Download NCT-CRC-HE-100K](https://zenodo.org/record/1214456#.Xk2d2-l7nqo)
+ - [Download NCT-CRC-HE-100K](https://zenodo.org/record/1214456#.Xr6HwRZS8Up)
 
 ### Copying images to Training, Validation and Test sets
  - In order to create training, validation and test sets, first:
@@ -50,7 +50,7 @@ $ python3 data/nct_crc_he_100k/nct_crc_he_100k_dataset_creation.py
 ```
  - In order to plot sample images and obtain basic dataset information, run following command:
  ```
-$ python3 data/dataset_overview.py
+$ python3 utils/dataset_overview.py
  ```
 
 ## Models
@@ -61,8 +61,8 @@ BaseCNN is parent model of all subsequent models. It contains creation of data g
 
 ### 1. CNNSimple
 
-CNNSimple is model trained on NCT_CRC_HE_100K dataset. It's architecture consists of 4 convolutional blocks (each of which contain several convolutional layers, followed by max pooling layer), and 3 fully-connected (dense) layers on top.
- - In order to train the model from scratch on NCT_CRC_HE_100K dataset, set up the parameters dictionary in and run following command:
+CNNSimple is model trained on NCT-CRC-HE-100K dataset. It's architecture consists of 4 convolutional blocks (each of which contain several convolutional layers, followed by max pooling layer), and 3 fully-connected (dense) layers on top.
+ - In order to train the model from scratch on NCT-CRC-HE-100K dataset, set up the parameters dictionary in and run following command:
  ```
 $ python3 experiments/hyperparameter_tuning.py
  ```
@@ -77,7 +77,7 @@ $ python3 experiments/hyperparameter_tuning.py
 
 ## Graphical User Interface
 
-GUI is implemented using PyQt5 library, and it consists of several window classes, all derived from Window class. In order to run the Application, run the following command:
+GUI is implemented using PyQt5 library, and it consists of several window classes, all derived from Window class. In order to run the Application, execute the following command:
 ```
 $ python3 gui/main_window.py
 ```
