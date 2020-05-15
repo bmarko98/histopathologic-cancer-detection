@@ -1,9 +1,9 @@
 import os
-import matplotlib.pyplot as plt
 import logging
 import pandas as pd
 import seaborn as sns
 from datetime import datetime
+import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix
 from utils.visualize_filters import visualize_filters
 

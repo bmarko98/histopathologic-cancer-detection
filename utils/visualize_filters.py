@@ -1,8 +1,8 @@
 import os
-import logging
 import math
-import numpy as np
+import logging
 import matplotlib
+import numpy as np
 import matplotlib.pyplot as plt
 from keras import backend as K
 

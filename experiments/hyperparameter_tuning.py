@@ -9,7 +9,7 @@ _logger = logging.getLogger(__name__)
 
 def create_cnn_simple(cnn_simple_parameter_dictonary):
     for i in range(cnn_simple_parameter_dictonary['model_number']):
-        _logger.info('Creating CNNSimple object number ' + str(i) + '...')
+        _logger.info('Creating CNNSimple object number ' + str(i+1) + '...')
 
         model = CNNSimple(network_name='FinalCNNSimple',  # NOQA: F841
                           dataset_name='nct_crc_he_100k',
@@ -46,11 +46,11 @@ def create_vgg19_simple(vgg19_simple_parameter_dictonary):
                             optimizer=vgg19_simple_parameter_dictonary['optimizer'][i],
                             metrics=['acc'],
                             epochs=vgg19_simple_parameter_dictonary['epochs'][i],
-                            skip_filters=True,
                             fine_tune=True,
                             first_trainable_block=vgg19_simple_parameter_dictonary['first_trainable_block'][i],
                             fine_tune_learning_rate=vgg19_simple_parameter_dictonary['fine_tune_learning_rate'][i],
-                            fine_tune_epochs=vgg19_simple_parameter_dictonary['fine_tune_epochs'][i])
+                            fine_tune_epochs=vgg19_simple_parameter_dictonary['fine_tune_epochs'][i],
+                            skip_filters=True)
     return 0
 
 

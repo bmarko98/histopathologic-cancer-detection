@@ -49,11 +49,11 @@ ABOUT_DATASETS_CONFIG = {
     'NCT_CRC_HE_100K': {
         'WINDOW_NAME': 'AboutDatasetsWindow',
         'WINDOW_TITLE': 'About NCT_CRC_HE_100K Dataset',
-        'WINDOW_X': 1600,
+        'WINDOW_X': 1650,
         'WINDOW_Y': 1000,
-        'OVERVIEW_LABEL_POSITION': [75, 5, 400, 1000],
+        'OVERVIEW_LABEL_POSITION': [50, 5, 450, 1000],
         'OVERVIEW_LABEL_NAME': 'datasetOverviewLabel',
-        'IMAGES_LABEL_POSITIONS': [550, 200, 950, 600],
+        'IMAGES_LABEL_POSITIONS': [600, 200, 950, 600],
         'IMAGES_LABEL_NAME': 'datasetImagesLabel',
         'IMAGES_PATH': os.path.join(REPO_DIR, 'data', 'nct_crc_he_100k', 'nct_crc_he_100k_sample_images.jpg'),
         'DATASET_OVERVIEW_PATH': os.path.join(REPO_DIR, 'data', 'nct_crc_he_100k', 'nct_crc_he_100k_dataset_overview.txt')
@@ -273,7 +273,7 @@ MAIN_CONFIG = {
         'AUTHOR_NAME': 'actionAuthor', 'AUTHOR_TEXT': 'Author',
         'HOW_TO_NAME': 'actionHowTo', 'HOW_TO_TEXT': 'Advanced Use',
         'BREAK_HIS_NAME': 'actionBreakHis', 'BREAK_HIS_TEXT': 'BreakHis',
-        'NCT_CRC_HE_100K_NAME': 'actionNCT_CRC_HE_100K', 'NCT_CRC_HE_100K_TEXT': 'NCT_CRC_HE_100K',
+        'NCT_CRC_HE_100K_NAME': 'actionNCT_CRC_HE_100K', 'NCT_CRC_HE_100K_TEXT': 'NCT-CRC-HE-100K',
         'CNN_SIMPLE_NAME': 'actionCNNSimple', 'CNN_SIMPLE_TEXT': 'CNNSimple',
         'VGG19_SIMPLE_NAME': 'actionVGG19Simple', 'VGG19_SIMPLE_TEXT': 'VGG19Simple',
         'NETWORK_FILTERS_NAME': 'actionNetworkFilters', 'NETWORK_FILTERS_TEXT': 'Network Filters',

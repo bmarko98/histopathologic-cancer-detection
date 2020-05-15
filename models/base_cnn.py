@@ -1,6 +1,6 @@
 import os
-import numpy as np
 import logging
+import numpy as np
 from PIL import Image
 from keras.optimizers import SGD, RMSprop, Adam
 from keras.preprocessing.image import ImageDataGenerator

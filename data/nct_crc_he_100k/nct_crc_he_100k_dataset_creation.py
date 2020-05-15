@@ -1,7 +1,7 @@
 import os
-import zipfile
 import shutil
 import logging
+import zipfile
 from utils.misc import move_to_directory
 
 

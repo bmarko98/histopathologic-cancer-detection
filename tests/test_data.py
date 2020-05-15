@@ -1,8 +1,8 @@
 import os
 import tarfile
 import zipfile
-import data.break_his.break_his_dataset_creation as break_his_dataset_creation
 from data.break_his.break_his_dataset_creation import benign, malignant
+import data.break_his.break_his_dataset_creation as break_his_dataset_creation
 import data.nct_crc_he_100k.nct_crc_he_100k_dataset_creation as nct_crc_he_100k_dataset_creation
 
 

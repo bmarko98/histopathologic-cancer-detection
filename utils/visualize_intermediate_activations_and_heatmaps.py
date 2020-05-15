@@ -2,9 +2,9 @@ import os
 import cv2
 import logging
 import numpy as np
-import matplotlib.pyplot as plt
 from keras import backend as K
 from keras.models import Model
+import matplotlib.pyplot as plt
 
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
@@ -76,7 +76,7 @@ def visualize_intermediate_activations(image, model, requested_layer_name, chann
                 plt.title(layer_name)
                 plt.grid(False)
                 plt.axis('off')
-                plt.imshow(display_grid, aspect='auto', cmap='viridis')
+                plt.imshow(display_grid, aspect='auto', cmap='jet')
                 plot_path = os.path.join(activation_plots_dir, layer_name + '.png')
                 plt.savefig(fname=plot_path, bbox_inches='tight')
                 plt.close('all')

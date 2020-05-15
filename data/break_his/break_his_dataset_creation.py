@@ -1,7 +1,7 @@
 import os
-import tarfile
 import shutil
 import logging
+import tarfile
 from utils.misc import move_to_directory
 
 

@@ -35,7 +35,6 @@ class MainWindow(Window):
                                                      True,
                                                      MAIN_CONFIG['INPUT_IMAGE_NAME'],
                                                      None)
-        self.image_path = ''
         self.breast_tissue_radio_button = GUI.get_radio_button(self.centralwidget,
                                                                *MAIN_CONFIG['BREAST_TISSUE_RADIO_BUTTON_POSITION'],
                                                                CONFIG.FONT,
@@ -62,10 +61,11 @@ class MainWindow(Window):
         self.image = None
         self.model = None
         self.dataset = None
+        self.image_path = ''
         self.plot_path = None
         self.heatmap_path = None
-        self.layer_activations = False
         self.filter_patterns = False
+        self.layer_activations = False
         MainWindow.setCentralWidget(self.centralwidget)
 
     def create_menu(self, MainWindow, MAIN_CONFIG):
@@ -255,7 +255,7 @@ class MainWindow(Window):
         self.input_image_label.setPixmap(QtGui.QPixmap(self.image_path))
 
     def classify_button_event(self):
-        if self.image_path != '':
+        if self.image_path:
             if self.breast_tissue_radio_button.isChecked():
                 self.dataset, model_path = 'break_his', CONFIG.MAIN_CONFIG['VGG19_SIMPLE_MODEL_PATH']
             elif self.colorectal_tissue_radio_button.isChecked():

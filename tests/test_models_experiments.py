@@ -1,5 +1,4 @@
 import pytest
-import utils.save_model as save_model
 import models.cnn_simple as cnn_simple
 import models.vgg19_simple as vgg19_simple
 from experiments.hyperparameter_tuning import create_cnn_simple, create_vgg19_simple

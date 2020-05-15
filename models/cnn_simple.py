@@ -75,11 +75,11 @@ class CNNSimple(BaseCNN):
     def data_generators(self):
         _logger.info('Setting data generators...')
         train_datagen = ImageDataGenerator(rescale=1./255,
-                                           rotation_range=60,
-                                           width_shift_range=0.2,
-                                           height_shift_range=0.2,
-                                           shear_range=0.2,
-                                           zoom_range=0.2,
+                                           rotation_range=45,
+                                           width_shift_range=0.1,
+                                           height_shift_range=0.1,
+                                           shear_range=0.1,
+                                           zoom_range=0.1,
                                            fill_mode='nearest',
                                            horizontal_flip=True,
                                            vertical_flip=True)

@@ -1,6 +1,6 @@
 import os
-import numpy as np
 import logging
+import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 from utils.misc import load_image
@@ -77,7 +77,9 @@ def predict_image(image_path, dataset, model_path=None, temporary_plots_dir=None
         temporary_plots_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'gui', 'temporary_plots')
     if not os.path.exists(temporary_plots_dir):
         os.mkdir(temporary_plots_dir)
-        os.mkdir(os.path.join(temporary_plots_dir, 'filters'))
+    filters_dir = os.path.join(temporary_plots_dir, 'filters')
+    if not os.path.exists(filters_dir):
+        os.mkdir(filters_dir)
     model = load_keras_model(dataset, model_path)
     layers = []
     for layer in model.layers:
