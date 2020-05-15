@@ -115,9 +115,3 @@ def main(data_dir, datasets, number_of_images=10, save_dir=None):
         _logger.info('Exception caught in main: {}'.format(e), exc_info=True)
         return 1
     return 0
-
-
-if __name__ == "__main__":
-    data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data')
-    datasets = [f.name for f in os.scandir(data_dir) if f.is_dir()]
-    exit(main(data_dir, datasets))
