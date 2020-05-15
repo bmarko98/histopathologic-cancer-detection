@@ -1,13 +1,13 @@
 \chapter{Developer Documentation}
 \label{ch:impl}
 
-Creation of the program for histopathologic cancer detection is divided in four major parts:
+Creation of the program for histopathologic cancer detection is divided into four major parts:
 \begin{enumerate}
 	\itemsep0em
-	\item Assembling dataset structure (required for input to convolutional neural network), image preprocessing (loading, removing noise, normalization, whitening) and data augmentation (expanding size of dataset by applying a series of random transformations to each image)
-	\item Building the convolutional neural networks (class of deep neural networks applied to analyzing images), and training them on data
+	\item Assembling dataset structure (required for input to a convolutional neural network), image preprocessing (loading, removing noise, normalization, whitening) and data augmentation (expanding the size of the dataset by applying a series of random transformations to each image)
+	\item Building the convolutional neural networks (class of deep neural networks applied to analyze images), and training them on data
 	\item Improving prediction accuracy of networks (solving underfitting and overfitting problems) with hyperparameter tuning (choosing optimal parameters for learning algorithm) and changes to network architecture
-	\item Creating graphical user interface for the program, which allows user to load histopathologic slide and select network which has be applied on it, and to get as output category to which that slide belongs, with additional possibility to visualize network representations (heatmaps of class activations, filters of convolutional layers and intermediate activations)
+	\item Creating a graphical user interface for the program, which allows user to load histopathologic slide and select network which has to be applied on it, and to get as output category to which that slide belongs, with the additional possibility to visualize network representations (heatmaps of class activations, filters of convolutional layers and intermediate activations)
 \end{enumerate}
 In the remainder of this chapter each part will be thoroughly analyzed, and directory/file structure of source the code will be illustrated, as well as use-case and class diagrams. 
 
@@ -45,8 +45,7 @@ Histopathologic Cancer Detection program is divided into six major modules (\tex
 
 \section{Use-Case Diagram}
 
-One of the main goals of the Histopahtologic Cancer Detection program was the ease of use, i.e. straightforward graphical user interface which makes complex operations look quite simple and effortless. Even though there are extremely advanced algorithms with millions of parameters behind the program, GUI was made in such a way that everyone can use it. 
-First step is loading the image and selecting tissue type (breast or colorectal tissue), after which classification is being done. At every step of the way, current work can be saved, and new image can be loaded to start the process from scratch. After the classification, it is possible to visualize network representations and perform further analysis of the results by visualizing layer activations, network filters and heatmaps (\textcolor{red}{\autoref{fig:usecase}}).
+One of the main goals of the Histopathologic Cancer Detection program was the ease of use, i.e. straightforward graphical user interface which makes complex operations look quite simple and effortless. Even though there are extremely advanced algorithms with millions of parameters behind the program, GUI was made in such a way that everyone can use it. The first step is loading the image and selecting tissue type (breast or colorectal tissue), after which classification is being done. At every step of the way, current work can be saved, and a new image can be loaded to start the process from scratch. After the classification, it is possible to visualize network representations and perform further analysis of the results by visualizing layer activations, network filters, and heatmaps (\textcolor{red}{\autoref{fig:usecase}}).
 
 \begin{figure}[h]
 	\centering
@@ -59,7 +58,7 @@ First step is loading the image and selecting tissue type (breast or colorectal 
 
 Classes of Histopathologic Cancer Detection can be divided into two main segments: window classes and neural network classes.
 
-BaseCNN class is the common class of all neural network classes, and it contains common attributes, such as dataset name, network name, compile parameters, and common methods, such as creation of data generators, compilation and training of the network. Neural network classes will be discussed in more detail in \textcolor{red}{\hyperref[cnn]{Section 3.5}, \hyperref[vgg19]{Section 3.6}}.
+BaseCNN class is the common class of all neural network classes, and it contains common attributes, such as dataset name, network name, compile parameters, and common methods, such as the creation of data generators, compilation, and training of the network. Neural network classes will be discussed in more detail in \textcolor{red}{\hyperref[cnn]{Section 3.5}, \hyperref[vgg19]{Section 3.6}}.
 
 \begin{figure}[h]
 	\centering
@@ -75,18 +74,18 @@ BaseCNN class is the common class of all neural network classes, and it contains
 	\label{fig:class2}
 \end{figure}
 
-Window class is the base class of all window classes, and it implements common methods, such as setting up the window size and central widget. On the other side, MainWindow class is the central point of GUI, as it defines the window which appears when program is run, and every other window is invoked from it (\textcolor{red}{\autoref{fig:class2}}). Window classes, along with their attributed and methods, will be discussed in more detail in \textcolor{red}{\hyperref[gui]{Section 3.8}}.
+Window class is the base class of all window classes, and it implements common methods, such as setting up the window size and central widget. On the other side, MainWindow class is the central point of GUI, as it defines the window which appears when the program is run, and every other window is invoked from it (\textcolor{red}{\autoref{fig:class2}}). Window classes, along with their attributes and methods, will be discussed in more detail in \textcolor{red}{\hyperref[gui]{Section 3.8}}.
 
 \section{Creation of Datasets}
 \label{createdata}
 
-Performance and accuracy of convolutional neural networks relies largely on datasets, i.e. on quality of available data, dataset size, class balance, etc. But before feeding data to the network, if using \texttt{Keras} API, certain dataset structure must be satisfied. More precisely, datasets must have the following structure: train, validation and test directories, each with subdirectory for each class. Scripts responsible for creation of required directory structure and distribution of data are:
+Performance and accuracy of convolutional neural networks rely largely on datasets, i.e. on quality of available data, dataset size, class balance, etc. But before feeding data to the network, if using \texttt{Keras} API, certain dataset structures must be satisfied. More precisely, datasets must have the following structure: train, validation, and test directories, each with a subdirectory for each class. Scripts responsible for the creation of required directory structure and distribution of data are:
 \begin{itemize}
 	\itemsep 0em
 	\item \texttt{break\_his\_dataset\_creation.py},
 	\item \texttt{nct\_crc\_he\_100k\_dataset\_creation.py}.
 \end{itemize} 
-They work by extracting datasets downloaded from \cite{breakhis_bib}, \cite{nctcrche100k_bib}, creating necessary directory tree and distributing images between created subdirectories. After executing scripts, datasets are ready to be fed into convolutional neural networks (in order to train them), but before that, neural network architecture has to be built.
+They work by extracting datasets downloaded from \cite{breakhis_bib}, \cite{nctcrche100k_bib}, creating necessary directory tree, and distributing images between created subdirectories. After executing scripts, datasets are ready to be fed into convolutional neural networks (in order to train them), but before that, neural network architecture has to be built.
 \clearpage
 
 \section{CNNSimple Implementation}
@@ -94,11 +93,11 @@ They work by extracting datasets downloaded from \cite{breakhis_bib}, \cite{nctc
 
 CNNSimple convolutional neural network (\textcolor{red}{\hyperref[src:py1]{Code 3.1}}) was created using \texttt{Keras} Sequential model in order to classify images from NCT-CRC-HE-100K dataset, which contains 100.000 images divided into 9 tissue/cancer categories. 
 
-Convolutional base of CNNSimple is composed of four blocks of convolutional and max-pooling layers, where first two blocks have two convolutional and one max-pooling layer, and last two blocks have three convolutional and one max-pooling layer. Each convolutional layer has 3$\times$3 convolution window, uses ReLU activation function, and number of feature maps (filters) increases exponentially from 32 to 256. Each max-pooling layer has pool size of 2$\times$2. 
+The convolutional base of CNNSimple is composed of four blocks of convolutional and max-pooling layers, where the first two blocks have two convolutional and one max-pooling layer, and the last two blocks have three convolutional and one max-pooling layer. Each convolutional layer has a 3$\times$3 convolution window, uses the ReLU activation function, and the number of feature maps (filters) increases exponentially from 32 to 256. Each max-pooling layer has pool size of 2$\times$2. 
 
 Classification top of CNNSimple is composed of two fully-connected layers, each followed by a dropout layer, and an output (also fully-connected) layer. Fully-connected layers use ReLU activation function, and number of neurons grows from 512 to 1024. Dropout layers use 50\% dropout rate (fraction of neurons which will be ignored in each passing). Output layer uses softmax activation function, and has nine neurons (one neuron per tissue/cancer subtype output). 
 \vspace{1mm}
-\lstset{caption={CNNSimple network architecture, defined in \texttt{cnn\_simple.py}},label=src:py1}
+\lstset{caption={CNNSimple network architecture (defined in \texttt{cnn\_simple.py})},label=src:py1}
 \begin{lstlisting}[language={Python}, basicstyle=\scriptsize]
 	model = Sequential()
 	model.add(Conv2D(32, (3, 3), activation='relu', input_shape=(150, 150, 3),     
@@ -127,7 +126,7 @@ Classification top of CNNSimple is composed of two fully-connected layers, each 
 \section{Transfer Learning}
 \label{vgg19}
 
-Although CNNs are a powerful tool for image classification, in order to achieve high accuracy, large amount of data is required. Problem occurs when only small dataset is available (as is often in healthcare, ex. BreakHis dataset). In such cases transfer learning can be used: take model trained on large dataset and transfer knowledge to small dataset, i.e. freeze convolutional base, and only train classification top of the network. Main idea is that early layers of convolutional base learn low-level features applicable across all images, such as edges and patterns.
+Although CNNs are a powerful tool for image classification, in order to achieve high accuracy, a large amount of data is required. The problem occurs when only a small dataset is available (as is often in healthcare, ex. BreakHis dataset). In such cases transfer learning can be used: take a model trained on a large dataset and transfer knowledge to a small dataset, i.e. freeze convolutional base, and only train classification top of the network. The main idea is that early layers of convolutional base learn low-level features applicable across all images, such as edges and patterns.
 
 \subsection{VGG19Simple Implementation}
 
@@ -135,10 +134,10 @@ VGG19Simple convolutional neural network (\textcolor{red}{\hyperref[src:py2]{Cod
 
 Convolutional base of VGG19Simple is VGG19 \cite{simonyan2014very} pre-built network pre-trained on ImageNet \cite{deng2009imagenet} dataset (without top classification part), using imagenet weights.
 
-Classification top of CNNSimple is composed of two fully-connected layers, each followed by a dropout layer, and an output (also fully-connected) layer. Fully-connected layers use ReLU activation function, and number of neurons grows from 512 to 1024. Dropout layers use 50\% dropout rate (fraction of neurons which will be ignored in each passing). Output layer uses softmax activation function, and has eight neurons (one neuron per tissue/cancer subtype output). 
+Classification top of VGG19Simple is composed of two fully-connected layers, each followed by a dropout layer, and an output (also fully-connected) layer. Fully-connected layers use the ReLU activation function, and the number of neurons grows from 512 to 1024. Dropout layers use a 50\% dropout rate (fraction of neurons which will be ignored in each passing). The output layer uses softmax activation function, and has eight neurons (one neuron per tissue/cancer subtype output). 
 
 \vspace{3mm}
-\lstset{caption={VGG19Simple network architecture, defined in \texttt{vgg19\_simple.py}},label=src:py2}
+\lstset{caption={VGG19Simple network architecture (defined in \texttt{vgg19\_simple.py})},label=src:py2}
 \begin{lstlisting}[language={Python}, basicstyle=\scriptsize]
 	input = Input((150, 150, 3))
 	convolutional_base = VGG19(weights='imagenet', include_top=False,
@@ -158,31 +157,30 @@ Classification top of CNNSimple is composed of two fully-connected layers, each 
 \section{Experiments and Results}
 \label{exp}
 
-Performance of neural networks is determined by how well will it generalize, i.e. how high accuracy will it achieve on previously unseen data (if it performs well on training data, but underachieves on test data, it is said that CNN overfits). In order to prevent overfitting, number of techniques can be used: increase size of the dataset, change network architecture or apply hyperparameter tuning techniques, which consist of selecting a set optimal hyperparameters for learning algorithm. Selection of such parameters for networks is done in \texttt{hyperparameter\_tuning.py}. First step consists of defining hyperparameter dictionary with parameters and values to be tested, such as number of epochs for which network is to be trained, optimization techniques, etc. Next step consists of training network with all combination of parameters and values defined, after which network performances are compared in order to determine the optimal hyperparameter set.
+Performance of neural networks is determined by how well will it generalize, i.e. how high accuracy will it achieve on previously unseen data (if it performs well on training data, but underachieves on test data, it is said that CNN overfits). In order to prevent overfitting, a number of techniques can be used: increase the size of the dataset, change network architecture or apply hyperparameter tuning techniques, which consist of selecting a set of optimal hyperparameters for the learning algorithms. The selection of such parameters for networks is done in \texttt{hyperparameter\_tuning.py}. The first step consists of defining the hyperparameter dictionary with parameters and values to be tested, such as the number of epochs for which the network is to be trained, optimization techniques, etc. The next step consists of training a network with all combinations of parameters and values defined, after which network performances are compared in order to determine the optimal hyperparameter set.
 
-CNNSimple network trained on NCT-CRC-HE-100K dataset was trained for 35 epochs, using RMSProp optimizer with learning rate of 0.00004, using categorical crossentropy loss function. Before feeding data to the network, data augmentation (applying random transformations in order to produce more images, such as translation, rotation, sheer) has been used. In order to assess performance of the network, accuracy metrics function was employed. CNNSimple achieved 93.89\% validation and 94.21\% test accuracy, and 0.24 validation and 0.06 test loss (\textcolor{red}{\autoref{fig:netsperf}}).
+CNNSimple network trained on the NCT-CRC-HE-100K dataset was trained for 35 epochs, using RMSProp optimizer with a learning rate of 0.00004, using a categorical cross-entropy loss function. Before feeding data to the network, data augmentation (applying random transformations in order to produce more images, such as translation, rotation, sheer) has been used. In order to assess the performance of the network, the accuracy metrics function was employed. CNNSimple achieved 93.89\% validation and 94.21\% test accuracy, and 0.24 validation and 0.06 test loss (\textcolor{red}{\autoref{fig:netsperf}}).
 
-VGG19Simple network trained on BreakHis dataset was trained for 90 epochs, using RMSProp optimizer with learning rate of 0.0001, using categorical crossentropy loss function. Before feeding data to the network, data augmentation (applying random transformations in order to produce more images, such as translation, rotation, sheer) has been used. In order to assess performance of the network, accuracy metrics function was employed. After training network with frozen convolutional base, last two convolutional blocks were unfrozen, and network was trained again using RMSProp optimizer with learning rate of 0.00004. VGG19Simple achieved 85.3\% validation and 83.59\% test accuracy, and 0.72 validation and 1.02 test loss.
+VGG19Simple network trained on the BreakHis dataset was trained for 90 epochs, using RMSProp optimizer with a learning rate of 0.0001, using a categorical cross-entropy loss function. Before feeding data to the network, data augmentation (applying random transformations in order to produce more images, such as translation, rotation, sheer) has been used. In order to assess the performance of the network, the accuracy metrics function was employed. After training a network with a frozen convolutional base, the last two convolutional blocks were unfrozen, and network was trained again using RMSProp optimizer with a learning rate of 0.00004. VGG19Simple achieved 85.3\% validation and 83.59\% test accuracy, and 0.72 validation and 1.02 test loss (\textcolor{red}{\autoref{fig:netsperf}}).
 
 \begin{figure}[h]
 	\centering
 	\subfigure[\scriptsize CNNSimple Accuracy]{\label{fig:a}\includegraphics[width=72mm]{cnn_acc.png}}
-	\subfigure[\scriptsize CNNSImple Loss]{\label{fig:b}\includegraphics[width=72mm]{cnn_loss.png}}
+	\subfigure[\scriptsize CNNSimple Loss]{\label{fig:b}\includegraphics[width=72mm]{cnn_loss.png}}
 	\subfigure[\scriptsize VGG19Simple Accuracy]{\label{fig:vgg19perf}\includegraphics[width=72mm]{vgg19_acc.png}}
 	\subfigure[\scriptsize VGG19Simple Loss]{\label{fig:b}\includegraphics[width=72mm]{vgg19_loss.png}}
 	\caption{CNNSimple and VGG19Simple performance on BreakHis and NCT-CRC-HE-100K train and validation datasets (respectively)}
 	\label{fig:netsperf}
 \end{figure}
 
-Another way of interpreting network performance is by plotting confusion matrix, which is a summary table of correct and incorrect predictions broken down by each class (\textcolor{red}{\autoref{fig:cnncf}, \autoref{fig:vgg19cf}}).
-
 \begin{figure}[h]
 	\centering
 	\begin{minipage}{.5\textwidth}
 		\centering
 		\hspace*{-0.7cm}
+		\vspace*{-0.45cm}
 		\includegraphics[scale=0.37]{cnn_cf.png}
-		\captionof{figure}{Confusion Matrix of CNNSimple on NCT-CRC-HE-1OOK test dataset}
+		\captionof{figure}{Confusion Matrix (a summary table of correct and incorrect predictions broken down by each class) of CNNSimple on NCT-CRC-HE-1OOK test dataset}
 		\label{fig:cnncf}
 	\end{minipage}%
 	\begin{minipage}{.5\textwidth}
@@ -214,7 +212,7 @@ In addition, every window-specific information is located in \texttt{config.py},
 
 \subsection{Main Window}
 
-MainWindow class is the central part of the GUI, as it defines the window which appears when program is started. It has menu bar from which every other window can be reached, and central widget which contains input image, tissue-type radio buttons, classify button and output class label and probabilities plot. Function \emph{classifyButtonEvent}, associated with \emph{classifyButton} is the integral part of the class, as it loads network based on the tissue type of the input image, classifies it, and writes output to labels.
+MainWindow class is the central part of the GUI, as it defines the window which appears when the program is started. It has a menu bar from which every other window can be reached, and a central widget which contains input image, tissue-type radio buttons, classify button and output class label, and probabilities plot. Function \emph{classifyButtonEvent}, associated with \emph{classifyButton} is an integral part of the class, as it loads network based on the tissue type of the input image, classifies it, and writes output to labels.
 
 
 \section{Utilities}
@@ -233,7 +231,7 @@ For program to work seamlessly, certain utilities needed to be implemented:
 
 \section{Implementing Additional Features}
 
-In addition to the ease of use of Histopathologic Cancer Detection program, source code was written in such a way to make expanding scope (problem space) of the program by including additional features quite simple and fast. If new tissue type (ex. lung tissue), along with tissue/cancer subtype classification was to be added to the program, it would be accomplished in following four steps:
+In addition to the ease of use of the Histopathologic Cancer Detection program, source code was written in such a way to make expanding scope (problem space) of the program by including additional features quite simple and fast. If new tissue type (ex. lung tissue), along with tissue/cancer subtype classification was to be added to the program, it would be accomplished in the following four steps:
 \begin{enumerate}
 	\itemsep 0em
 	\item \textbf{Creating dataset} \\
@@ -243,18 +241,18 @@ In addition to the ease of use of Histopathologic Cancer Detection program, sour
 	\item \textbf{Fine-tuning CNN} \\
 	Defining hyperparameter dictionary and training neural networks in order to increase classification accuracy and prevent overfitting
 	\item \textbf{Extending GUI} \\
-	Adding additional radio button to MainWindow class, and extending action associated with classify button, as well as further analysis actions, to use newly created network
+	Adding an additional radio button to MainWindow class, and extending action associated with classify button, as well as further analysis actions, to use newly created network
 \end{enumerate}
 
 \section{Testing}
 \label{tests}
 
-Source code for Histopatologic Cancer Detection can be divided into two equal chunks: code responsible for CNN-related functionality and code responsible for GUI-related functionality.
+Source code for Histopathologic Cancer Detection can be divided into two equal chunks: code responsible for CNN-related functionality and code responsible for GUI-related functionality.
 
-Code responsible for CNN-related functionality has been unit-tested using \texttt{PyTest} testing framework, and has a code coverage of 97\%. Unit tests for data module can be found in \texttt{test\_data.py}, unit tests for models and experiments modules can be found in \texttt{test\_models\_experiments.py}, and unit tests for utilities can be found in \texttt{test\_utils.py}.
+The code responsible for CNN-related functionality has been unit-tested using \texttt{PyTest} testing framework, and has a code coverage over 93\%. Unit tests for data module can be found in \texttt{test\_data.py}, unit tests for models and experiments modules can be found in \texttt{test\_models\_experiments.py}, and unit tests for utilities can be found in \texttt{test\_utils.py}.
 
 Code responsible for GUI-related functionality has been tested manually, where numerous histopathologic slides have been loaded and classified, as well as further analyzed, in order to inspect program functionality. 
 
 \section{External Code}
 
-Main ideas for advanced use of Histopathologic Cancer Detection, i.e. for further analysis of CNN representations and visualization of heatmaps of class activations, intermediate activations and filters of convolutional layers, as well as some parts of source code, have been taken from \cite{chollet2018deep}. Code is licensed under MIT license.
+Main ideas for advanced use of Histopathologic Cancer Detection, i.e. for further analysis of CNN representations and visualization of heatmaps of class activations, intermediate activations and filters of convolutional layers, as well as some parts of source code, have been taken from \cite{chollet2018deep}. The code is licensed under MIT license.

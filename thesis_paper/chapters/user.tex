@@ -4,7 +4,7 @@
 There are three main ways of using Histopathologic Cancer Detection program:
 \begin{enumerate}
 	\itemsep 0em
-	\item Predicting tissue and cancer subtype of breast and colorectal tissue, i.e. predicting whether patient has breast or colorectal cancer or not
+	\item Predicting tissue and cancer subtype of breast and colorectal tissue, i.e. predicting whether the patient has breast or colorectal cancer or not
 	\item Visualizing what Convolutional Neural Network (CNN) learns, i.e. visualizing how network transforms input image, and which parts of input image lead to predicting tissue and cancer subtype
 	\item Adding new datasets and networks in order to increase the scope of the program, and predict even more tissue and cancer subtypes
 \end{enumerate}
@@ -13,7 +13,7 @@ Before using the program, certain system requirements must be satisfied.
 \section{System Requirements}
 \label{sysreq}
 
-In order to run Histopathologic Cancer Detection, Python 3.5+ is required on one of the following operating systems: Windows 7 or later (64bit), macOS 10.12.6 (Sierra) or later (64bit), Ubuntu 16.04 or later (64bit) or Raspbian 9.0 or later. Moreover, considering computer needs to be powerful enough to perform large number of tensor operations, CPU Intel Core i5 6th generation processor or higher (or an AMD equivalent processor) and 8+GB of RAM are required.
+In order to run Histopathologic Cancer Detection, Python 3.5+ is required on one of the following operating systems: Windows 7 or later (64bit), macOS 10.12.6 (Sierra), or later (64bit), Ubuntu 16.04 or later (64bit) or Raspbian 9.0 or later. Moreover, considering computer needs to be powerful enough to perform a large number of tensor operations, CPU Intel Core i5 6th generation processor or higher (or an AMD equivalent processor) and 8+GB of RAM are required.
 
 \subsection{General Software Requirements}
 
@@ -32,14 +32,14 @@ In order to use the program to predict tissue and cancer subtype, and to visuali
 
 \subsection{Additional Software Requirements}
 
-In order to replicate results of already existing networks, or to expand scope of the program by adding new datasets and training new networks, NVIDIA GPU card with CUDA Compute Capability 3.5 or higher is required, along with the following:
+In order to replicate results of already existing networks, or to expand the scope of the program by adding new datasets and training new networks, NVIDIA GPU card with CUDA Compute Capability 3.5 or higher is required, along with the following:
 \begin{itemize}
 	\itemsep 0em
-	\item NVIDIA CUDA toolkit - provides a development environment for creating high performance GPU-accelerated applications
+	\item NVIDIA CUDA toolkit - provides a development environment for creating high-performance GPU-accelerated applications
 	\item NVIDIA CUDA Deep Neural Network Library (cuDNN) - GPU-accelerated library of primitives for deep neural networks, which provides highly tuned implementations for standard routines
 	\item \texttt{TensorFlow-GPU} - GPU-enabled version of \texttt{TensorFlow} library
 \end{itemize}
-Training convolutional neural networks requires large amount of computations, and in order to decrease training time, networks are trained on GPU (it is not feasible on CPU, as GPU training is multiple times faster).
+Training convolutional neural networks requires a large amount of computations, and in order to decrease training time, networks are trained on GPU (it is not feasible on CPU, as GPU training is multiple times faster).
 
 \section{Running the Program}
 
@@ -49,7 +49,7 @@ After running the program, new window appears (\textcolor{red}{\autoref{fig:star
 	\hspace*{0.5cm}
 	\centering
 	\includegraphics[scale=0.32]{startup_window.png}
-	\caption{Main window of Histopathologic Cancer Detection program}
+	\caption{The main window of Histopathologic Cancer Detection program}
 	\label{fig:startup}
 \end{figure}
 
@@ -90,7 +90,7 @@ In order to find basic information about networks, which include network archite
 \section{Basic Use: Predicting Tissue Type}
 \label{basicuse}
 
-Main use of the Histopathologic Cancer Detection program is to make it easy and fast to load histopathologic slide and get a prediction on tissue and cancer subtype. In order to load a histopathologic slide, click on \emph{Load\; Image}, and select histopathologic slide for which the prediction is required. Next, select a tissue type of the slide by clicking on \emph{Breast\;Tissue} or \emph{Colorectal\;Tissue} radio button. Afterwards, in order to get tissue and cancer subtype, along with probabilities plot, press \emph{Classify} button (\textcolor{red}{\autoref{fig:predict}}).
+The main use of the Histopathologic Cancer Detection program is to make it easy and fast to load histopathologic slides and get a prediction on tissue and cancer subtype. In order to load a histopathologic slide, click on \emph{Load\; Image}, and select histopathologic slide for which the prediction is required. Next, select a tissue type of the slide by clicking on \emph{Breast\;Tissue} or \emph{Colorectal\;Tissue} radio button. Afterwards, in order to get tissue and cancer subtype, along with probabilities plot, press \emph{Classify} button (\textcolor{red}{\autoref{fig:predict}}).
 
 \begin{figure}[h]
 	\centering
@@ -102,11 +102,11 @@ Main use of the Histopathologic Cancer Detection program is to make it easy and 
 \section{Advanced Use: Visualizing Network \\Representations}
 \label{advuse}
 
-Deep neural networks are highly complex models which have great expressive power and can achieve high accuracy while solving wide range of problems. Unfortunately, with high complexity comes low interpretability, which presents an issue, especially in deep learning applications to healthcare. Fortunately, there are several methods to inspect convolutional neural networks, and interpret their output. In this paper, I cover three of them: visualizing heatmaps of class activations, visualizing filters of convolutional layers and visualizing intermediate activations.
+Deep neural networks are highly complex models that have great expressive power and can achieve high accuracy while solving a wide range of problems. Unfortunately, with high complexity comes low interpretability, which presents an issue, especially in deep learning applications to healthcare. Fortunately, there are several methods to inspect convolutional neural networks, and interpret their output. In this paper, I cover three of them: visualizing heatmaps of class activations, visualizing filters of convolutional layers, and visualizing intermediate activations.
 
 \subsection{Visualizing Heatmaps of Class Activations}
 
-Different parts of an image have different weights in networks decision on tissue and cancer subtype classification, and because of that, it is possible to highlight which parts of an image have the highest influence on the networks output. This class of methods is called class activation map visualization, and it produces heatmaps of class activations over input images. A class activation heatmap is a 2D grid of scores associated with a specific output class, computed for every location in any input image, indicating how important each location is with respect to the class under consideration \cite{chollet2018deep}. In order to produce heatmap, go to \emph{Further Analysis $\rightarrow$ Heatmap} (\textcolor{red}{\autoref{fig:heatmap}}).
+Different parts of an image have different weights in networks decision on tissue and cancer subtype classification, and because of that, it is possible to highlight which parts of an image have the highest influence on the network's output. This class of methods is called class activation map visualization, and it produces heatmaps of class activations over input images. A class activation heatmap is a 2D grid of scores associated with a specific output class, computed for every location in any input image, indicating how important each location is with respect to the class under consideration \cite{chollet2018deep}. In order to produce heatmap, go to \emph{Further Analysis $\rightarrow$ Heatmap} (\textcolor{red}{\autoref{fig:heatmap}}).
 
 \begin{figure}[h]
 	\centering
@@ -127,25 +127,25 @@ Different parts of an image have different weights in networks decision on tissu
 
 \subsection{Visualizing Intermediate Activations}
 
-Visualizing intermediate activations consists of displaying the feature maps that are output by various convolutional and pooling layers in a network, given a certain input (the output of a layer is often called its activation, the output of the activation function). This gives a view into how an input is decomposed into the different filters learned by the network \cite{chollet2018deep}. In order to visualize intermediate activations of layers, go to \emph{Further Analysis $\rightarrow$ Class Activations}. Next choose which network layer's intermediate activations should be visualized, along with channel number, or 'all', for visualizing all of layer's channels  (\textcolor{red}{\autoref{fig:interact}}).
+Visualizing intermediate activations consists of displaying the feature maps that are output by various convolutional and pooling layers in a network, given a certain input (the output of a layer is often called its activation, the output of the activation function). This gives a view into how an input is decomposed into the different filters learned by the network \cite{chollet2018deep}. In order to visualize intermediate activations of layers, go to \emph{Further Analysis $\rightarrow$ Class Activations}. Next choose which network layer's intermediate activations should be visualized, along with channel number, or 'all', for visualizing all of the layer's channels  (\textcolor{red}{\autoref{fig:interact}}).
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[scale=0.33]{layer_activations.png}
-	\caption{Every channel of second convolutional layer of VGG19Simple on a breast tissue input (\textcolor{red}{\autoref{fig:input}}).}
+	\caption{Every channel of the second convolutional layer of VGG19Simple on a breast tissue input image (\textcolor{red}{\autoref{fig:input}}).}
 	\label{fig:interact}
 \end{figure}
 
 \subsection{Visualizing Filters of Convolutional Layers}
 
-Further analysis is not only dependent on an input image, as we can also inspect feature extractors (filters) of convolutional layers by displaying patterns on which each filter is supposed to respond to. This can be done with gradient ascent in input space: applying gradient descent to the value of the input image of a CNN so as to maximize the response of a specific filter, starting from a blank input image. The resulting input image will be one that the chosen filter is maximally responsive to \cite{chollet2018deep}. In order to visualize filters of convolutional layers, go to \emph{Further Analysis $\rightarrow$ Network Filters}.  Next choose which network convolutional layer's filters should be visualized, along with filter number, or 'all', for visualizing all of layer's filters  (\textcolor{red}{\autoref{fig:filters}}).
+Further analysis is not only dependent on an input image, as we can also inspect feature extractors (filters) of convolutional layers by displaying patterns on which each filter is supposed to respond to. This can be done with gradient ascent in input space: applying gradient descent to the value of the input image of a CNN so as to maximize the response of a specific filter, starting from a blank input image. The resulting input image will be one that the chosen filter is maximally responsive to \cite{chollet2018deep}. In order to visualize filters of convolutional layers, go to \emph{Further Analysis $\rightarrow$ Network Filters}.  Next choose which network convolutional layer's filters should be visualized, along with filter number, or 'all', for visualizing all of the layer's filters  (\textcolor{red}{\autoref{fig:filters}}).
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[scale=0.5]{filters.png}
-	\caption{Filter patterns for second convolutional layer of CNNSimple network}
+	\caption{Filter patterns for the third convolutional layer of CNNSimple network}
 	\label{fig:filters}
 \end{figure}
 
 \section{Saving Results}
-After all predictions have been made, and all further analysis has been conducted, in order to save the results, i.e. save all the images created during the program's execution, go to \emph{File $\rightarrow$ Save}.
+After all of the predictions have been made, and all further analysis has been conducted, in order to save the results, i.e. save all the images created during the program's execution, go to \emph{File $\rightarrow$ Save}.
