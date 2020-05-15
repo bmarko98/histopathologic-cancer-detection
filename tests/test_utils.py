@@ -4,8 +4,8 @@ import random
 from PIL import Image
 from utils.misc import load_image
 import utils.save_model as save_model
-from models.cnn_simple import CNNSimple
-from models.vgg19_simple import VGG19Simple
+import models.cnn_simple as cnn_simple
+import models.vgg19_simple as vgg19_simple
 import utils.predict_image as predict_image
 import utils.dataset_overview as dataset_overview
 import utils.visualize_filters as visualize_filters
@@ -66,19 +66,26 @@ def test_predict_image(tmpdir):
 
 
 @pytest.mark.slow
-def test_save_model(tmpdir):
-    cnn_simple = CNNSimple(epochs=1)
-    assert save_model.save_model(cnn_simple, save_dir=os.path.join(tmpdir, 'cnn_simple')) == 0
+def test_save_model(monkeypatch, tmpdir):
 
-    vgg19_simple = VGG19Simple(epochs=1)
-    assert save_model.save_model(vgg19_simple, save_dir=os.path.join(tmpdir, 'vgg19_simple')) == 0
+    def dummy_save_model(*args, **kwargs):
+        pass
+
+    monkeypatch.setattr(cnn_simple, 'save_model', dummy_save_model, raising=True)
+    cnn_simple_network = cnn_simple.CNNSimple(epochs=1, dataset_count=(70010, 14995, 14995))
+
+    assert save_model.save_model(cnn_simple_network, save_dir=os.path.join(tmpdir, 'cnn_simple')) == 0
+
+    monkeypatch.setattr(vgg19_simple, 'save_model', dummy_save_model, raising=True)
+    vgg19_simple_network = vgg19_simple.VGG19Simple(epochs=1, dataset_count=(1463, 309, 309))
+
+    assert save_model.save_model(vgg19_simple_network, save_dir=os.path.join(tmpdir, 'vgg19_simple')) == 0
 
 
-@pytest.mark.slow
 def test_visualize_filters(tmpdir):
     for dataset in datasets:
         model = predict_image.load_keras_model(dataset)
-        assert visualize_filters.visualize_filters(model, tmpdir) == 0
+        assert visualize_filters.create_layer_patterns(model, 'block1_conv1', 5, 150, 5, tmpdir) == 0
 
 
 def test_visualize_intermediate_activations(tmpdir):
